@@ -47,11 +47,14 @@ export default async function HomePage() {
     principalMsg,
   ].filter((v): v is NonNullable<typeof v> => Boolean(v));
 
+  // LP-1: the four figures the school publishes, in the deck's order. Values are
+  // admin-editable settings; the fallbacks match the deck so a bare database still
+  // states the truth rather than a placeholder.
   const statCards = [
-    { label: t.home.stats_students, value: stats.stat_total_students ?? "30", color: "bg-sunrise" },
-    { label: t.home.stats_classes, value: stats.stat_total_classes ?? "6", color: "bg-sky" },
-    { label: t.home.stats_special, value: stats.stat_special_courses ?? "6", color: "bg-teal" },
-    { label: t.home.stats_teachers, value: stats.stat_teachers_staff ?? "9", color: "bg-navy" },
+    { label: t.home.stats_students, sub: null, value: stats.stat_total_students ?? "120+", color: "bg-sunrise" },
+    { label: t.home.stats_classes, sub: t.home.stats_classes_sub, value: stats.stat_total_classes ?? "6", color: "bg-sky" },
+    { label: t.home.stats_special, sub: null, value: stats.stat_special_courses ?? "8", color: "bg-teal" },
+    { label: t.home.stats_teachers, sub: null, value: stats.stat_teachers_staff ?? "15+", color: "bg-navy" },
   ];
 
   return (
@@ -66,30 +69,29 @@ export default async function HomePage() {
           <div className="absolute right-8 bottom-8 w-40 h-40 dot-grid opacity-60 hidden md:block" aria-hidden />
           <div className="grid lg:grid-cols-2 gap-8 items-center px-6 sm:px-12 py-12 lg:py-16">
             <div className="relative z-10">
-              <p className="inline-block bg-sky-soft text-navy text-xs font-extrabold tracking-wide uppercase rounded-full px-3 py-1.5 mb-5">
-                {t.home.firstSchool}
-              </p>
+              {/* LP-1 headline. The CMS page owns it; the fallback is the deck's wording. */}
               <h1 className="font-display text-4xl sm:text-5xl xl:text-[3.4rem] leading-[1.12] font-semibold text-ink">
-                {hero?.title ?? "Kids are the best explorers in the world!"}
+                {hero?.title ?? t.home.firstSchool}
               </h1>
               <div
                 className="mt-5 text-ink-soft text-[15px] leading-relaxed max-w-md [&_strong]:text-navy"
                 dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
               />
+              {/* Deck order: Read More first, Apply Now second. */}
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
-                  href="/apply"
-                  className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors shadow-sm"
+                  href="/bcsk/about-us"
+                  className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
                 >
-                  {t.home.getStarted}
+                  {t.common.readMore}
                 </Link>
                 <Link
-                  href="/bcsk/about-us"
-                  className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors inline-flex items-center gap-2"
+                  href="/apply"
+                  className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors shadow-sm inline-flex items-center gap-2"
                 >
-                  {t.home.watchVideo}
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                    <path d="M8 5v14l11-7L8 5Z" />
+                  {t.nav.applyNow}
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
+                    <path d="m7 5 7 7-7 7M14 5l7 7-7 7" />
                   </svg>
                 </Link>
               </div>
@@ -98,6 +100,20 @@ export default async function HomePage() {
             {/* signature visual: one child, three language worlds — auto-rotating */}
             <HeroLanguageSlider images={heroImages} />
           </div>
+        </div>
+      </section>
+
+      {/* ---------------- STATS BAND (LP-1, FR-HOME-04) ---------------- */}
+      <section className="mx-auto max-w-7xl px-4 mt-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {statCards.map((s) => (
+            <div key={s.label} className="bg-cream rounded-2xl p-6 text-center">
+              <span className={`inline-block w-3 h-3 rounded-full ${s.color} mb-3`} aria-hidden />
+              <p className="font-display text-4xl font-semibold text-navy">{s.value}</p>
+              <p className="mt-1 text-xs font-bold uppercase tracking-wide text-ink-soft">{s.label}</p>
+              {s.sub && <p className="mt-1 text-[11px] text-ink-soft/80">{s.sub}</p>}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -162,7 +178,7 @@ export default async function HomePage() {
       </section>
 
       {/* ---------------- WELCOME (FR-HOME-03) ---------------- */}
-      <section className="mx-auto max-w-7xl px-4 mt-20 grid lg:grid-cols-2 gap-10 items-center">
+      <section className="mx-auto max-w-3xl px-4 mt-20">
         <div className="relative">
           <div className="absolute -left-6 -top-6 w-28 h-28 dot-grid" aria-hidden />
           <h2 className="relative font-display text-3xl font-semibold text-ink">{t.home.welcome}</h2>
@@ -173,16 +189,6 @@ export default async function HomePage() {
           <Link href="/bcsk/about-us" className="inline-block mt-5 text-sky font-bold text-sm hover:underline underline-offset-4">
             {t.common.readMore} →
           </Link>
-        </div>
-        {/* stats counters (FR-HOME-04) */}
-        <div className="grid grid-cols-2 gap-4">
-          {statCards.map((s) => (
-            <div key={s.label} className="bg-cream rounded-2xl p-6 text-center">
-              <span className={`inline-block w-3 h-3 rounded-full ${s.color} mb-3`} aria-hidden />
-              <p className="font-display text-4xl font-semibold text-navy">{s.value}</p>
-              <p className="mt-1 text-xs font-bold uppercase tracking-wide text-ink-soft">{s.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 

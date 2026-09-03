@@ -16,7 +16,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-screen bg-[#f3f4f8] flex">
       <aside className="w-60 shrink-0 bg-navy text-white min-h-screen sticky top-0 hidden lg:flex flex-col no-print">
         <Link href="/admin/dashboard" className="flex items-center gap-2.5 px-5 h-16 border-b border-white/10">
-          <LogoMark size={34} />
+          <LogoMark size={34} priority />
           <span className="font-display font-semibold text-sm leading-tight">BCSK Admin</span>
         </Link>
         <AdminNav items={nav} />
@@ -28,7 +28,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="flex-1 min-w-0">
         <header className="bg-white border-b border-line h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-40 no-print">
           <div className="lg:hidden flex items-center gap-2">
-            <LogoMark size={30} />
+            <LogoMark size={30} priority />
             <span className="font-display font-semibold text-sm text-navy">BCSK Admin</span>
           </div>
           <nav className="lg:hidden overflow-x-auto flex gap-3 text-xs font-bold text-ink-soft mx-3">
