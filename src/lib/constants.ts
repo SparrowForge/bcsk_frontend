@@ -72,8 +72,11 @@ export const SCHOOL = {
   phone2: "+82 10-6893-6237",
   whatsapp: "+821095998901",
   whatsappDisplay: "+82 10 9599 8901",
+  /** Romanised, for search engines and non-Korean readers. */
   address:
     "794-29 Wangsan-ri, Mohyeon-eup, Cheoin-gu, Yongin-si, Gyeonggi-do, South Korea",
+  /** The same address as a Korean courier or taxi driver needs it. The deck prints this form. */
+  addressKo: "경기도 용인시 처인구 모현읍 왕산리 794-29",
   bank: {
     name: "Hana Bank",
     accountName: "Bangladesh Community School Korea",

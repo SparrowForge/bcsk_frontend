@@ -120,13 +120,10 @@ const en = {
     seminarGallery: "Offline Seminar: Gallery",
   },
   footer: {
-    quickLinks: "Quick Links",
-    programs: "Programs",
-    contactUs: "Contact Us",
+    address: "Address",
     privacy: "Privacy Policy",
     refund: "Refund Policy",
     rights: "All rights reserved.",
-    tagline: "The first Bangladeshi community school in South Korea — mother language, culture, Deen, and world-class education.",
   },
   common: {
     readMore: "Read more",
@@ -291,13 +288,10 @@ const bn: Dict = {
     seminarGallery: "অফলাইন সেমিনার: গ্যালারি",
   },
   footer: {
-    quickLinks: "দ্রুত লিংক",
-    programs: "প্রোগ্রামসমূহ",
-    contactUs: "যোগাযোগ করুন",
+    address: "ঠিকানা",
     privacy: "গোপনীয়তা নীতি",
     refund: "রিফান্ড নীতি",
     rights: "সর্বস্বত্ব সংরক্ষিত।",
-    tagline: "দক্ষিণ কোরিয়ার প্রথম বাংলাদেশি কমিউনিটি স্কুল — মাতৃভাষা, সংস্কৃতি, দ্বীন এবং বিশ্বমানের শিক্ষা।",
   },
   common: {
     readMore: "আরও পড়ুন",
@@ -460,13 +454,10 @@ const ko: Dict = {
     seminarGallery: "오프라인 세미나: 갤러리",
   },
   footer: {
-    quickLinks: "바로가기",
-    programs: "프로그램",
-    contactUs: "연락처",
+    address: "주소",
     privacy: "개인정보처리방침",
     refund: "환불 정책",
     rights: "All rights reserved.",
-    tagline: "한국 최초의 방글라데시 커뮤니티 스쿨 — 모국어, 문화, 신앙, 그리고 세계적 수준의 교육.",
   },
   common: {
     readMore: "더 보기",

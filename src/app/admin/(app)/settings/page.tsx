@@ -27,6 +27,7 @@ const GROUPS: Array<{ title: string; note?: string; keys: Array<[string, string]
       ["support_email", "Support email"],
       ["school_phone", "Phone 1"],
       ["school_phone2", "Phone 2"],
+      ["contact_hours", "Contact hours (shown beside the footer phone numbers)"],
     ],
   },
   {
