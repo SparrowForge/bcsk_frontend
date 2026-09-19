@@ -3,6 +3,7 @@ import Link from "next/link";
 import { requireTeacher } from "@/lib/auth";
 import { office } from "@/services";
 import { SEMESTER_CURRENT, classLevelLabel } from "@/lib/constants";
+import { DeskStatusCard } from "./DeskStatusCard";
 
 /** FR-TCH-02/05: teacher profile, assigned classes grid, notifications panel. */
 export default async function TeacherDashboard() {
@@ -64,24 +65,34 @@ export default async function TeacherDashboard() {
           </div>
         </section>
 
-        <aside className="bg-white rounded-2xl border border-line p-5">
-          <h2 className="font-display text-lg font-semibold text-navy">Notifications</h2>
-          <ul className="mt-3 space-y-3">
-            {notifications.length === 0 && <li className="text-sm text-ink-soft">Nothing new.</li>}
-            {notifications.map((n) => (
-              <li key={n.id} className="border-l-2 border-sky pl-3">
-                {n.link ? (
-                  <Link href={n.link} className="text-sm font-bold text-ink hover:text-sky leading-snug">{n.title}</Link>
-                ) : (
-                  <p className="text-sm font-bold text-ink leading-snug">{n.title}</p>
-                )}
-                {n.body && <p className="text-xs text-ink-soft mt-0.5">{n.body}</p>}
-                <time className="text-[10px] text-ink-soft">
-                  {formatDate(n.createdAt)}
-                </time>
-              </li>
-            ))}
-          </ul>
+        <aside className="space-y-6">
+          {profile && (
+            <DeskStatusCard
+              status={profile.deskStatus}
+              returnAt={profile.returnAt}
+              deskName={profile.deskName}
+            />
+          )}
+
+          <div className="bg-white rounded-2xl border border-line p-5">
+            <h2 className="font-display text-lg font-semibold text-navy">Notifications</h2>
+            <ul className="mt-3 space-y-3">
+              {notifications.length === 0 && <li className="text-sm text-ink-soft">Nothing new.</li>}
+              {notifications.map((n) => (
+                <li key={n.id} className="border-l-2 border-sky pl-3">
+                  {n.link ? (
+                    <Link href={n.link} className="text-sm font-bold text-ink hover:text-sky leading-snug">{n.title}</Link>
+                  ) : (
+                    <p className="text-sm font-bold text-ink leading-snug">{n.title}</p>
+                  )}
+                  {n.body && <p className="text-xs text-ink-soft mt-0.5">{n.body}</p>}
+                  <time className="text-[10px] text-ink-soft">
+                    {formatDate(n.createdAt)}
+                  </time>
+                </li>
+              ))}
+            </ul>
+          </div>
         </aside>
       </div>
     </div>

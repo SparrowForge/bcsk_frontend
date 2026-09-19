@@ -11,6 +11,13 @@
   --sunrise: #f5820b;
   --sunrise-deep: #d96e04;
   --teal: #0fb5a6;
+  /* Homepage board palette (LP-1..LP-6): the sage panels the school design uses for
+     section headings and the stat band, plus the two card accents that sit inside them. */
+  --sage: #c3ccac;
+  --sage-soft: #dde3cd;
+  --sage-deep: #7f8c63;
+  --peach: #fdeacf;
+  --maroon: #8c2b20;
   --paper: #ffffff;
   --ink: #232323;
   --ink-soft: #5b5b6b;
@@ -29,6 +36,11 @@
   --color-sunrise: var(--sunrise);
   --color-sunrise-deep: var(--sunrise-deep);
   --color-teal: var(--teal);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-sage-deep: var(--sage-deep);
+  --color-peach: var(--peach);
+  --color-maroon: var(--maroon);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);

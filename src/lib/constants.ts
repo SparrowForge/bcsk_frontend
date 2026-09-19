@@ -18,8 +18,21 @@ export const CLASS_LEVELS = [
   { key: "CLASS_5", label: "Class 5" },
 ] as const;
 
+/**
+ * A class level as a reader sees it.
+ *
+ * `ClassSession.classLevel` is a free-text column, so the school runs sections the
+ * `CLASS_LEVELS` list does not name — "PRE_PRIMARY_A", "PRE_PRIMARY_B". Falling back to the
+ * raw key would print PRE_PRIMARY_A on the homepage board, so an unknown key is title-cased
+ * rather than shown as a database value.
+ */
 export const classLevelLabel = (key: string) =>
-  CLASS_LEVELS.find((c) => c.key === key)?.label ?? key;
+  CLASS_LEVELS.find((c) => c.key === key)?.label ??
+  key
+    .toLowerCase()
+    .split("_")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join("-");
 
 export const APPLICATION_STATUS = {
   PENDING_PAYMENT: "PENDING_PAYMENT",

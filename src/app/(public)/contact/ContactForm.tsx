@@ -8,7 +8,14 @@ import { submitContact, type ContactState } from "./actions";
 const input =
   "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
 
-export function ContactForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) {
+export function ContactForm({
+  recaptchaSiteKey,
+  defaultCategory = "GENERAL",
+}: {
+  recaptchaSiteKey: string;
+  /** Preselected topic, so a "Technical / IT support" link arrives on the right form. */
+  defaultCategory?: string;
+}) {
   const [state, action, pending] = useActionState<ContactState, FormData>(submitContact, null);
 
   if (state?.ok) {
@@ -44,7 +51,7 @@ export function ContactForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
         </label>
         <label className="block">
           <span className="text-xs font-bold text-ink">Topic *</span>
-          <select name="category" className={`mt-1.5 ${input}`}>
+          <select name="category" defaultValue={defaultCategory} className={`mt-1.5 ${input}`}>
             <option value="GENERAL">General inquiry</option>
             <option value="ADMISSION">Admission</option>
             <option value="IT">Technical / IT support</option>

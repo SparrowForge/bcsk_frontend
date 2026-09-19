@@ -64,6 +64,10 @@ export type TeacherRow = {
   bio: string | null;
   photoUrl: string | null;
   guideClass: string | null;
+  /** Office-board presence. IN_CLASS is derived on the server, so it is not one of these. */
+  deskName: string | null;
+  deskStatus: "DESK" | "OFFLINE";
+  returnAt: ISODate | null;
   displayOrder: number;
   user: { name: string };
 };
@@ -117,6 +121,7 @@ export type ClassSession = {
   teacherId: number | null;
   zoomLink: string | null;
   isLive: boolean;
+  liveSince: ISODate | null;
   notice: string | null;
   active: boolean;
   course?: Course;
@@ -133,16 +138,42 @@ export type CurriculumEntry = {
   displayOrder: number;
 };
 
-export type CampusStatus = {
+/**
+ * The homepage office and classroom boards (LP-2, LP-3), from `/public/school-board`.
+ *
+ * Nulls here mean "nothing to show", not "zero": an idle class has no duration and no
+ * attendee count, and the page prints an em dash rather than inventing a number.
+ */
+export type SchoolBoard = {
+  /** True when at least one class is live — what the "Current Status" pill reads. */
   open: boolean;
   liveCount: number;
-  sessions: {
+  availableTeachers: number;
+  inClassTeachers: number;
+  desks: {
     id: number;
-    title: string;
-    courseName: string;
+    /** The card's title: a named desk, else the subjects they teach. */
+    deskName: string;
+    teacherName: string;
+    photoUrl: string | null;
+    /** IN_CLASS is derived from a live session, never stored — the teacher sets the other two. */
+    status: "IN_CLASS" | "DESK" | "OFFLINE";
+    /** The class they are teaching right now, when IN_CLASS. */
+    classLabel: string | null;
+    /** Minutes until they are back at the desk; null when unknown or already there. */
+    returnInMinutes: number | null;
+  }[];
+  classes: {
+    key: string;
+    /** A raw class-level key ("CLASS_3") or a course name — run it through `classLevelLabel`. */
+    label: string;
     classLevel: string | null;
+    courseSlug: string | null;
+    live: boolean;
+    currentCourseName: string | null;
     teacherName: string | null;
-    students: number;
+    durationMinutes: number | null;
+    attendees: number | null;
   }[];
 };
 

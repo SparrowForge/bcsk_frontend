@@ -52,8 +52,11 @@ export const site = {
       0,
     ),
   specialCourses: () => api.public<T.Course[]>("/public/special-courses", 300),
-  /** Homepage "campus right now" widget. Short cache — reflects real teacher-toggled state. */
-  campusStatus: () => api.public<T.CampusStatus>("/public/campus-status", 30),
+  /**
+   * Homepage office + classroom boards. Short cache: it reflects state a teacher toggled
+   * seconds ago, so a long one would show a class as live after it had ended.
+   */
+  schoolBoard: () => api.public<T.SchoolBoard>("/public/school-board", 30),
   heroImages: () => api.public<T.HeroImage[]>("/public/hero-images", 300),
   /** Answers for anonymous visitors too — an empty list, not an error. */
   enrolledCourseSlugs: () => api.get<string[]>("/classroom/enrolled-courses"),
@@ -211,6 +214,9 @@ export const office = {
   answer: (id: number, answer: string) => api.post<T.Question>(`/office/questions/${id}/answer`, { answer }),
   tasks: () => api.get<T.TeacherTask[]>("/office/tasks"),
   toggleTask: (id: number, done: boolean) => api.patch<T.TeacherTask>(`/office/tasks/${id}`, { done }),
+  /** The teacher's own desk presence on the homepage office board. */
+  setDeskStatus: (status: "DESK" | "OFFLINE", returnAt?: string) =>
+    api.patch<T.TeacherRow>("/office/desk-status", { status, returnAt }),
 };
 
 /* ---------------------------------- users ----------------------------------- */

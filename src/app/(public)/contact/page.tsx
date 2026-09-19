@@ -5,7 +5,18 @@ import { SCHOOL } from "@/lib/constants";
 import { ContactForm } from "./ContactForm";
 
 /** FR-CONT-01: address, map, phone/WhatsApp, email, social links, and a support-ticket contact form. */
-export default async function ContactPage() {
+/** The topics the form offers; anything else in the URL falls back to a general inquiry. */
+const TOPICS = ["GENERAL", "ADMISSION", "IT"];
+
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string }>;
+}) {
+  // The homepage board links straight to "Admin Support" and "IT Support"; landing on the
+  // right topic is the whole difference between those two buttons.
+  const { topic } = await searchParams;
+  const defaultCategory = topic && TOPICS.includes(topic.toUpperCase()) ? topic.toUpperCase() : "GENERAL";
   const siteKey = recaptchaSiteKey();
 
   const { t } = await getDict();
@@ -65,7 +76,7 @@ export default async function ContactPage() {
 
         <div className="bg-cream rounded-2xl p-6 sm:p-8">
           <h2 className="font-display text-xl font-semibold text-navy mb-5">Send us a message</h2>
-          <ContactForm recaptchaSiteKey={siteKey} />
+          <ContactForm recaptchaSiteKey={siteKey} defaultCategory={defaultCategory} />
         </div>
       </div>
     </PageShell>

@@ -13,6 +13,14 @@ const GROUPS: Array<{ title: string; note?: string; keys: Array<[string, string]
     ],
   },
   {
+    title: "School hours (home page office board)",
+    note: "Printed under the school name above the office and classroom boards. Free text — leave a field blank and that half of the line is omitted rather than shown empty.",
+    keys: [
+      ["school_time_weekday", "Weekday hours (e.g. 5 PM – 9 PM)"],
+      ["school_time_weekend", "Weekend hours (e.g. 9 AM – 3 PM, Saturday)"],
+    ],
+  },
+  {
     title: "Contact & messaging",
     keys: [
       ["whatsapp_number", "WhatsApp number (click-to-chat)"],
