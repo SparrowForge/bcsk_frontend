@@ -1,25 +1,31 @@
 /**
- * The sage heading bar that separates every band of the homepage (LP-2 … LP-6).
+ * The heading bars that separate every band of the homepage (LP-2 … LP-6).
  *
- * It is a heading, not a decoration, so it renders a real `h2`/`h3` — the bar is the only
- * thing naming each board, and a screen reader that skipped it would meet a wall of
- * unlabelled cards. `level` exists because the School Overview band nests two rows of these
- * inside one section and an `h3` under an `h3` would break the outline.
+ * The deck uses two weights, and the distinction carries meaning rather than decoration:
+ * the **sage** bar marks a whole band ("School Overview", the school banner above the
+ * boards), while the lighter **peach** bar marks a panel inside one. Using sage for both
+ * flattened the page into a stack of equal-looking strips.
+ *
+ * Each bar is a real `h2`/`h3`, not a styled div — it is the only thing naming its board,
+ * and a reader who skipped it would meet a wall of unlabelled cards. `level` exists because
+ * School Overview nests a second row of bars inside a band that already has one.
  */
 export function SectionBar({
   children,
   level = 2,
-  tone = "sage",
+  tone = "peach",
 }: {
   children: React.ReactNode;
   level?: 2 | 3;
-  tone?: "sage" | "soft";
+  tone?: "sage" | "peach";
 }) {
   const Tag = level === 2 ? "h2" : "h3";
   return (
     <Tag
-      className={`rounded-xl px-5 py-3 text-center font-display font-semibold text-navy ${
-        tone === "sage" ? "bg-sage text-[1.35rem]" : "bg-sage-soft text-[1.05rem]"
+      className={`rounded-lg px-5 text-center font-bold text-navy ${
+        tone === "sage"
+          ? "bg-sage py-3.5 font-display text-[1.4rem] font-semibold"
+          : "bg-peach py-2 text-[0.95rem]"
       }`}
     >
       {children}
@@ -27,9 +33,7 @@ export function SectionBar({
   );
 }
 
-/** The panel the cards sit in: a cream sheet inside a thin sunrise rule, as the deck draws it. */
+/** The sheet the board cards sit on: white inside a thin sunrise rule, as the deck draws it. */
 export function BoardPanel({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-2xl border border-sunrise/40 bg-cream/60 p-4 sm:p-5">{children}</div>
-  );
+  return <div className="rounded-xl border border-sunrise/40 bg-white p-3 sm:p-4">{children}</div>;
 }

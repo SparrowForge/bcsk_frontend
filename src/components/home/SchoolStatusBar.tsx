@@ -6,9 +6,9 @@ import { SCHOOL } from "@/lib/constants";
  * is happening right now.
  *
  * "Open" here means a class is actually live, not that the clock is inside opening hours —
- * the same `isLive` flag the two boards below it read, so the banner cannot claim the school
- * is open above a board showing every room idle. The two time strings are admin settings;
- * a school that has not filled them in gets no line rather than invented hours.
+ * the same `isLive` flag the two boards below it read, so the banner cannot claim the
+ * school is open above a board showing every room idle. The two time strings are admin
+ * settings; a school that has not filled them in gets no line rather than invented hours.
  */
 export function SchoolStatusBar({
   t,
@@ -24,33 +24,35 @@ export function SchoolStatusBar({
   weekend?: string;
 }) {
   return (
-    <div className="rounded-2xl bg-sage px-5 py-5 text-center">
+    <div className="rounded-lg bg-sage px-5 py-4 text-center">
       <h2 className="font-display text-xl sm:text-2xl font-semibold text-navy">{SCHOOL.name}</h2>
 
       {(weekday || weekend) && (
-        <p className="mt-2 text-[13px] text-navy/80">
-          <span className="font-bold">{t.home.schoolTime}:</span>{" "}
-          {weekday && (
-            <span className="whitespace-nowrap">
-              {t.home.weekday}: {weekday}
-            </span>
-          )}
-          {weekday && weekend && <span className="mx-2 text-navy/40">·</span>}
-          {weekend && (
-            <span className="whitespace-nowrap">
-              {t.home.weekend}: {weekend}
-            </span>
-          )}
-        </p>
+        <>
+          <p className="mt-1.5 text-[12px] font-bold text-navy">{t.home.schoolTime}:</p>
+          <p className="text-[12px] text-navy/85">
+            {weekday && (
+              <span className="whitespace-nowrap">
+                {t.home.weekday}: {weekday}
+              </span>
+            )}
+            {weekday && weekend && ", "}
+            {weekend && (
+              <span className="whitespace-nowrap">
+                {t.home.weekend}: {weekend}
+              </span>
+            )}
+          </p>
+        </>
       )}
 
-      <p className="mt-2 flex flex-wrap items-center justify-center gap-2 text-[13px]">
+      <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[12px]">
         <span className="font-bold text-navy">{t.home.currentStatus}:</span>
         <span className={`font-extrabold ${open ? "text-teal" : "text-ink-soft"}`}>
           {open ? t.home.statusOpen : t.home.statusClosed}
         </span>
         {open && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-extrabold text-white">
+          <span className="inline-flex items-center gap-1 rounded-full bg-red-600 px-2 py-0.5 text-[9px] font-extrabold text-white">
             <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" aria-hidden />
             {t.common.live} · {liveCount}
           </span>

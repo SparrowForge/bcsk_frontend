@@ -70,10 +70,11 @@ export default async function HomePage() {
   // admin-editable settings; the fallbacks match the deck so a bare database still states
   // the truth rather than a placeholder.
   const statCards = [
-    { label: t.home.stats_students, sub: null, value: stats.stat_total_students || "120+" },
-    { label: t.home.stats_classes, sub: t.home.stats_classes_sub, value: stats.stat_total_classes || "6" },
-    { label: t.home.stats_special, sub: null, value: stats.stat_special_courses || "8" },
-    { label: t.home.stats_teachers, sub: null, value: stats.stat_teachers_staff || "15+" },
+    { label: t.home.stats_students, sub: null, inline: false, value: stats.stat_total_students || "120+" },
+    // The deck sets this one as "6 Classes" on a single line, unlike the other three.
+    { label: t.home.stats_classes, sub: t.home.stats_classes_sub, inline: true, value: stats.stat_total_classes || "6" },
+    { label: t.home.stats_special, sub: null, inline: false, value: stats.stat_special_courses || "8" },
+    { label: t.home.stats_teachers, sub: null, inline: false, value: stats.stat_teachers_staff || "15+" },
   ];
 
   // LP-5 links a role's tile only where real, attributed content sits behind it. No quote is
@@ -86,54 +87,54 @@ export default async function HomePage() {
   return (
     <>
       {/* ---------------- LP-1 · HERO (FR-HOME-03) ---------------- */}
-      <section className="relative mx-auto max-w-7xl px-4 pt-6">
-        <div className="absolute -left-2 top-40 w-16 h-8 bg-sunrise rounded-b-full hidden xl:block" aria-hidden />
-        <div className="absolute right-6 -top-2 w-20 h-20 border-[6px] border-sky-soft rounded-full hidden xl:block" aria-hidden />
-
-        <div className="relative bg-cream rounded-3xl overflow-hidden">
-          <div className="absolute right-8 bottom-8 w-40 h-40 dot-grid opacity-60 hidden md:block" aria-hidden />
-          <div className="grid lg:grid-cols-2 gap-8 items-center px-6 sm:px-12 py-12 lg:py-14">
-            <div className="relative z-10">
-              <h1 className="font-display text-4xl sm:text-5xl xl:text-[3.2rem] leading-[1.12] font-semibold text-ink">
-                {hero?.title ?? t.home.firstSchool}
-              </h1>
-              <div
-                className="mt-5 text-ink-soft text-[15px] leading-relaxed max-w-md [&_strong]:text-navy"
-                dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
-              />
-              {/* Deck order: Read More first, Apply Now second. */}
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/bcsk/about-us"
-                  className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
-                >
-                  {t.common.readMore}
-                </Link>
-                <Link
-                  href="/apply"
-                  className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors shadow-sm inline-flex items-center gap-2"
-                >
-                  {t.nav.applyNow}
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
-                    <path d="m7 5 7 7-7 7M14 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
+      <section className="mx-auto max-w-7xl px-4 pt-8">
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_1.15fr] gap-8 lg:gap-10 items-center">
+          <div>
+            {/* The CMS page owns the headline; the fallback is the deck's exact wording. */}
+            <h1 className="text-[1.9rem] sm:text-[2.2rem] leading-[1.2] font-extrabold text-ink">
+              {hero?.title ?? t.home.firstSchool}
+            </h1>
+            <div
+              className="mt-4 text-ink-soft text-[13.5px] leading-[1.75] max-w-lg [&_strong]:text-navy"
+              dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
+            />
+            {/* Deck order: Read More first, Apply Now second — both small and orange. */}
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              <Link
+                href="/bcsk/about-us"
+                className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] transition-colors"
+              >
+                {t.home.readMoreHero}
+              </Link>
+              <Link
+                href="/apply"
+                className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] transition-colors inline-flex items-center gap-1.5"
+              >
+                {t.nav.applyNow}
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
+                  <path d="m7 5 7 7-7 7M14 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
-
-            <HeroLanguageSlider images={heroImages} />
           </div>
+
+          <HeroLanguageSlider images={heroImages} />
         </div>
       </section>
 
       {/* ---------------- LP-1 · STATS BAND (FR-HOME-04) ---------------- */}
-      <section className="mx-auto max-w-7xl px-4 mt-6">
+      <section className="mx-auto max-w-7xl px-4 mt-8">
         <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {statCards.map((s) => (
-            <li key={s.label} className="bg-sage rounded-2xl px-6 py-7 text-center">
-              <p className="font-display text-3xl font-semibold text-navy">{s.value}</p>
-              <p className="mt-1 text-sm font-bold text-navy">{s.label}</p>
-              {s.sub && <p className="mt-0.5 text-[11px] text-navy/70">{s.sub}</p>}
+            <li key={s.label} className="bg-sage rounded-lg px-5 py-6 text-center">
+              {/* The deck runs the class count into its own label — "6 Classes" on one line —
+                  and stacks the other three. `inline` carries that difference. */}
+              <p className="font-display text-[1.6rem] leading-tight font-semibold text-navy">
+                {s.value}
+                {s.inline && <span className="ml-1.5">{s.label}</span>}
+              </p>
+              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-navy">{s.label}</p>}
+              {s.sub && <p className="mt-0.5 text-[12px] text-navy/75">{s.sub}</p>}
             </li>
           ))}
         </ul>

@@ -20,7 +20,7 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
   if (news.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 mt-14">
+    <section className="mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.latestNews}</SectionBar>
 
       <ul className="mt-5 grid sm:grid-cols-3 gap-4">
