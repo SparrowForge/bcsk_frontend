@@ -2,12 +2,14 @@ import { requireStudent } from "@/lib/auth";
 import { classroom } from "@/services";
 import { classLevelLabel, SEMESTER_CURRENT } from "@/lib/constants";
 import { krw } from "@/lib/format";
+import { getContact } from "@/lib/contact";
 import { ReAdmissionForm } from "./ReAdmissionForm";
 
 /** FR-ADM-10 / FR-STU-05: returning-student re-admission — semester fee only, admission fee waived. */
 export default async function ReAdmissionPage() {
   const session = await requireStudent();
   const { classLevel, semesterFee, existing, semester } = await classroom.reAdmissionInfo();
+  const { email } = await getContact();
 
   return (
     <div className="max-w-2xl">
@@ -45,7 +47,7 @@ export default async function ReAdmissionPage() {
         />
       ) : (
         <p className="bg-white border border-line rounded-2xl p-6 text-sm text-ink-soft">
-          No semester fee is configured for your class. Please contact the office (bcskr22@gmail.com).
+          No semester fee is configured for your class. Please contact the office ({email}).
         </p>
       )}
     </div>

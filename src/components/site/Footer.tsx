@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LogoMark } from "@/components/Logo";
 import { SCHOOL } from "@/lib/constants";
 import { getDict } from "@/lib/i18n";
-import { getSettings } from "@/services";
+import { getContact } from "@/lib/contact";
 
 /**
  * The site footer, as the school's design deck draws it (LP-6): one light band — badge and
@@ -21,12 +21,12 @@ import { getSettings } from "@/services";
 export async function Footer() {
   const { t } = await getDict();
   const year = new Date().getFullYear();
-  const s = await getSettings(["school_phone", "school_phone2", "support_email", "contact_hours"]);
+  const c = await getContact();
 
-  const phones = [s.school_phone || SCHOOL.phone, s.school_phone2 || SCHOOL.phone2].filter(Boolean);
-  const email = s.support_email || SCHOOL.email;
-  const hours = s.contact_hours;
-  const fbHandle = SCHOOL.facebook.replace(/^https?:\/\/(www\.)?facebook\.com\//, "fb.com/");
+  const phones = [c.phone, c.phone2].filter(Boolean);
+  const email = c.email;
+  const hours = c.hours;
+  const fbHandle = c.facebookHandle;
 
   return (
     <footer className="bg-cream/50 border-t border-line mt-14">
@@ -70,7 +70,7 @@ export async function Footer() {
                 <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z" />
               </svg>
             </span>
-            <a href={SCHOOL.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-sky">
+            <a href={c.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-sky">
               {fbHandle}
             </a>
           </li>
@@ -81,7 +81,7 @@ export async function Footer() {
             </Icon>
             <span>
               <span className="font-bold text-ink">{t.footer.address}:</span>{" "}
-              <span lang="ko">{SCHOOL.addressKo}</span>
+              <span lang="ko">{c.addressKo}</span>
             </span>
           </li>
         </ul>

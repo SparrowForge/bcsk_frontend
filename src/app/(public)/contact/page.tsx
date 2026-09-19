@@ -2,6 +2,7 @@ import { recaptchaSiteKey } from "@/lib/recaptcha";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { SCHOOL } from "@/lib/constants";
+import { getContact } from "@/lib/contact";
 import { ContactForm } from "./ContactForm";
 
 /** FR-CONT-01: address, map, phone/WhatsApp, email, social links, and a support-ticket contact form. */
@@ -18,6 +19,7 @@ export default async function ContactPage({
   const { topic } = await searchParams;
   const defaultCategory = topic && TOPICS.includes(topic.toUpperCase()) ? topic.toUpperCase() : "GENERAL";
   const siteKey = recaptchaSiteKey();
+  const c = await getContact();
 
   const { t } = await getDict();
 
@@ -42,11 +44,12 @@ export default async function ContactPage({
               <div>
                 <p className="font-bold text-ink">Phone / WhatsApp</p>
                 <p className="text-ink-soft mt-0.5">
-                  {SCHOOL.phone} · {SCHOOL.phone2}
+                  {c.phone} · {c.phone2}
+                  {c.hours && <span className="text-ink-soft"> ({c.hours})</span>}
                   <br />
                   WhatsApp:{" "}
-                  <a className="text-sky hover:underline" href={`https://wa.me/${SCHOOL.whatsapp.replace("+", "")}`} target="_blank" rel="noopener noreferrer">
-                    {SCHOOL.whatsappDisplay}
+                  <a className="text-sky hover:underline" href={`https://wa.me/${c.whatsapp}`} target="_blank" rel="noopener noreferrer">
+                    {c.whatsappDisplay}
                   </a>
                 </p>
               </div>
@@ -57,7 +60,7 @@ export default async function ContactPage({
               </span>
               <div>
                 <p className="font-bold text-ink">Email</p>
-                <a className="text-sky hover:underline mt-0.5 inline-block" href={`mailto:${SCHOOL.email}`}>{SCHOOL.email}</a>
+                <a className="text-sky hover:underline mt-0.5 inline-block" href={`mailto:${c.email}`}>{c.email}</a>
               </div>
             </li>
           </ul>

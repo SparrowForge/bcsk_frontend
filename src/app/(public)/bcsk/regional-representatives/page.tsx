@@ -1,11 +1,12 @@
 import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
-import { SCHOOL } from "@/lib/constants";
+import { getContact } from "@/lib/contact";
 
 /** FR-ABOUT-03: regional representatives listing. */
 export default async function RegionalRepsPage() {
   const { t } = await getDict();
+  const c = await getContact();
   const members = await cms.regionalReps();
 
   return (
@@ -25,7 +26,7 @@ export default async function RegionalRepsPage() {
           <h2 className="font-display text-lg font-semibold text-navy">Become a representative</h2>
           <p className="mt-2 text-sm text-ink-soft">
             BCSK is recruiting regional representatives across South Korea. If you would like to represent your
-            city, contact the office at {SCHOOL.email} or {SCHOOL.phone2}.
+            city, contact the office at {c.email} or {c.phone2}.
           </p>
         </div>
       </div>

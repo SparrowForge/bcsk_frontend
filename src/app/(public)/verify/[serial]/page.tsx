@@ -1,11 +1,15 @@
 import { site } from "@/services";
 import { formatDate } from "@/lib/dates";
 import { PageShell } from "@/components/site/PageShell";
+import { getContact } from "@/lib/contact";
 
 /** FR-STU-09: QR verification endpoint for issued certificates and ID cards. */
 export default async function VerifyPage({ params }: { params: Promise<{ serial: string }> }) {
   const { serial } = await params;
   const cert = await site.verify(serial);
+  // The support address is an admin setting, so a change reaches this sentence too rather
+  // than leaving one stale address buried in prose.
+  const { email } = await getContact();
 
   return (
     <PageShell title="Document Verification" eyebrow="BCSK">
@@ -31,8 +35,8 @@ export default async function VerifyPage({ params }: { params: Promise<{ serial:
             </div>
             <h2 className="mt-4 font-display text-xl font-semibold text-navy">Not found</h2>
             <p className="mt-2 text-sm text-ink-soft">
-              No document with serial “{serial}” was issued by BCSK. If you believe this is an error, contact
-              bcskr22@gmail.com.
+              No document with serial “{serial}” was issued by BCSK. If you believe this is an error,{" "}
+              contact {email}.
             </p>
           </div>
         )}
