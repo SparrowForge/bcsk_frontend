@@ -1,3 +1,5 @@
+import { reveal } from "@/lib/motion";
+
 /**
  * The heading bars that separate every band of the homepage (LP-2 … LP-6).
  *
@@ -21,8 +23,11 @@ export function SectionBar({
 }) {
   const Tag = level === 2 ? "h2" : "h3";
   return (
+    // Every bar reveals itself as the band scrolls in, and a band-level bar takes a single
+    // slow highlight across it — the one flourish that says "new section" without a rule.
     <Tag
-      className={`rounded-lg px-5 text-center font-bold text-navy ${
+      {...reveal()}
+      className={`sheen rounded-lg px-5 text-center font-bold text-navy ${
         tone === "sage"
           ? "bg-sage py-3.5 font-display text-[1.4rem] font-semibold"
           : "bg-peach py-2 text-[0.95rem]"
@@ -35,5 +40,7 @@ export function SectionBar({
 
 /** The sheet the board cards sit on: white inside a thin sunrise rule, as the deck draws it. */
 export function BoardPanel({ children }: { children: React.ReactNode }) {
+  // The sheet itself does not animate — the cards inside it do, one after another. Fading
+  // the sheet as well would put two overlapping fades on the same pixels and read as haze.
   return <div className="rounded-xl border border-sunrise/40 bg-white p-3 sm:p-4">{children}</div>;
 }

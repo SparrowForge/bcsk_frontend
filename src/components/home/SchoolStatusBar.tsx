@@ -1,5 +1,6 @@
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { SCHOOL } from "@/lib/constants";
+import { reveal } from "@/lib/motion";
 
 /**
  * The sage banner above both boards (LP-2): who we are, when we open, and whether anything
@@ -24,7 +25,7 @@ export function SchoolStatusBar({
   weekend?: string;
 }) {
   return (
-    <div className="rounded-lg bg-sage px-5 py-4 text-center">
+    <div {...reveal()} className="sheen rounded-lg bg-sage px-5 py-4 text-center">
       <h2 className="font-display text-xl sm:text-2xl font-semibold text-navy">{SCHOOL.name}</h2>
 
       {(weekday || weekend) && (

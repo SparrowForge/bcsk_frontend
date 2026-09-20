@@ -29,7 +29,9 @@ export function ClassScreen({ live, liveLabel }: { live: boolean; liveLabel: str
       </svg>
 
       {live && (
-        <span className="absolute top-3 right-4 inline-flex items-center gap-1 rounded-full bg-red-600 px-1.5 py-[1px] text-[8px] font-extrabold text-white">
+        // `live-ring` spreads a soft red halo out of the badge, so a running class is
+        // findable from across a board of twenty cards, not only by reading each label.
+        <span className="live-ring absolute top-3 right-4 inline-flex items-center gap-1 rounded-full bg-red-600 px-1.5 py-[1px] text-[8px] font-extrabold text-white">
           <span className="w-1 h-1 rounded-full bg-white animate-pulse" aria-hidden />
           {liveLabel}
         </span>

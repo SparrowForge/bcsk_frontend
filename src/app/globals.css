@@ -200,3 +200,232 @@ textarea:focus-visible {
     background: white;
   }
 }
+
+/* ==========================================================================
+   MOTION — the homepage's scroll reveals and micro-interactions
+   ==========================================================================
+
+   Two mechanics, both pure CSS so a server component can opt in with one
+   attribute and no `"use client"` boundary:
+
+   1. `data-reveal` — the element starts hidden and plays its entrance when it
+      first scrolls into view. `data-revealed` is set by the tiny bootstrap
+      script in the root layout (`MOTION_BOOTSTRAP`), not by React, so a band
+      reveals as the browser paints it rather than waiting for hydration.
+      Stagger a row by setting `--reveal-delay` per item.
+
+   2. hover/press utilities — `hover-lift`, `hover-pop`, `press`, `nudge` —
+      plain transitions that cost nothing until the pointer arrives.
+
+   Everything here is gated on `html[data-motion]`, which that same script sets
+   before first paint. Attributes rather than classes so the mark React must be
+   told to ignore is a single `data-revealed` — `reveal()` pairs it with
+   `suppressHydrationWarning` at every call site. Without JavaScript the gate
+   never opens, the hidden state never applies, and the page renders exactly as
+   it did before — a homepage must never depend on script to be readable.
+
+   Every animation below is switched off under `prefers-reduced-motion`.
+   -------------------------------------------------------------------------- */
+
+@keyframes bcsk-reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bcsk-reveal-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-26px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bcsk-reveal-right {
+  from {
+    opacity: 0;
+    transform: translate3d(26px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bcsk-reveal-zoom {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes bcsk-reveal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+[data-motion] [data-reveal] {
+  opacity: 0;
+}
+/* `backwards`, never `both`: a filled-forwards animation keeps winning the cascade after it
+   ends, which would pin `transform: none` onto the card and silently disable its hover lift.
+   The resting state is therefore written as plain declarations, and the fill only covers the
+   waiting period before a staggered item's delay elapses. */
+[data-motion] [data-reveal][data-revealed] {
+  opacity: 1;
+  animation: bcsk-reveal-up 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+[data-motion] [data-reveal="left"][data-revealed] {
+  animation-name: bcsk-reveal-left;
+}
+[data-motion] [data-reveal="right"][data-revealed] {
+  animation-name: bcsk-reveal-right;
+}
+[data-motion] [data-reveal="zoom"][data-revealed] {
+  animation-name: bcsk-reveal-zoom;
+}
+[data-motion] [data-reveal="fade"][data-revealed] {
+  animation-name: bcsk-reveal-fade;
+  animation-duration: 0.8s;
+}
+
+/* ---------- hover / press micro-interactions ---------- */
+
+.hover-lift {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 26px -16px rgba(29, 43, 100, 0.45);
+}
+
+/* For a tile that should swell slightly rather than rise — the lounge shortcuts. */
+.hover-pop {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background-color 0.22s ease,
+    color 0.22s ease;
+}
+.hover-pop:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* A button that acknowledges the click it is about to navigate away from. */
+.press {
+  transition:
+    transform 0.16s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.press:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px -10px rgba(245, 130, 11, 0.9);
+}
+.press:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* The chevrons and arrows that point at where the link goes: they nudge that way. */
+.nudge svg,
+.nudge .nudge-mark {
+  transition: transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.nudge:hover svg,
+.nudge:hover .nudge-mark {
+  transform: translateX(3px);
+}
+
+/* ---------- ambient loops ---------- */
+
+/* The hero visual breathes so the band is never completely static. */
+.float-soft {
+  animation: bcsk-float 7s ease-in-out infinite;
+}
+
+/* A live class or a teaching desk gets a spreading ring, not just a dot — the
+   same signal the red badge carries, visible from across the board. */
+@keyframes bcsk-live-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
+  }
+}
+.live-ring {
+  animation: bcsk-live-ring 2.2s ease-out infinite;
+}
+
+/* The sage band headings catch a single slow highlight as they arrive, which
+   reads as the page turning a page rather than as a loading shimmer. */
+@keyframes bcsk-sheen {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+[data-motion] .sheen[data-revealed]::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-120%);
+  animation: bcsk-sheen 1.3s ease-out 0.35s 1 both;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-motion] [data-reveal],
+  [data-motion] [data-reveal][data-revealed] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  [data-motion] .sheen[data-revealed]::after {
+    display: none;
+  }
+  .float-soft,
+  .live-ring {
+    animation: none;
+  }
+  .hover-lift,
+  .hover-pop,
+  .press,
+  .nudge svg,
+  .nudge .nudge-mark {
+    transition: none;
+  }
+  .hover-lift:hover,
+  .hover-pop:hover,
+  .press:hover,
+  .press:active,
+  .nudge:hover svg,
+  .nudge:hover .nudge-mark {
+    transform: none;
+  }
+}

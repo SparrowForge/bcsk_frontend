@@ -1,6 +1,7 @@
 import type { SchoolBoard } from "@/services/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { classLevelLabel } from "@/lib/constants";
+import { reveal } from "@/lib/motion";
 import { BoardPanel } from "./SectionBar";
 import { returnLabel } from "./board-format";
 
@@ -16,7 +17,7 @@ import { returnLabel } from "./board-format";
 export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary }) {
   return (
     <section aria-labelledby="office-board" className="mt-6">
-      <div className="text-center">
+      <div {...reveal()} className="text-center">
         <h3 id="office-board" className="font-display text-xl font-semibold text-navy inline-flex items-center gap-2">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sunrise" aria-hidden>
             <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5" />
@@ -34,8 +35,8 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
             <p className="py-8 text-center text-sm text-ink-soft">{t.home.boardEmpty}</p>
           ) : (
             <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
-              {board.desks.map((d) => (
-                <DeskCard key={d.id} desk={d} t={t} />
+              {board.desks.map((d, i) => (
+                <DeskCard key={d.id} desk={d} index={i} t={t} />
               ))}
             </ul>
           )}
@@ -45,7 +46,16 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
   );
 }
 
-function DeskCard({ desk, t }: { desk: SchoolBoard["desks"][number]; t: Dictionary }) {
+function DeskCard({
+  desk,
+  index,
+  t,
+}: {
+  desk: SchoolBoard["desks"][number];
+  /** Position in the row, which is all the stagger needs to deal the cards in order. */
+  index: number;
+  t: Dictionary;
+}) {
   const inClass = desk.status === "IN_CLASS";
   // A desk card reports one of three things, and the status line is the only place the
   // distinction lives: the class they are teaching, "Desk", or "Offline".
@@ -58,7 +68,10 @@ function DeskCard({ desk, t }: { desk: SchoolBoard["desks"][number]; t: Dictiona
       : t.home.deskOffline;
 
   return (
-    <li className="rounded-lg border border-sunrise/50 bg-white overflow-hidden flex flex-col">
+    <li
+      {...reveal("zoom", index, 55)}
+      className="hover-lift rounded-lg border border-sunrise/50 hover:border-sunrise bg-white overflow-hidden flex flex-col"
+    >
       <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-sunrise">
         {t.home.deskDesk}
       </p>
@@ -83,10 +96,12 @@ function DeskCard({ desk, t }: { desk: SchoolBoard["desks"][number]; t: Dictiona
         )}
         {/* The live dot is the same signal the classroom board shows, from the same flag. */}
         {inClass && (
-          <span
-            className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-600 ring-2 ring-white animate-pulse"
-            aria-hidden
-          />
+          // The dot keeps its white ring — a Tailwind `ring` is a box-shadow, so the spreading
+          // pulse is a second element behind it rather than a shadow that would replace it.
+          <span className="absolute -top-0.5 -right-0.5 flex w-2.5 h-2.5" aria-hidden>
+            <span className="absolute inline-flex w-full h-full rounded-full bg-red-500 opacity-70 animate-ping motion-reduce:hidden" />
+            <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-red-600 ring-2 ring-white" />
+          </span>
         )}
       </div>
 

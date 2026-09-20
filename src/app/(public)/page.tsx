@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { getDict } from "@/lib/i18n";
+import { reveal } from "@/lib/motion";
 import { cms, site, getSettings } from "@/services";
 import { HeroLanguageSlider } from "@/components/site/HeroLanguageSlider";
+import { CountUp } from "@/components/home/CountUp";
 import { SchoolStatusBar } from "@/components/home/SchoolStatusBar";
 import { OfficeBoard } from "@/components/home/OfficeBoard";
 import { ClassroomBoard } from "@/components/home/ClassroomBoard";
@@ -90,25 +92,27 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 pt-8">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_1.15fr] gap-8 lg:gap-10 items-center">
           <div>
-            {/* The CMS page owns the headline; the fallback is the deck's exact wording. */}
-            <h1 className="text-[1.9rem] sm:text-[2.2rem] leading-[1.2] font-extrabold text-ink">
+            {/* The CMS page owns the headline; the fallback is the deck's exact wording.
+                The hero's three pieces arrive in reading order, a beat apart. */}
+            <h1 {...reveal()} className="text-[1.9rem] sm:text-[2.2rem] leading-[1.2] font-extrabold text-ink">
               {hero?.title ?? t.home.firstSchool}
             </h1>
             <div
+              {...reveal("up", 1, 110)}
               className="mt-4 text-ink-soft text-[13.5px] leading-[1.75] max-w-lg [&_strong]:text-navy"
               dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
             />
             {/* Deck order: Read More first, Apply Now second — both small and orange. */}
-            <div className="mt-6 flex flex-wrap gap-2.5">
+            <div {...reveal("up", 2, 110)} className="mt-6 flex flex-wrap gap-2.5">
               <Link
                 href="/bcsk/about-us"
-                className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] transition-colors"
+                className="press bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px]"
               >
                 {t.home.readMoreHero}
               </Link>
               <Link
                 href="/apply"
-                className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] transition-colors inline-flex items-center gap-1.5"
+                className="press nudge bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] inline-flex items-center gap-1.5"
               >
                 {t.nav.applyNow}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
@@ -118,19 +122,30 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <HeroLanguageSlider images={heroImages} />
+          {/* Two elements, not one: the reveal and the idle float are both `animation`, so
+              nesting them is what lets the visual settle in and then keep breathing. */}
+          <div {...reveal("zoom", 1, 160)}>
+            <div className="float-soft">
+              <HeroLanguageSlider images={heroImages} />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ---------------- LP-1 · STATS BAND (FR-HOME-04) ---------------- */}
       <section className="mx-auto max-w-7xl px-4 mt-8">
         <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {statCards.map((s) => (
-            <li key={s.label} className="bg-sage rounded-lg px-5 py-6 text-center">
+          {statCards.map((s, i) => (
+            <li
+              key={s.label}
+              {...reveal("up", i, 90)}
+              className="hover-lift bg-sage rounded-lg px-5 py-6 text-center"
+            >
               {/* The deck runs the class count into its own label — "6 Classes" on one line —
                   and stacks the other three. `inline` carries that difference. */}
               <p className="font-display text-[1.6rem] leading-tight font-semibold text-navy">
-                {s.value}
+                {/* `tabular-nums` so a figure counting up to 120 does not jitter its own card. */}
+                <CountUp value={s.value} className="tabular-nums" />
                 {s.inline && <span className="ml-1.5">{s.label}</span>}
               </p>
               {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-navy">{s.label}</p>}

@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { FeeConfig } from "@/services/types";
 import type { CmsPageResponse } from "@/services";
+import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
 
 const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
@@ -41,9 +42,11 @@ export function SchoolOverview({
 
       <div className="mt-4 rounded-xl bg-cream/50 border border-line p-4 sm:p-5 space-y-5">
         {(whyBcsk || missionVision) && (
+          // The two side-by-side panels come in from their own sides — the only place on the
+          // page where the motion tells you the pair is one row rather than two stacked bands.
           <div className="grid lg:grid-cols-2 gap-5">
-            {whyBcsk && <Panel title={t.home.whyBcsk} html={whyBcsk.html} />}
-            {missionVision && <Panel title={t.home.missionVision} html={missionVision.html} />}
+            {whyBcsk && <Panel title={t.home.whyBcsk} html={whyBcsk.html} from="left" />}
+            {missionVision && <Panel title={t.home.missionVision} html={missionVision.html} from="right" />}
           </div>
         )}
 
@@ -64,10 +67,10 @@ export function SchoolOverview({
           <div>
             <SectionBar level={3}>{t.home.tuitionFeeOthers}</SectionBar>
             <div className="mt-3 grid lg:grid-cols-2 gap-5">
-              <FeeTable title={t.nav.regularCourse} rows={regular} t={t} />
-              <FeeTable title={t.nav.specialCourse} rows={special} t={t} />
+              <FeeTable title={t.nav.regularCourse} rows={regular} from="left" t={t} />
+              <FeeTable title={t.nav.specialCourse} rows={special} from="right" t={t} />
             </div>
-            <p className="mt-3 text-right">
+            <p {...reveal()} className="mt-3 text-right">
               <Link
                 href="/admission/tuition-fee"
                 className="text-sky text-xs font-bold hover:underline underline-offset-4"
@@ -86,18 +89,21 @@ function Panel({
   title,
   html,
   columns,
+  from,
   children,
 }: {
   title: string;
   html: string;
   /** The deck sets Education Management in two columns; the narrower panels stay single. */
   columns?: boolean;
+  /** Which side this panel slides in from; the full-width ones just rise. */
+  from?: "left" | "right";
   children?: React.ReactNode;
 }) {
   return (
     <div>
       <SectionBar level={3}>{title}</SectionBar>
-      <div className="mt-3 px-1">
+      <div {...reveal(from ?? "up", 1, 90)} className="mt-3 px-1">
         <div
           className={`prose-bcsk text-[13px] text-ink-soft leading-relaxed [&_h2]:text-[13px] [&_h2]:mt-3 [&_h3]:text-[13px] [&_h3]:mt-3 [&_p]:my-1 [&_ul]:my-1 [&_li]:my-0.5 ${
             columns ? "lg:columns-2 lg:gap-10" : ""
@@ -110,10 +116,20 @@ function Panel({
   );
 }
 
-function FeeTable({ title, rows, t }: { title: string; rows: FeeConfig[]; t: Dictionary }) {
+function FeeTable({
+  title,
+  rows,
+  from,
+  t,
+}: {
+  title: string;
+  rows: FeeConfig[];
+  from: "left" | "right";
+  t: Dictionary;
+}) {
   if (rows.length === 0) return null;
   return (
-    <div className="rounded-lg border border-line bg-white overflow-hidden">
+    <div {...reveal(from)} className="rounded-lg border border-line bg-white overflow-hidden">
       <p className="bg-cream px-4 py-2 text-[13px] font-bold text-navy">{title}</p>
       <table className="w-full text-[12.5px]">
         <thead className="sr-only">
@@ -124,7 +140,8 @@ function FeeTable({ title, rows, t }: { title: string; rows: FeeConfig[]; t: Dic
         </thead>
         <tbody>
           {rows.map((f) => (
-            <tr key={f.id} className="border-t border-line">
+            // A fee row is the line a parent traces with a finger; the tint follows the pointer.
+            <tr key={f.id} className="border-t border-line transition-colors hover:bg-cream/60">
               <td className="px-4 py-1.5 text-ink-soft">{f.label}</td>
               <td className="px-4 py-1.5 text-right font-bold text-navy whitespace-nowrap">
                 {krw(f.semesterFee || f.bcskPrice || f.nonBcskPrice || 0)}

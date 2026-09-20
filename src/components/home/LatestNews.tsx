@@ -3,6 +3,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { EventNews } from "@/services/types";
 import type { Lang } from "@/lib/constants";
 import { formatDate, isoAttr } from "@/lib/dates";
+import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
 
 /**
@@ -24,20 +25,24 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
       <SectionBar>{t.home.latestNews}</SectionBar>
 
       <ul className="mt-5 grid sm:grid-cols-3 gap-4">
-        {news.map((n) => (
-          <li key={n.id}>
+        {news.map((n, i) => (
+          <li key={n.id} {...reveal("up", i, 110)}>
             <Link
               href={`/events/news/${n.id}`}
-              className="group h-full flex flex-col rounded-2xl border border-line bg-white overflow-hidden hover:shadow-md transition-shadow"
+              className="hover-lift group h-full flex flex-col rounded-2xl border border-line hover:border-sky/40 bg-white overflow-hidden"
             >
               {n.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={n.imageUrl}
-                  alt=""
-                  loading="lazy"
-                  className="w-full aspect-[16/9] object-cover"
-                />
+                <div className="overflow-hidden">
+                  {/* The photograph pushes in slightly under the pointer while the frame holds
+                      its shape — the card reads as a door rather than a picture that moved. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={n.imageUrl}
+                    alt=""
+                    loading="lazy"
+                    className="w-full aspect-[16/9] object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transform-none"
+                  />
+                </div>
               )}
               <div className="p-5 flex flex-col flex-1">
                 <p className="text-[11px] font-extrabold uppercase tracking-wide text-sunrise">{n.type}</p>
@@ -54,9 +59,12 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
         ))}
       </ul>
 
-      <p className="mt-4 text-right">
-        <Link href="/events/news" className="text-sky text-sm font-bold hover:underline underline-offset-4">
-          {t.home.viewAll} →
+      <p {...reveal()} className="mt-4 text-right">
+        <Link
+          href="/events/news"
+          className="nudge inline-flex items-center gap-1 text-sky text-sm font-bold hover:underline underline-offset-4"
+        >
+          {t.home.viewAll} <span className="nudge-mark inline-block">→</span>
         </Link>
       </p>
     </section>

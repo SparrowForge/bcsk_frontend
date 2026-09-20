@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { GalleryAlbum } from "@/services/types";
+import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
 
 /**
@@ -36,11 +37,11 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
       <SectionBar>{t.home.studentsLounge}</SectionBar>
 
       <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-        {tiles.map((tile) => (
-          <li key={tile.label}>
+        {tiles.map((tile, i) => (
+          <li key={tile.label} {...reveal("zoom", i, 45)}>
             <Link
               href={tile.href}
-              className="block rounded bg-peach hover:bg-sunrise hover:text-white text-navy text-center text-[11px] font-bold px-3 py-2 transition-colors"
+              className="hover-pop block rounded bg-peach hover:bg-sunrise hover:text-white text-navy text-center text-[11px] font-bold px-3 py-2"
             >
               {tile.label}
             </Link>
@@ -56,23 +57,29 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
             </SectionBar>
           </div>
           <ul className="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-            {photos.map((p) => (
-              <li key={p.id}>
-                <Link href="/events/gallery" className="group block rounded overflow-hidden border border-line">
+            {photos.map((p, i) => (
+              <li key={p.id} {...reveal("fade", i, 50)}>
+                <Link
+                  href="/events/gallery"
+                  className="group block rounded overflow-hidden border border-line hover:border-sky/50 transition-colors"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={p.url}
                     alt={p.caption ?? p.album}
                     loading="lazy"
-                    className="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform"
+                    className="w-full aspect-[4/3] object-cover transition-transform duration-500 group-hover:scale-110 motion-reduce:transform-none"
                   />
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="mt-4 text-right">
-            <Link href="/events/gallery" className="text-sky text-sm font-bold hover:underline underline-offset-4">
-              {t.home.viewAll} →
+          <p {...reveal()} className="mt-4 text-right">
+            <Link
+              href="/events/gallery"
+              className="nudge inline-flex items-center gap-1 text-sky text-sm font-bold hover:underline underline-offset-4"
+            >
+              {t.home.viewAll} <span className="nudge-mark inline-block">→</span>
             </Link>
           </p>
         </>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
 
 /**
@@ -32,18 +33,20 @@ export function OpinionsGrid({
       <SectionBar>{t.home.opinions}</SectionBar>
 
       <ul className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 justify-items-center">
-        {roles.map((r) => {
+        {roles.map((r, i) => {
           const href = r.slug && available.has(r.slug) ? `/bcsk/${r.slug}` : null;
           return (
-            <li key={r.label} className="w-full max-w-[220px] text-center">
+            <li key={r.label} {...reveal("up", i, 80)} className="w-full max-w-[220px] text-center">
               <p className="mb-2">
                 <span className="inline-block rounded bg-sunrise px-5 py-1 text-[11px] font-extrabold text-white">
                   {r.label}
                 </span>
               </p>
               {href ? (
+                // Only a tile that leads somewhere responds to the pointer — the placeholder
+                // ones stay inert, which is the honest signal that there is nothing to play.
                 <Link href={href} className="group block">
-                  <PlayerGlyph />
+                  <PlayerGlyph interactive />
                   <span className="mt-1.5 block text-[11px] font-bold text-sky group-hover:underline underline-offset-4">
                     {t.common.readFullMessage} →
                   </span>
@@ -67,12 +70,25 @@ export function OpinionsGrid({
  * bar beneath it. Drawn rather than an icon font so the stroke weight matches the deck at
  * this size.
  */
-function PlayerGlyph() {
+function PlayerGlyph({ interactive }: { interactive?: boolean }) {
   return (
-    <svg viewBox="0 0 100 86" className="w-full text-ink/85" aria-hidden>
+    <svg
+      viewBox="0 0 100 86"
+      className={`w-full text-ink/85 ${
+        interactive
+          ? "transition-[transform,color] duration-300 group-hover:-translate-y-1 group-hover:text-navy motion-reduce:transform-none"
+          : ""
+      }`}
+      aria-hidden
+    >
       <rect x="3" y="3" width="94" height="80" rx="7" fill="none" stroke="currentColor" strokeWidth="6" />
       <rect x="15" y="15" width="70" height="42" rx="3" fill="none" stroke="currentColor" strokeWidth="5" />
-      <path d="M41 26.5 62 36 41 45.5Z" fill="currentColor" />
+      {/* The play triangle leans forward under the pointer — the glyph's one moving part. */}
+      <path
+        d="M41 26.5 62 36 41 45.5Z"
+        fill="currentColor"
+        className={interactive ? "origin-center transition-transform duration-300 group-hover:scale-125 motion-reduce:transform-none" : ""}
+      />
       <rect x="15" y="66" width="70" height="6" rx="3" fill="currentColor" />
     </svg>
   );
