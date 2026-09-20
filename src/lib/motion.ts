@@ -37,16 +37,21 @@ export const MOTION_BOOTSTRAP = `
   var d = document;
   d.documentElement.setAttribute('data-motion', 'on');
   function start() {
-    var nodes = d.querySelectorAll('[data-reveal]');
     if (!('IntersectionObserver' in window)) {
-      for (var i = 0; i < nodes.length; i++) nodes[i].setAttribute('data-revealed', '');
+      var bare = d.querySelectorAll('[data-reveal]');
+      for (var i = 0; i < bare.length; i++) bare[i].setAttribute('data-revealed', '');
       return;
     }
-    function apply(el) {
+    // mayHide is false for an element we have only just met. A node React has inserted but not
+    // yet laid out measures as a zero rect, which reads as "off screen" and would strip the
+    // mark straight back off — that is what left the headline invisible after a Back press.
+    // Newly seen elements may therefore only be revealed, never hidden; the sweep that follows
+    // decides properly once layout exists.
+    function apply(el, mayHide) {
       var r = el.getBoundingClientRect();
       var vh = window.innerHeight || d.documentElement.clientHeight;
       if (r.bottom <= 0 || r.top >= vh) {
-        el.removeAttribute('data-revealed');
+        if (mayHide) el.removeAttribute('data-revealed');
         return;
       }
       var shown = Math.min(r.bottom, vh) - Math.max(r.top, 0);
@@ -60,31 +65,61 @@ export const MOTION_BOOTSTRAP = `
       // moved it somewhere else — a stale "not intersecting" would then hide an element
       // that is back on screen, with no further crossing left to undo it.
       entries.forEach(function (e) {
-        apply(e.target);
+        apply(e.target, true);
       });
     }, { threshold: [0, 0.12] });
-    for (var j = 0; j < nodes.length; j++) io.observe(nodes[j]);
+
+    function track(el) {
+      io.observe(el);
+      // Revealed at once rather than waiting for the observer, so an element that arrives
+      // already on screen does not spend a frame invisible.
+      apply(el, false);
+    }
+    function scan(root) {
+      if (!root || root.nodeType !== 1) return;
+      if (root.hasAttribute('data-reveal')) track(root);
+      var found = root.querySelectorAll('[data-reveal]');
+      for (var n = 0; n < found.length; n++) track(found[n]);
+    }
+    scan(d.body);
 
     // Safety net. The observer reports *crossings*, so a flick that clears a mark and then
     // lands without crossing anything again would leave that element hidden for good — which
     // is the one failure this whole feature must not have. A sweep when the scrolling stops
-    // costs one pass over the list and makes the resting state always correct.
+    // re-queries the document (never a stale list) and makes the resting state always correct.
     var t;
     function sweep() {
-      for (var k = 0; k < nodes.length; k++) apply(nodes[k]);
+      var all = d.querySelectorAll('[data-reveal]');
+      for (var k = 0; k < all.length; k++) apply(all[k], true);
     }
-    addEventListener(
-      'scroll',
-      function () {
-        clearTimeout(t);
-        t = setTimeout(sweep, 120);
-      },
-      { passive: true },
-    );
-    addEventListener('resize', function () {
+    function sweepSoon() {
       clearTimeout(t);
       t = setTimeout(sweep, 120);
-    });
+    }
+
+    // A client-side navigation does not reload the page: React throws away these elements and
+    // builds new ones, which arrive carrying data-reveal and therefore hidden. Observing only
+    // what existed at startup left the homepage blank after a visitor pressed Back — the bug
+    // this watcher exists to prevent. Observing an element twice is a no-op, so re-scanning
+    // costs nothing.
+    new MutationObserver(function (muts) {
+      var seen = false;
+      for (var m = 0; m < muts.length; m++) {
+        var added = muts[m].addedNodes;
+        for (var a = 0; a < added.length; a++) {
+          if (added[a].nodeType === 1) {
+            scan(added[a]);
+            seen = true;
+          }
+        }
+      }
+      // Then settle: the reveal above was made blind to layout on purpose, so one sweep after
+      // the insertion has been laid out is what puts the off-screen half back to hidden.
+      if (seen) sweepSoon();
+    }).observe(d.body, { childList: true, subtree: true });
+
+    addEventListener('scroll', sweepSoon, { passive: true });
+    addEventListener('resize', sweepSoon);
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start);
   else start();
