@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * The stat band's figures, counted up the first time the band is scrolled into view.
+ * The stat band's figures, counted up each time the band is scrolled into view.
  *
  * The values are admin-editable strings, not numbers — "120+", "15+", "6" — so the digits
  * are counted and whatever surrounds them is carried through untouched. A value with no
@@ -12,7 +12,8 @@ import { useEffect, useRef, useState } from "react";
  * The first render is the final figure, which is also what the server sent: a visitor
  * without JavaScript, and every reader between HTML and hydration, sees the real number.
  * The count only ever starts once the tile is about to be looked at, so the rewind to zero
- * happens while the tile is still hidden behind its own reveal animation.
+ * happens while the tile is still hidden behind its own reveal animation — and the same is
+ * true of every replay, because the tile is re-armed only after it has left the screen.
  */
 const DURATION_MS = 1100;
 
@@ -31,23 +32,39 @@ export function CountUp({ value, className }: { value: string; className?: strin
     if (!("IntersectionObserver" in window)) return;
 
     let frame = 0;
+    // Tracks whether the tile has been counted since it last left the screen, so a scroll
+    // that jitters around the threshold does not restart the count over and over.
+    let counted = false;
+
+    const run = () => {
+      cancelAnimationFrame(frame);
+      const start = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / DURATION_MS, 1);
+        // Ease-out: fast off the mark, settling onto the real figure.
+        const eased = 1 - Math.pow(1 - p, 3);
+        setShown(Math.round(target * eased));
+        if (p < 1) frame = requestAnimationFrame(tick);
+        else setShown(null);
+      };
+      frame = requestAnimationFrame(tick);
+    };
+
     const io = new IntersectionObserver(
       (entries) => {
-        if (!entries[0].isIntersecting) return;
-        io.disconnect();
-
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min((now - start) / DURATION_MS, 1);
-          // Ease-out: fast off the mark, settling onto the real figure.
-          const eased = 1 - Math.pow(1 - p, 3);
-          setShown(Math.round(target * eased));
-          if (p < 1) frame = requestAnimationFrame(tick);
-          else setShown(null);
-        };
-        frame = requestAnimationFrame(tick);
+        const e = entries[0];
+        // Gone entirely: arm it again so scrolling back re-runs the count, the same way the
+        // bands around it replay their entrance.
+        if (!e.isIntersecting) {
+          counted = false;
+          return;
+        }
+        if (e.intersectionRatio >= 0.3 && !counted) {
+          counted = true;
+          run();
+        }
       },
-      { threshold: 0.3 },
+      { threshold: [0, 0.3] },
     );
     io.observe(el);
 

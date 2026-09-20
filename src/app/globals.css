@@ -208,10 +208,12 @@ textarea:focus-visible {
    Two mechanics, both pure CSS so a server component can opt in with one
    attribute and no `"use client"` boundary:
 
-   1. `data-reveal` — the element starts hidden and plays its entrance when it
-      first scrolls into view. `data-revealed` is set by the tiny bootstrap
-      script in the root layout (`MOTION_BOOTSTRAP`), not by React, so a band
-      reveals as the browser paints it rather than waiting for hydration.
+   1. `data-reveal` — the element starts hidden and plays its entrance whenever
+      it scrolls into view, every time rather than once per page load.
+      `data-revealed` is set by the tiny bootstrap script in the root layout
+      (`MOTION_BOOTSTRAP`), not by React, so a band reveals as the browser
+      paints it rather than waiting for hydration; the same script clears the
+      mark once the element has left the screen, which is what arms the replay.
       Stagger a row by setting `--reveal-delay` per item.
 
    2. hover/press utilities — `hover-lift`, `hover-pop`, `press`, `nudge` —
