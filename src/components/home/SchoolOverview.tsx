@@ -3,16 +3,17 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { FeeConfig } from "@/services/types";
 import type { CmsPageResponse } from "@/services";
 import { reveal } from "@/lib/motion";
-import { SectionBar } from "./SectionBar";
+import { PanelHead, SectionBar } from "./SectionBar";
 
 const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
 
 /**
  * LP-4 — the four panels a parent reads before deciding, inside one sheet.
  *
- * The deck draws them as panels *within* a single band, not as four free-floating cards:
- * one cool band bar names the section, one light sheet holds everything, and each panel gets
- * a warm bar. That containment is what stops the page reading as an endless stack of strips.
+ * The deck draws them as panels *within* a single band, not as four free-floating cards: one
+ * cool band bar names the section, one sheet holds everything, and each panel is a white card
+ * under a warm head. The sheet is white rather than tinted — with a cream sheet behind them
+ * the cream heads had nothing to sit against and the whole band read as one beige block.
  *
  * The first three are admin-authored CMS pages and a missing one drops its panel rather
  * than leaving an empty frame. The fourth is *not* prose: tuition is money, so it comes
@@ -40,7 +41,7 @@ export function SchoolOverview({
     <section id="school-overview" className="mx-auto max-w-7xl px-4 mt-12 scroll-mt-24">
       <SectionBar tone="band">{t.home.overview}</SectionBar>
 
-      <div className="mt-4 rounded-xl bg-cream/50 border border-line p-4 sm:p-5 space-y-5">
+      <div className="mt-4 rounded-xl bg-white border border-line p-4 sm:p-5 space-y-5">
         {(whyBcsk || missionVision) && (
           // The two side-by-side panels come in from their own sides — the only place on the
           // page where the motion tells you the pair is one row rather than two stacked bands.
@@ -65,7 +66,14 @@ export function SchoolOverview({
 
         {fees.length > 0 && (
           <div>
-            <SectionBar level={3}>{t.home.tuitionFeeOthers}</SectionBar>
+            {/* The fee pair is two cards with their own heads, so the group above them is a
+                plain heading and a rule — a fifth bar here would just be another stripe. */}
+            <h3
+              {...reveal()}
+              className="font-display text-[15px] font-semibold text-navy border-t border-line pt-4"
+            >
+              {t.home.tuitionFeeOthers}
+            </h3>
             <div className="mt-3 grid lg:grid-cols-2 gap-5">
               <FeeTable title={t.nav.regularCourse} rows={regular} from="left" t={t} />
               <FeeTable title={t.nav.specialCourse} rows={special} from="right" t={t} />
@@ -101,11 +109,13 @@ function Panel({
   children?: React.ReactNode;
 }) {
   return (
-    <div>
-      <SectionBar level={3}>{title}</SectionBar>
-      <div {...reveal(from ?? "up", 1, 90)} className="mt-3 px-1">
+    <div {...reveal(from ?? "up", 1, 90)} className="rounded-lg border border-line bg-white overflow-hidden h-full">
+      <PanelHead>{title}</PanelHead>
+      <div className="px-4 py-3.5">
+        {/* An admin writing a CMS page may head a section with any level; inside a panel they
+            all take the panel's own size, or a stray `#` renders at browser-default h1. */}
         <div
-          className={`prose-bcsk text-[13px] text-ink-soft leading-relaxed [&_h2]:text-[13px] [&_h2]:mt-3 [&_h3]:text-[13px] [&_h3]:mt-3 [&_p]:my-1 [&_ul]:my-1 [&_li]:my-0.5 ${
+          className={`prose-bcsk text-[13px] text-ink leading-relaxed [&_h1]:!text-[14px] [&_h2]:!text-[14px] [&_h3]:!text-[13px] [&_:is(h1,h2,h3)]:!mt-3.5 [&_:is(h1,h2,h3):first-child]:!mt-0 [&_p]:my-1 [&_ul]:my-1 [&_li]:my-0.5 ${
             columns ? "lg:columns-2 lg:gap-10" : ""
           }`}
           dangerouslySetInnerHTML={{ __html: html }}
@@ -130,7 +140,7 @@ function FeeTable({
   if (rows.length === 0) return null;
   return (
     <div {...reveal(from)} className="rounded-lg border border-line bg-white overflow-hidden">
-      <p className="bg-cream px-4 py-2 text-[13px] font-bold text-navy">{title}</p>
+      <PanelHead>{title}</PanelHead>
       <table className="w-full text-[12.5px]">
         <thead className="sr-only">
           <tr>
@@ -141,8 +151,8 @@ function FeeTable({
         <tbody>
           {rows.map((f) => (
             // A fee row is the line a parent traces with a finger; the tint follows the pointer.
-            <tr key={f.id} className="border-t border-line transition-colors hover:bg-cream/60">
-              <td className="px-4 py-1.5 text-ink-soft">{f.label}</td>
+            <tr key={f.id} className="border-t border-line transition-colors hover:bg-sky-soft/60">
+              <td className="px-4 py-1.5 text-ink">{f.label}</td>
               <td className="px-4 py-1.5 text-right font-bold text-navy whitespace-nowrap">
                 {krw(f.semesterFee || f.bcskPrice || f.nonBcskPrice || 0)}
               </td>

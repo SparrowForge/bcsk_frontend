@@ -39,6 +39,22 @@ export function SectionBar({
   );
 }
 
+/**
+ * The head of a panel *card* — the same warm bar, but flush inside the card's own border
+ * rather than floating above it.
+ *
+ * A bar drawn on the sheet only reads as a heading when the thing it heads is visibly
+ * separate; stacked four deep on a tinted sheet, as School Overview had them, they turn the
+ * whole band into beige stripes. Giving each panel a white card and running its bar edge to
+ * edge inside it restores that separation, and matches the fee tables, which were already
+ * built this way.
+ */
+export function PanelHead({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="bg-band-soft px-4 py-2 text-[13px] font-bold text-navy text-center">{children}</h3>
+  );
+}
+
 /** The sheet the board cards sit on: white inside a thin azure rule, as the deck draws it. */
 export function BoardPanel({ children }: { children: React.ReactNode }) {
   // The sheet itself does not animate — the cards inside it do, one after another. Fading
