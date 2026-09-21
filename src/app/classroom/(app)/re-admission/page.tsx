@@ -23,7 +23,7 @@ export default async function ReAdmissionPage() {
         <div className="bg-white border border-line rounded-2xl p-6">
           <p className="text-sm">
             <span className={`inline-block text-xs font-bold rounded-full px-3 py-1 mr-2 ${
-              existing.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-deep" : "bg-teal/15 text-teal"
+              existing.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-ink" : "bg-teal/15 text-teal"
             }`}>
               {existing.status.replace(/_/g, " ")}
             </span>

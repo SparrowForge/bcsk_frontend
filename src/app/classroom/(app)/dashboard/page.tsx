@@ -84,7 +84,7 @@ export default async function StudentDashboard() {
                         href={cs.zoomLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-block bg-sunrise hover:bg-sunrise-deep text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
+                        className="inline-block bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors"
                       >
                         Join Zoom class
                       </a>

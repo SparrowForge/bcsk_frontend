@@ -11,8 +11,8 @@ const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
  * LP-4 — the four panels a parent reads before deciding, inside one sheet.
  *
  * The deck draws them as panels *within* a single band, not as four free-floating cards:
- * one sage bar names the band, one light sheet holds everything, and each panel gets a
- * peach bar. That containment is what stops the page reading as an endless stack of strips.
+ * one cool band bar names the section, one light sheet holds everything, and each panel gets
+ * a warm bar. That containment is what stops the page reading as an endless stack of strips.
  *
  * The first three are admin-authored CMS pages and a missing one drops its panel rather
  * than leaving an empty frame. The fourth is *not* prose: tuition is money, so it comes
@@ -38,7 +38,7 @@ export function SchoolOverview({
 
   return (
     <section id="school-overview" className="mx-auto max-w-7xl px-4 mt-12 scroll-mt-24">
-      <SectionBar tone="sage">{t.home.overview}</SectionBar>
+      <SectionBar tone="band">{t.home.overview}</SectionBar>
 
       <div className="mt-4 rounded-xl bg-cream/50 border border-line p-4 sm:p-5 space-y-5">
         {(whyBcsk || missionVision) && (

@@ -26,7 +26,7 @@ export default async function VideosPage() {
             className="group bg-white rounded-2xl border border-line p-5 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-3">
-              <span className="w-11 h-11 rounded-full bg-sunrise/15 text-sunrise flex items-center justify-center shrink-0">
+              <span className="w-11 h-11 rounded-full bg-sunrise/15 text-sunrise-ink flex items-center justify-center shrink-0">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M8 5v14l11-7L8 5Z" /></svg>
               </span>
               <div>

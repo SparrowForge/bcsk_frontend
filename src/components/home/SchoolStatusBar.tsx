@@ -3,7 +3,7 @@ import { SCHOOL } from "@/lib/constants";
 import { reveal } from "@/lib/motion";
 
 /**
- * The sage banner above both boards (LP-2): who we are, when we open, and whether anything
+ * The banner above both boards (LP-2): who we are, when we open, and whether anything
  * is happening right now.
  *
  * "Open" here means a class is actually live, not that the clock is inside opening hours —
@@ -25,7 +25,7 @@ export function SchoolStatusBar({
   weekend?: string;
 }) {
   return (
-    <div {...reveal()} className="sheen rounded-lg bg-sage px-5 py-4 text-center">
+    <div {...reveal()} className="sheen rounded-lg bg-band px-5 py-4 text-center">
       <h2 className="font-display text-xl sm:text-2xl font-semibold text-navy">{SCHOOL.name}</h2>
 
       {(weekday || weekend) && (

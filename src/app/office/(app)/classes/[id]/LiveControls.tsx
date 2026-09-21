@@ -47,7 +47,7 @@ export function LiveControls({
         <button
           disabled={pending}
           onClick={() => start(() => toggleLive(classSessionId, true, link || undefined))}
-          className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
         >
           ▶ Start live class
         </button>

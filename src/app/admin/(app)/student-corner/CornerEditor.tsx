@@ -16,7 +16,7 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
     <div>
       <button
         onClick={() => setEditing(editing === "new" ? null : "new")}
-        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
       >
         {editing === "new" ? "Close" : "+ New post"}
       </button>
@@ -64,7 +64,7 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {posts.map((p) => (
           <div key={p.id} className="px-5 py-3.5 flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-extrabold uppercase text-sunrise w-20">{p.kind}</span>
+            <span className="text-[10px] font-extrabold uppercase text-sunrise-ink w-20">{p.kind}</span>
             <div className="min-w-48 flex-1">
               <p className="font-bold text-ink text-sm">{p.title}</p>
               <p className="text-[11px] text-ink-soft">{p.studentName}{!p.published && " · draft"}</p>

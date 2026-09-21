@@ -59,7 +59,7 @@ export function GalleryGrid({ albums }: { albums: Album[] }) {
             <h2 className="font-display text-xl font-semibold text-navy mb-4">
               {album.title}
               {album.category && (
-                <span className="ml-3 text-xs font-body font-bold uppercase tracking-wide text-sunrise">{album.category}</span>
+                <span className="ml-3 text-xs font-body font-bold uppercase tracking-wide text-sunrise-ink">{album.category}</span>
               )}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">

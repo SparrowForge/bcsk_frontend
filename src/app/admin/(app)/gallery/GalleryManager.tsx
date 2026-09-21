@@ -66,7 +66,7 @@ function AlbumCard({ album, onDeleteItem, onDeleteAlbum }: { album: Album; onDel
         <input type="hidden" name="albumId" value={album.id} />
         <input type="file" name="image" required accept="image/jpeg,image/png,image/webp" className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-cream file:px-3 file:py-2 file:text-xs file:font-bold file:text-navy" />
         <input name="caption" placeholder="Caption (optional)" className={`flex-1 min-w-40 ${input}`} />
-        <button disabled={pending} className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors">
+        <button disabled={pending} className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors">
           {pending ? "Uploading…" : "Upload photo"}
         </button>
         {state?.error && <p className="w-full text-xs font-semibold text-red-600">{state.error}</p>}

@@ -33,7 +33,7 @@ export default async function ApplicationCompletePage({
     <PageShell title={paid ? "Application complete!" : "Application received"} eyebrow="Application">
       <div className="max-w-xl">
         <div className="bg-white border border-line rounded-3xl p-8 text-center">
-          <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center ${paid ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise"}`}>
+          <div className={`mx-auto w-16 h-16 rounded-full flex items-center justify-center ${paid ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-ink"}`}>
             {paid ? (
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6 9 17l-5-5" /></svg>
             ) : (
@@ -71,12 +71,12 @@ export default async function ApplicationCompletePage({
 
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             {!paid && !pending && (
-              <Link href={`/apply/payment/${app.id}`} className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm">
+              <Link href={`/apply/payment/${app.id}`} className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-6 py-2.5 text-sm">
                 Complete payment
               </Link>
             )}
             {paid && (
-              <Link href="/classroom" className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm">
+              <Link href="/classroom" className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-6 py-2.5 text-sm">
                 Open Classroom portal
               </Link>
             )}

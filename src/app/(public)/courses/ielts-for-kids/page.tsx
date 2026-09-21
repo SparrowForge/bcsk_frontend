@@ -38,7 +38,7 @@ export default async function IeltsPage() {
           </p>
           <Link
             href="/apply/special?course=ielts-for-kids"
-            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-7 py-3 text-sm transition-colors"
           >
             Apply for IELTS for Kids
           </Link>
@@ -102,7 +102,7 @@ export default async function IeltsPage() {
                 <p className="text-xs text-ink-soft mt-1">per level / semester</p>
               </div>
               <div className="bg-white rounded-2xl p-6 text-center">
-                <p className="text-xs font-extrabold uppercase tracking-wide text-sunrise">Non-BCSK Student</p>
+                <p className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink">Non-BCSK Student</p>
                 <p className="mt-2 font-display text-3xl font-semibold text-navy">{fee?.nonBcskPrice ? krw(fee.nonBcskPrice) : "—"}</p>
                 <p className="text-xs text-ink-soft mt-1">per level / semester</p>
               </div>

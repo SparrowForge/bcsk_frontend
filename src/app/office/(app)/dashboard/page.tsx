@@ -25,7 +25,7 @@ export default async function TeacherDashboard() {
           </p>
         </div>
         <div className="ml-auto text-right">
-          <p className="font-display text-3xl font-semibold text-sunrise">{openQuestions}</p>
+          <p className="font-display text-3xl font-semibold text-sunrise-ink">{openQuestions}</p>
           <p className="text-xs font-bold text-ink-soft uppercase">Questions waiting</p>
         </div>
       </section>
@@ -52,7 +52,7 @@ export default async function TeacherDashboard() {
                 <p className="mt-1.5 text-xs text-ink-soft">
                   {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""} · {s._count.enrollments} students
                 </p>
-                <span className="inline-block mt-3 text-sunrise text-xs font-bold uppercase tracking-wide">
+                <span className="inline-block mt-3 text-sunrise-ink text-xs font-bold uppercase tracking-wide">
                   Manage class →
                 </span>
               </Link>

@@ -18,7 +18,7 @@ export async function SideCard({ applyLabel = "Apply Now", contactLabel = "Conta
       </ul>
       <Link
         href="/apply"
-        className="block mt-5 bg-sunrise hover:bg-sunrise-deep text-white text-center font-bold rounded-lg px-4 py-2.5 text-sm transition-colors"
+        className="block mt-5 bg-sunrise hover:bg-sunrise-deep text-navy text-center font-bold rounded-lg px-4 py-2.5 text-sm transition-colors"
       >
         {applyLabel}
       </Link>

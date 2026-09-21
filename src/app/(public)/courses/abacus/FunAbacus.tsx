@@ -18,7 +18,7 @@ export function FunAbacus({ loggedIn }: { loggedIn: boolean }) {
             <h3 className="mt-3 font-display text-2xl font-semibold">Flash Race</h3>
             <p className="mt-1.5 text-sm text-white/80">Numbers flash one by one — keep the running sum in your head, anzan style!</p>
           </button>
-          <button onClick={() => setMode("balloon-pop")} className="text-left bg-gradient-to-br from-sunrise to-red-500 text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
+          <button onClick={() => setMode("balloon-pop")} className="text-left bg-gradient-to-br from-sunrise-ink to-red-700 text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
             <span className="text-4xl" aria-hidden>🎈</span>
             <h3 className="mt-3 font-display text-2xl font-semibold">Balloon Pop</h3>
             <p className="mt-1.5 text-sm text-white/80">Pop the balloon with the right answer before the 60 seconds run out!</p>
@@ -122,7 +122,7 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
             onChange={(e) => setInput(e.target.value.replace(/\D/g, ""))}
             className="text-center font-display text-3xl font-bold text-navy border-2 border-line focus:border-sky rounded-xl px-4 py-2 w-40 focus:outline-none"
           />
-          <button className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-8 py-2.5 text-sm transition-colors">
+          <button className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-2.5 text-sm transition-colors">
             Check ✓
           </button>
         </form>
@@ -211,7 +211,7 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
       {!running && !done && (
         <>
           <p className="text-sm text-ink-soft mb-5">Pop the balloon with the correct answer. +10 for right, −5 for wrong. 60 seconds!</p>
-          <button onClick={start} className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors">
+          <button onClick={start} className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-3 text-sm transition-colors">
             Start Balloon Pop
           </button>
         </>
@@ -227,8 +227,8 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
               <button
                 key={`${n}-${i}`}
                 onClick={() => pop(n)}
-                className={`relative w-24 h-28 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] text-white font-display text-2xl font-bold shadow-lg hover:scale-110 transition-transform ${
-                  ["bg-sunrise", "bg-sky", "bg-teal"][i]
+                className={`relative w-24 h-28 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] font-display text-2xl font-bold shadow-lg hover:scale-110 transition-transform ${
+                  ["bg-sunrise text-navy", "bg-sky text-white", "bg-teal text-white"][i]
                 }`}
               >
                 {n}

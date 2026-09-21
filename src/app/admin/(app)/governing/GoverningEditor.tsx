@@ -27,7 +27,7 @@ export function GoverningEditor({ members }: { members: Member[] }) {
     <div>
       <button
         onClick={() => setEditing(editing === "new" ? null : "new")}
-        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
       >
         {editing === "new" ? "Close" : "+ Add member"}
       </button>

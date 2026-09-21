@@ -19,7 +19,7 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
     <section aria-labelledby="office-board" className="mt-6">
       <div {...reveal()} className="text-center">
         <h3 id="office-board" className="font-display text-xl font-semibold text-navy inline-flex items-center gap-2">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sunrise" aria-hidden>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky" aria-hidden>
             <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5" />
           </svg>
           {t.home.office}
@@ -70,9 +70,9 @@ function DeskCard({
   return (
     <li
       {...reveal("zoom", index, 55)}
-      className="hover-lift rounded-lg border border-sunrise/50 hover:border-sunrise bg-white overflow-hidden flex flex-col"
+      className="hover-lift rounded-lg border border-sky/25 hover:border-sky/60 bg-white overflow-hidden flex flex-col"
     >
-      <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-sunrise">
+      <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-sky">
         {t.home.deskDesk}
       </p>
       <p className="px-1.5 text-center font-bold text-[12px] text-navy leading-tight truncate" title={desk.deskName}>

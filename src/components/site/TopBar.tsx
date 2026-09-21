@@ -47,7 +47,7 @@ export async function TopBar() {
           </Link>
           <Link
             href="/apply"
-            className="hidden sm:inline-block bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-md px-3 py-1 transition-colors"
+            className="hidden sm:inline-block bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-md px-3 py-1 transition-colors"
           >
             {t.nav.applyNow}
           </Link>

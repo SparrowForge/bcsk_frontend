@@ -39,7 +39,7 @@ export function ReAdmissionForm({ amount, classLabel, semester }: { amount: numb
         {state?.error && <p className="text-sm font-semibold text-red-600">{state.error}</p>}
         <button
           disabled={pending}
-          className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
+          className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3 text-sm transition-colors"
         >
           {pending ? "Uploading…" : `Submit re-admission (${krw(amount)})`}
         </button>

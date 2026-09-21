@@ -15,7 +15,7 @@ export default async function ApplyPage() {
             Pre-Primary to Class 5 — the full NCTB curriculum: Bangla, English, Mathematics, Science, BGS, and
             Religious Studies.
           </p>
-          <span className="inline-block mt-4 text-sunrise font-bold text-sm">Start application →</span>
+          <span className="inline-block mt-4 text-sunrise-ink font-bold text-sm">Start application →</span>
         </Link>
         <Link href="/apply/special" className="group bg-sky-soft hover:bg-sky-soft/70 rounded-3xl p-8 transition-colors">
           <span className="inline-block w-12 h-12 rounded-full bg-sky text-white flex items-center justify-center text-xl" aria-hidden>🌟</span>
@@ -24,7 +24,7 @@ export default async function ApplyPage() {
             IELTS for Kids, Abacus, Qur'an & Deen, Hifz, Debate Club, or Bangla Language — open to BCSK and
             non-BCSK students.
           </p>
-          <span className="inline-block mt-4 text-sunrise font-bold text-sm">Start application →</span>
+          <span className="inline-block mt-4 text-sunrise-ink font-bold text-sm">Start application →</span>
         </Link>
       </div>
       <p className="mt-8 text-sm text-ink-soft max-w-2xl">

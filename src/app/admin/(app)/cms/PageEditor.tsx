@@ -31,7 +31,7 @@ export function PageEditor({
       <Link href="/admin/cms" className="text-xs font-bold text-ink-soft hover:text-sky">← All pages</Link>
       <h1 className="mt-2 font-display text-2xl font-semibold text-navy mb-6">
         {isNew ? "New page" : `Edit: ${slug}`}
-        {!isNew && <span className="ml-3 text-sm font-body font-bold text-sunrise">{langLabel}</span>}
+        {!isNew && <span className="ml-3 text-sm font-body font-bold text-sunrise-ink">{langLabel}</span>}
       </h1>
 
       <form action={action} className="space-y-4 bg-white rounded-2xl border border-line p-6">

@@ -20,8 +20,8 @@ export default async function TeachersPage() {
                 <img src={tp.photoUrl} alt={tp.name} className="w-16 h-16 rounded-full object-cover" />
               ) : (
                 <div
-                  className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-display font-semibold text-white shrink-0 ${
-                    ["bg-navy", "bg-sky", "bg-teal", "bg-sunrise"][i % 4]
+                  className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-display font-semibold shrink-0 ${
+                    ["bg-navy text-white", "bg-sky text-white", "bg-teal text-white", "bg-sunrise text-navy"][i % 4]
                   }`}
                   aria-hidden
                 >
@@ -30,7 +30,7 @@ export default async function TeachersPage() {
               )}
               <div>
                 <h2 className="font-bold text-ink leading-snug">{tp.name}</h2>
-                <p className="text-xs font-bold uppercase tracking-wide text-sunrise mt-0.5">{tp.designation}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-sunrise-ink mt-0.5">{tp.designation}</p>
               </div>
             </div>
             {tp.bio && <p className="mt-4 text-sm text-ink-soft leading-relaxed">{tp.bio}</p>}

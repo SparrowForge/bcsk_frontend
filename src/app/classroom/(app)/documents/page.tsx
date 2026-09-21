@@ -32,7 +32,7 @@ export default async function DocumentsPage() {
             <span className="text-3xl" aria-hidden>{d.icon}</span>
             <h2 className="mt-3 font-bold text-navy">{d.title}</h2>
             <p className="mt-1.5 text-xs text-ink-soft leading-relaxed">{d.desc}</p>
-            <span className="inline-block mt-3 text-sunrise text-xs font-bold uppercase tracking-wide">Download PDF →</span>
+            <span className="inline-block mt-3 text-sunrise-ink text-xs font-bold uppercase tracking-wide">Download PDF →</span>
           </a>
         ))}
       </div>

@@ -15,7 +15,7 @@ const BUBBLES = [
     key: "bn",
     lang: "bn",
     text: "অ আ",
-    bg: "bg-teal",
+    bg: "bg-teal text-white",
     corner: "rounded-[2rem] rounded-bl-md",
     tailBorder: "border-t-teal",
     tailPos: "-bottom-3 left-6",
@@ -24,7 +24,7 @@ const BUBBLES = [
     key: "en",
     lang: undefined,
     text: "ABC",
-    bg: "bg-sunrise",
+    bg: "bg-sunrise text-navy",
     corner: "rounded-[2.4rem] rounded-br-md",
     tailBorder: "border-t-sunrise",
     tailPos: "-bottom-3 right-6",
@@ -33,7 +33,7 @@ const BUBBLES = [
     key: "ko",
     lang: "ko",
     text: "한글",
-    bg: "bg-sky",
+    bg: "bg-sky text-white",
     corner: "rounded-[2rem] rounded-bl-md",
     tailBorder: "border-t-sky",
     tailPos: "-bottom-3 left-6",
@@ -110,7 +110,7 @@ function IllustrationSlider() {
               i === active ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
-            <div className={`relative ${b.bg} text-white ${b.corner} w-full h-full flex items-center justify-center shadow-md`}>
+            <div className={`relative ${b.bg} ${b.corner} w-full h-full flex items-center justify-center shadow-md`}>
               <span lang={b.lang} className="text-4xl sm:text-5xl font-bold">
                 {b.text}
               </span>

@@ -2,11 +2,12 @@ import { site } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 
+/** Each pill carries its own label colour: the three dark fills take white, marigold takes navy. */
 const KIND_COLORS: Record<string, string> = {
-  POEM: "bg-teal",
-  ARTICLE: "bg-sky",
-  ARTWORK: "bg-sunrise",
-  ACHIEVEMENT: "bg-navy",
+  POEM: "bg-teal text-white",
+  ARTICLE: "bg-sky text-white",
+  ARTWORK: "bg-sunrise text-navy",
+  ACHIEVEMENT: "bg-navy text-white",
 };
 
 /** FR-NEWS-03: curated student articles, poems, artwork, achievements. */
@@ -24,7 +25,7 @@ export default async function StudentCornerPage() {
         <div className="grid sm:grid-cols-2 gap-6">
           {posts.map((p) => (
             <article key={p.id} className="bg-white border border-line rounded-2xl p-6 flex flex-col">
-              <span className={`self-start text-white text-[10px] font-extrabold uppercase tracking-wider rounded-full px-2.5 py-1 ${KIND_COLORS[p.kind] ?? "bg-navy"}`}>
+              <span className={`self-start text-[10px] font-extrabold uppercase tracking-wider rounded-full px-2.5 py-1 ${KIND_COLORS[p.kind] ?? "bg-navy text-white"}`}>
                 {p.kind}
               </span>
               <h2 className="mt-3 font-display text-xl font-semibold text-navy leading-snug">{p.title}</h2>

@@ -35,7 +35,7 @@ export function AssignmentPanel({
         <h2 className="font-display text-lg font-semibold text-navy">Assignments & Homework</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-sunrise hover:bg-sunrise-deep text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
+          className="bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors"
         >
           {showForm ? "Close" : "+ Post assignment"}
         </button>

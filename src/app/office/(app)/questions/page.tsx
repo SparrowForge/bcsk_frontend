@@ -23,7 +23,7 @@ export default async function QuestionsPage() {
                 — {q.student.name} ({q.student.studentProfile?.studentId}) ·{" "}
                 {formatDate(q.createdAt)}
               </span>
-              <span className={`ml-auto text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-deep"}`}>
+              <span className={`ml-auto text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-ink"}`}>
                 {q.answer ? "Answered" : "Waiting"}
               </span>
             </div>

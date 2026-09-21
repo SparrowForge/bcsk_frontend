@@ -24,7 +24,7 @@ export default async function AdminDashboard() {
           <Link key={c.label} href={c.href} className="bg-white rounded-2xl border border-line p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
               <span className={`w-3 h-3 rounded-full ${c.color}`} aria-hidden />
-              {c.urgent && <span className="text-[10px] font-extrabold text-sunrise uppercase">Action needed</span>}
+              {c.urgent && <span className="text-[10px] font-extrabold text-sunrise-ink uppercase">Action needed</span>}
             </div>
             <p className="mt-3 font-display text-4xl font-semibold text-navy">{c.value}</p>
             <p className="mt-1 text-xs font-bold text-ink-soft uppercase tracking-wide">{c.label}</p>

@@ -24,7 +24,7 @@ export default async function AttendancePage() {
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Present</p>
         </div>
         <div className="bg-white rounded-2xl border border-line p-5 text-center">
-          <p className="font-display text-3xl font-semibold text-sunrise">{rate != null ? `${rate}%` : "—"}</p>
+          <p className="font-display text-3xl font-semibold text-sunrise-ink">{rate != null ? `${rate}%` : "—"}</p>
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Attendance</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default async function AttendancePage() {
                 <td className="px-5 py-3">{r.classSession.title}</td>
                 <td className="px-5 py-3">
                   <span className={`text-xs font-bold rounded-full px-3 py-1 ${
-                    r.status === "PRESENT" ? "bg-teal/15 text-teal" : r.status === "LATE" ? "bg-sunrise/15 text-sunrise-deep" : "bg-red-50 text-red-600"
+                    r.status === "PRESENT" ? "bg-teal/15 text-teal" : r.status === "LATE" ? "bg-sunrise/15 text-sunrise-ink" : "bg-red-50 text-red-600"
                   }`}>
                     {r.status}
                   </span>

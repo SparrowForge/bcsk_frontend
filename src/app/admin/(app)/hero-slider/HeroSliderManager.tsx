@@ -62,7 +62,7 @@ export function HeroSliderManager({ images }: { images: Image[] }) {
             <input name="caption" placeholder="Caption (optional, not shown publicly)" className={`flex-1 min-w-52 ${input}`} />
             <button
               disabled={pending}
-              className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
+              className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors"
             >
               {pending ? "Uploading…" : "Add to slider"}
             </button>

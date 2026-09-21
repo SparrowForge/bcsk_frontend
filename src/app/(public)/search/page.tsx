@@ -67,7 +67,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         <div className="mt-6 space-y-8">
           {pages.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise mb-3">Pages</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">Pages</h2>
               <ul className="space-y-3">
                 {pages.map((p) => (
                   <li key={p.id}>
@@ -82,7 +82,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
           {courses.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise mb-3">Courses</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">Courses</h2>
               <ul className="space-y-3">
                 {courses.map((c) => (
                   <li key={c.id}>
@@ -100,7 +100,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
           {news.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise mb-3">News & Events</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">News & Events</h2>
               <ul className="space-y-3">
                 {news.map((n) => (
                   <li key={n.id}>

@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Forbidden() {
   return (
     <div className="max-w-lg">
-      <p className="text-xs font-extrabold uppercase tracking-wide text-sunrise">403</p>
+      <p className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink">403</p>
       <h1 className="mt-2 font-display text-2xl font-semibold text-navy">
         Your role doesn&apos;t have access to this
       </h1>

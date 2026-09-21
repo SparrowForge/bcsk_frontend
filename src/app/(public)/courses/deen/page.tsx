@@ -24,7 +24,7 @@ export default async function DeenPage() {
           <p className="relative mt-4 text-white/75 text-sm max-w-xl leading-relaxed">{course?.description}</p>
           <Link
             href="/apply/special?course=deen"
-            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-7 py-3 text-sm transition-colors"
           >
             Apply for the Deen program
           </Link>
@@ -48,7 +48,7 @@ export default async function DeenPage() {
           </div>
         </div>
         <div className="bg-cream rounded-3xl p-8">
-          <p className="text-xs font-extrabold tracking-wide uppercase text-sunrise">KOIE</p>
+          <p className="text-xs font-extrabold tracking-wide uppercase text-sunrise-ink">KOIE</p>
           <h2 className="mt-2 font-display text-2xl font-semibold text-navy">Korea Online Islamic Education</h2>
           <p className="mt-3 text-sm text-ink leading-relaxed">
             BCSK's flagship online Islamic education program for children across Korea:
@@ -140,7 +140,7 @@ export default async function DeenPage() {
           <h2 className="font-display text-2xl font-semibold text-navy">Ready to begin?</h2>
           <p className="mt-2 text-sm text-ink-soft">Apply for Qur'an & Islamic Studies, or the Hifz program — boys', girls', and ladies' tracks available.</p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <Link href="/apply/special?course=deen" className="bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
+            <Link href="/apply/special?course=deen" className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
               Apply — Qur'an & Deen
             </Link>
             <Link href="/apply/special?course=hifz" className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">

@@ -65,14 +65,14 @@ export default async function AbacusPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs font-extrabold tracking-[0.2em] uppercase text-sunrise">BCSK Abacus Programme</p>
+          <p className="text-xs font-extrabold tracking-[0.2em] uppercase text-sunrise-ink">BCSK Abacus Programme</p>
           <h1 className="relative mt-3 font-display text-4xl sm:text-5xl font-semibold text-ink max-w-xl leading-tight">
             Where Math Becomes an Adventure
           </h1>
           <p className="relative mt-4 text-ink-soft text-sm max-w-xl leading-relaxed">{course?.description}</p>
           <Link
             href="/apply/special?course=abacus"
-            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-7 py-3 text-sm transition-colors"
           >
             Join the Abacus programme
           </Link>
@@ -110,7 +110,12 @@ export default async function AbacusPage() {
           {course?.levels.map((l, i) => (
             <details key={l.id} className="bg-white border border-line rounded-2xl group">
               <summary className="cursor-pointer px-6 py-4 font-bold text-navy flex items-center gap-3">
-                <span className={`w-8 h-8 rounded-full text-white text-sm flex items-center justify-center ${["bg-sunrise", "bg-sky", "bg-teal", "bg-navy"][i % 4]}`}>
+                {/* Each fill brings its own label colour: marigold takes navy, the three dark fills take white. */}
+                <span
+                  className={`w-8 h-8 rounded-full text-sm flex items-center justify-center ${
+                    ["bg-sunrise text-navy", "bg-sky text-white", "bg-teal text-white", "bg-navy text-white"][i % 4]
+                  }`}
+                >
                   {i}
                 </span>
                 {l.name}
@@ -213,7 +218,7 @@ export default async function AbacusPage() {
           <p className="mt-2 text-white/70 text-sm">Eight levels from first beads to full mental arithmetic.</p>
           <Link
             href="/apply/special?course=abacus"
-            className="inline-block mt-6 bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors"
+            className="inline-block mt-6 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-3 text-sm transition-colors"
           >
             Apply for Abacus
           </Link>

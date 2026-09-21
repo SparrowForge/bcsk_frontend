@@ -63,13 +63,13 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
         <span className="flex gap-1.5">
           <Link
             href="/contact"
-            className="press rounded bg-sunrise hover:bg-sunrise-deep text-white text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1"
           >
             {t.home.adminSupport}
           </Link>
           <Link
             href="/contact?topic=IT"
-            className="press rounded bg-sunrise hover:bg-sunrise-deep text-white text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1"
           >
             {t.home.itSupport}
           </Link>
@@ -90,13 +90,15 @@ function ClassCard({
   t: Dictionary;
 }) {
   const label = row.classLevel ? classLevelLabel(row.classLevel) : row.label;
-  // Special courses carry the deck's darker header so the regular ladder reads as one block.
-  const headerTone = row.courseSlug ? "bg-maroon" : "bg-sunrise";
+  // The regular ladder wears the school's azure so the six of them read as one block;
+  // a special course wears teal, which is the same signal the boards use elsewhere for
+  // "extra / open". Both hold white text at AA, which the old orange and maroon did not.
+  const headerTone = row.courseSlug ? "bg-teal" : "bg-sky";
 
   return (
     <li
       {...reveal("zoom", index, 60)}
-      className="hover-lift rounded-lg border border-sunrise/50 hover:border-sunrise bg-white overflow-hidden flex flex-col"
+      className="hover-lift rounded-lg border border-sky/25 hover:border-sky/60 bg-white overflow-hidden flex flex-col"
     >
       <p className={`${headerTone} px-2 py-1 text-center text-[11px] font-extrabold text-white truncate`} title={label}>
         {label}

@@ -24,7 +24,7 @@ export default async function TicketsPage() {
               <span className="text-[10px] font-extrabold uppercase bg-cream rounded-full px-2.5 py-1">{t.category}</span>
               <span className="font-bold text-ink text-sm">{t.subject}</span>
               <span className={`ml-auto text-[11px] font-bold rounded-full px-2.5 py-1 ${
-                t.status === "OPEN" ? "bg-sunrise/15 text-sunrise-deep" : t.status === "IN_PROGRESS" ? "bg-sky-soft text-navy" : "bg-teal/15 text-teal"
+                t.status === "OPEN" ? "bg-sunrise/15 text-sunrise-ink" : t.status === "IN_PROGRESS" ? "bg-sky-soft text-navy" : "bg-teal/15 text-teal"
               }`}>
                 {t.status.replace(/_/g, " ")}
               </span>

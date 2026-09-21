@@ -14,15 +14,15 @@ export default async function GoverningBodyPage() {
         {members.map((m, i: number) => (
           <div key={m.id} className="bg-white border border-line rounded-2xl p-6">
             <div
-              className={`w-14 h-14 rounded-full flex items-center justify-center text-lg font-display font-semibold text-white ${
-                ["bg-navy", "bg-sky", "bg-teal", "bg-sunrise"][i % 4]
+              className={`w-14 h-14 rounded-full flex items-center justify-center text-lg font-display font-semibold ${
+                ["bg-navy text-white", "bg-sky text-white", "bg-teal text-white", "bg-sunrise text-navy"][i % 4]
               }`}
               aria-hidden
             >
               {m.name.replace(/[()]/g, "").split(" ").slice(-2).map((w) => w[0]).join("")}
             </div>
             <h2 className="mt-4 font-bold text-ink leading-snug">{m.name}</h2>
-            <p className="text-xs font-bold uppercase tracking-wide text-sunrise mt-1">{m.role}</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-sunrise-ink mt-1">{m.role}</p>
             {m.organization && <p className="mt-2 text-sm text-ink-soft leading-relaxed">{m.organization}</p>}
             <div className="mt-3 space-y-1 text-xs text-ink-soft">
               {m.phone && <p>{m.phone}</p>}

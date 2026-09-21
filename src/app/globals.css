@@ -1,27 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  /* BCSK palette — derived from the school logo (navy + sky) with warm complements */
+  /* ------------------------------------------------------------------
+     BCSK palette — navy + azure from the school logo, marigold as the one
+     warm accent, and two quiet band tints.
+
+     Three rules keep it from turning into the fairground it was:
+       1. Navy carries authority (header, footer, headings), azure carries
+          interaction (links, board headers), marigold carries the call to
+          action. Nothing else competes for attention.
+       2. A colour is either a *fill* or a *text colour*, and every pairing in
+          use clears WCAG AA: white sits on navy / azure / teal, navy sits on
+          marigold and on the band tints. Marigold never carries white text —
+          that pairing was 2.6:1, which is why the buttons read as cheap.
+       3. Bands are tints of the two anchors — cool for a whole band, warm for
+          a panel inside one — not a third hue. The olive sage and the maroon
+          beside it are gone: muddy earth tones read as municipal, the opposite
+          of what a children's school wants.
+     ------------------------------------------------------------------ */
   --navy: #1d2b64;
-  --navy-deep: #141f4b;
-  --sky: #38a8dc;
-  --sky-soft: #d9eef8;
-  --cream: #fbf6ea;
-  --cream-deep: #f6ecd6;
-  --sunrise: #f5820b;
-  --sunrise-deep: #d96e04;
-  --teal: #0fb5a6;
-  /* Homepage board palette (LP-1..LP-6): the sage panels the school design uses for
-     section headings and the stat band, plus the two card accents that sit inside them. */
-  --sage: #c3ccac;
-  --sage-soft: #dde3cd;
-  --sage-deep: #7f8c63;
-  --peach: #fdeacf;
-  --maroon: #8c2b20;
+  --navy-deep: #131f4a;
+  /* Azure deep enough to work both ways — 4.6:1 as link text on white and as
+     white text on the fill — so one token serves links, chips and headers. */
+  --sky: #1a7ea8;
+  /* The logo's lighter blue: decoration only (illustration, gradients), never text. */
+  --sky-bright: #38a8dc;
+  --sky-soft: #e4f1fa;
+  /* Band tints: cool names a whole band, warm names a panel inside one. */
+  --band: #d8eaf7;
+  --band-soft: #fdeedb;
+  --cream: #fdf8f0;
+  --cream-deep: #f7edda;
+  /* Marigold: bright enough to feel like a school, always with navy on top. */
+  --sunrise: #f7a325;
+  --sunrise-deep: #d9820b;
+  /* Amber as *text* has to be this dark to be legible on white or on a 15% tint. */
+  --sunrise-ink: #a45c07;
+  /* Teal reads "open / live / done" and is dark enough to hold white text. */
+  --teal: #0d7f74;
+  --teal-soft: #ddf1ee;
   --paper: #ffffff;
   --ink: #232323;
   --ink-soft: #5b5b6b;
-  --line: #e8e4da;
+  --line: #e6e9ef;
   --font-display: var(--font-fraunces), var(--font-bangla), Georgia, serif;
   --font-body: var(--font-nunito), var(--font-bangla), var(--font-korean), system-ui, sans-serif;
 }
@@ -30,17 +51,17 @@
   --color-navy: var(--navy);
   --color-navy-deep: var(--navy-deep);
   --color-sky: var(--sky);
+  --color-sky-bright: var(--sky-bright);
   --color-sky-soft: var(--sky-soft);
+  --color-band: var(--band);
+  --color-band-soft: var(--band-soft);
   --color-cream: var(--cream);
   --color-cream-deep: var(--cream-deep);
   --color-sunrise: var(--sunrise);
   --color-sunrise-deep: var(--sunrise-deep);
+  --color-sunrise-ink: var(--sunrise-ink);
   --color-teal: var(--teal);
-  --color-sage: var(--sage);
-  --color-sage-soft: var(--sage-soft);
-  --color-sage-deep: var(--sage-deep);
-  --color-peach: var(--peach);
-  --color-maroon: var(--maroon);
+  --color-teal-soft: var(--teal-soft);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
@@ -337,7 +358,7 @@ textarea:focus-visible {
 }
 .press:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px -10px rgba(245, 130, 11, 0.9);
+  box-shadow: 0 8px 16px -10px rgba(217, 130, 11, 0.55);
 }
 .press:active {
   transform: translateY(0) scale(0.97);
@@ -375,7 +396,7 @@ textarea:focus-visible {
   animation: bcsk-live-ring 2.2s ease-out infinite;
 }
 
-/* The sage band headings catch a single slow highlight as they arrive, which
+/* The section band headings catch a single slow highlight as they arrive, which
    reads as the page turning a page rather than as a loading shimmer. */
 @keyframes bcsk-sheen {
   from {

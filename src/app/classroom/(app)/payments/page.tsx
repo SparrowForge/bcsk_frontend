@@ -39,7 +39,7 @@ export default async function StudentPaymentsPage() {
                 <td className="px-5 py-3">
                   <span className={`text-xs font-bold rounded-full px-3 py-1 ${
                     ["PAID", "VERIFIED"].includes(p.status) ? "bg-teal/15 text-teal"
-                    : p.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-deep"
+                    : p.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-ink"
                     : p.status === "REFUNDED" ? "bg-sky-soft text-navy"
                     : "bg-red-50 text-red-600"
                   }`}>

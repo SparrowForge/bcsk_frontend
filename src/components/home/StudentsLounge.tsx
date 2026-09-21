@@ -41,7 +41,7 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
           <li key={tile.label} {...reveal("zoom", i, 45)}>
             <Link
               href={tile.href}
-              className="hover-pop block rounded bg-peach hover:bg-sunrise hover:text-white text-navy text-center text-[11px] font-bold px-3 py-2"
+              className="hover-pop block rounded bg-band-soft hover:bg-sunrise text-navy text-center text-[11px] font-bold px-3 py-2"
             >
               {tile.label}
             </Link>

@@ -24,7 +24,7 @@ import { StudentsLounge } from "@/components/home/StudentsLounge";
  *
  * Plus one band the deck does not draw: latest news, between LP-5 and LP-6. The deck drops
  * it, but the school publishes news and the homepage is where families look for it — so it
- * wears the same sage bar as the bands it sits between rather than reading as a bolt-on.
+ * wears the same band bar as the sections it sits between rather than reading as a bolt-on.
  *
  * Every read is caught individually: a homepage is the one page that must never 500, and a
  * CMS page an admin has not written yet is a missing panel, not an outage.
@@ -106,13 +106,13 @@ export default async function HomePage() {
             <div {...reveal("up", 2, 110)} className="mt-6 flex flex-wrap gap-2.5">
               <Link
                 href="/bcsk/about-us"
-                className="press bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px]"
+                className="press bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded px-4 py-1.5 text-[11px]"
               >
                 {t.home.readMoreHero}
               </Link>
               <Link
                 href="/apply"
-                className="press nudge bg-sunrise hover:bg-sunrise-deep text-white font-bold rounded px-4 py-1.5 text-[11px] inline-flex items-center gap-1.5"
+                className="press nudge bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded px-4 py-1.5 text-[11px] inline-flex items-center gap-1.5"
               >
                 {t.nav.applyNow}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
@@ -139,17 +139,20 @@ export default async function HomePage() {
             <li
               key={s.label}
               {...reveal("up", i, 90)}
-              className="hover-lift bg-sage rounded-lg px-5 py-6 text-center"
+              // Navy blocks, not another tint: these four figures are the page's opening claim,
+              // and set against the pale band underneath they read as the anchor of the hero
+              // rather than as a second, weaker copy of it.
+              className="hover-lift bg-navy rounded-lg px-5 py-6 text-center"
             >
               {/* The deck runs the class count into its own label — "6 Classes" on one line —
                   and stacks the other three. `inline` carries that difference. */}
-              <p className="font-display text-[1.6rem] leading-tight font-semibold text-navy">
+              <p className="font-display text-[1.6rem] leading-tight font-semibold text-sunrise">
                 {/* `tabular-nums` so a figure counting up to 120 does not jitter its own card. */}
                 <CountUp value={s.value} className="tabular-nums" />
                 {s.inline && <span className="ml-1.5">{s.label}</span>}
               </p>
-              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-navy">{s.label}</p>}
-              {s.sub && <p className="mt-0.5 text-[12px] text-navy/75">{s.sub}</p>}
+              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-white">{s.label}</p>}
+              {s.sub && <p className="mt-0.5 text-[12px] text-white/75">{s.sub}</p>}
             </li>
           ))}
         </ul>

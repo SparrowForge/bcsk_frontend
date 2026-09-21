@@ -17,7 +17,7 @@ export default async function CmsListPage() {
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-display text-2xl font-semibold text-navy">CMS Pages</h1>
-        <Link href="/admin/cms/new" className="bg-sunrise hover:bg-sunrise-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors">
+        <Link href="/admin/cms/new" className="bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors">
           + New page
         </Link>
       </div>
@@ -39,7 +39,7 @@ export default async function CmsListPage() {
                       v
                         ? v.status === "PUBLISHED"
                           ? "bg-teal/15 text-teal hover:bg-teal/25"
-                          : "bg-sunrise/15 text-sunrise-deep hover:bg-sunrise/25"
+                          : "bg-sunrise/15 text-sunrise-ink hover:bg-sunrise/25"
                         : "bg-cream text-ink-soft hover:text-navy"
                     }`}
                     title={v ? `${l.label}: ${v.status}` : `${l.label}: not created`}

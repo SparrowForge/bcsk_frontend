@@ -7,7 +7,7 @@ import { PaymentRowActions } from "./PaymentRowActions";
 const STATUS_STYLE: Record<string, string> = {
   PAID: "bg-teal/15 text-teal",
   VERIFIED: "bg-teal/15 text-teal",
-  PENDING_VERIFICATION: "bg-sunrise/15 text-sunrise-deep",
+  PENDING_VERIFICATION: "bg-sunrise/15 text-sunrise-ink",
   PENDING: "bg-cream text-ink-soft",
   REJECTED: "bg-red-50 text-red-600",
   FAILED: "bg-red-50 text-red-600",

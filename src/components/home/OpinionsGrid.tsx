@@ -38,7 +38,7 @@ export function OpinionsGrid({
           return (
             <li key={r.label} {...reveal("up", i, 80)} className="w-full max-w-[220px] text-center">
               <p className="mb-2">
-                <span className="inline-block rounded bg-sunrise px-5 py-1 text-[11px] font-extrabold text-white">
+                <span className="inline-block rounded bg-sunrise px-5 py-1 text-[11px] font-extrabold text-navy">
                   {r.label}
                 </span>
               </p>

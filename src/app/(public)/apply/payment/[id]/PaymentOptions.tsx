@@ -118,7 +118,7 @@ export function PaymentOptions({
           <button
             onClick={payByCard}
             disabled={cardBusy}
-            className="mt-5 w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+            className="mt-5 w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
           >
             {cardBusy ? "Opening secure checkout…" : `Pay ${krw(amount)} by card`}
           </button>

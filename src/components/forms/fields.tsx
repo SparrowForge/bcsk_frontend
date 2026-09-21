@@ -21,7 +21,7 @@ export function Field({
   return (
     <label className="block">
       <span className="text-xs font-bold text-ink">
-        {label} {required && <span className="text-sunrise">*</span>}
+        {label} {required && <span className="text-sunrise-ink">*</span>}
       </span>
       <input
         name={name}
@@ -51,7 +51,7 @@ export function SelectField({
   return (
     <label className="block">
       <span className="text-xs font-bold text-ink">
-        {label} {required && <span className="text-sunrise">*</span>}
+        {label} {required && <span className="text-sunrise-ink">*</span>}
       </span>
       <select name={name} required={required} defaultValue="" className={`mt-1.5 ${inputCls}`}>
         <option value="" disabled>
@@ -71,7 +71,7 @@ export function PhotoField({ label = "Applicant photo (JPG/PNG, max 1 MB)" }: { 
   return (
     <label className="block">
       <span className="text-xs font-bold text-ink">
-        {label} <span className="text-sunrise">*</span>
+        {label} <span className="text-sunrise-ink">*</span>
       </span>
       <input
         type="file"

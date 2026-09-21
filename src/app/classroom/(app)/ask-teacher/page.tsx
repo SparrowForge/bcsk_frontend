@@ -31,7 +31,7 @@ export default async function AskTeacherPage() {
           <div key={q.id} className="bg-white rounded-2xl border border-line p-5">
             <div className="flex items-center justify-between gap-3">
               <p className="font-bold text-ink text-sm">{q.subject}</p>
-              <span className={`text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-deep"}`}>
+              <span className={`text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-ink"}`}>
                 {q.answer ? "Answered" : "Waiting"}
               </span>
             </div>

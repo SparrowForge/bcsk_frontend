@@ -7,7 +7,7 @@ import { formatDate } from "@/lib/dates";
 const STATUS_STYLE: Record<string, string> = {
   APPROVED: "bg-teal/15 text-teal",
   PAID: "bg-sky-soft text-navy",
-  PENDING_VERIFICATION: "bg-sunrise/15 text-sunrise-deep",
+  PENDING_VERIFICATION: "bg-sunrise/15 text-sunrise-ink",
   PENDING_PAYMENT: "bg-cream text-ink-soft",
   REJECTED: "bg-red-50 text-red-600",
   CORRECTIONS_REQUESTED: "bg-purple-50 text-purple-600",

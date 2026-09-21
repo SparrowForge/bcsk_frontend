@@ -94,7 +94,7 @@ export default async function ResultsPage() {
               <div key={g.id} className="bg-white rounded-xl border border-line px-5 py-3 flex items-center gap-3 text-sm">
                 <span className="font-bold text-ink capitalize">{g.game.replace(/-/g, " ")}</span>
                 <span className="text-xs text-ink-soft">Level {g.level}</span>
-                <span className="ml-auto font-display text-lg font-semibold text-sunrise">{g.score} pts</span>
+                <span className="ml-auto font-display text-lg font-semibold text-sunrise-ink">{g.score} pts</span>
                 <time className="text-xs text-ink-soft">{formatDate(g.createdAt)}</time>
               </div>
             ))}

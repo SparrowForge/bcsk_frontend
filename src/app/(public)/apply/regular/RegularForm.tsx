@@ -72,7 +72,7 @@ export function RegularForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
       <Recaptcha siteKey={recaptchaSiteKey} />
       <button
         disabled={pending}
-        className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+        className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
       >
         {pending ? "Submitting…" : "Continue to payment →"}
       </button>

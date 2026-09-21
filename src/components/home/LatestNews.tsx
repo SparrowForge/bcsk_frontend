@@ -11,7 +11,7 @@ import { SectionBar } from "./SectionBar";
  *
  * Not one of the deck's six bands — it sits between the opinions and the seminar gallery
  * because that is where the page turns from what the school *is* to what it has been doing.
- * It wears the same sage bar as the bands around it so the addition does not read as a
+ * It wears the same band bar as the sections around it so the addition does not read as a
  * bolted-on strip.
  *
  * Renders nothing at all when the school has published nothing: an empty "Latest News"
@@ -45,7 +45,7 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
                 </div>
               )}
               <div className="p-5 flex flex-col flex-1">
-                <p className="text-[11px] font-extrabold uppercase tracking-wide text-sunrise">{n.type}</p>
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-sunrise-ink">{n.type}</p>
                 <h3 className="mt-1.5 font-display text-lg font-semibold text-navy group-hover:text-sky transition-colors leading-snug">
                   {n.title}
                 </h3>
