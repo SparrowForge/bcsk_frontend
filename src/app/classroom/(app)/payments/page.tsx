@@ -14,7 +14,7 @@ export default async function StudentPaymentsPage() {
   return (
     <div className="max-w-3xl">
       <h1 className="font-display text-2xl font-semibold text-navy mb-6">Payment Report</h1>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+      <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-cream text-navy text-left">

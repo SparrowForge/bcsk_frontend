@@ -195,6 +195,42 @@ h3,
   }
 }
 
+/* ---------- a table that is wider than the screen ---------- */
+
+/*
+ * On a phone every fee, result and admin table is wider than the viewport. They have always
+ * scrolled sideways, but nothing said so: the last column was simply cut off at the card's
+ * edge, which reads as a broken layout rather than as something to swipe.
+ *
+ * This is the four-layer background trick, and it needs no JavaScript and no listener per
+ * table. Two opaque "cover" layers are attached `local`, so they travel with the content and
+ * sit at its very start and end; two shadow layers are attached `scroll`, so they stay at the
+ * edges of the box. Wherever the content has reached its end, its cover is parked over that
+ * shadow and hides it — so a fade appears only on a side that has more to show, and both
+ * fades disappear once a table is narrow enough to fit.
+ *
+ * The container paints the base colour, so the fade only works over rows that are themselves
+ * transparent — which is how every table here is built; a tinted header row covers it, and
+ * that is fine, since the rows below carry the signal.
+ */
+.scroll-fade {
+  background:
+    linear-gradient(to right, var(--paper) 40%, rgba(255, 255, 255, 0)) left center,
+    linear-gradient(to left, var(--paper) 40%, rgba(255, 255, 255, 0)) right center,
+    linear-gradient(to right, rgba(29, 43, 100, 0.28), rgba(29, 43, 100, 0)) left center,
+    linear-gradient(to left, rgba(29, 43, 100, 0.28), rgba(29, 43, 100, 0)) right center;
+  background-repeat: no-repeat;
+  /* The covers must be at least as wide as the shadows they park over, or a table that
+     fits its box leaks a sliver of shading at both ends. */
+  background-size:
+    34px 100%,
+    34px 100%,
+    28px 100%,
+    28px 100%;
+  background-attachment: local, local, scroll, scroll;
+  background-color: var(--paper);
+}
+
 /* dotted decorative pattern (screenshot motif) */
 .dot-grid {
   background-image: radial-gradient(var(--line) 2px, transparent 2px);
@@ -328,14 +364,22 @@ textarea:focus-visible {
 /* ---------- hover / press micro-interactions ---------- */
 
 .hover-lift {
+  /* A resting shadow, not just a hover one: a page of flat-bordered rectangles reads as a
+     wireframe. This is small enough to stay quiet behind twenty cards at once and is what
+     the lift then has something to lift *from*. */
+  box-shadow:
+    0 1px 2px rgba(29, 43, 100, 0.04),
+    0 8px 18px -14px rgba(29, 43, 100, 0.3);
   transition:
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     box-shadow 0.28s ease,
     border-color 0.28s ease;
 }
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 26px -16px rgba(29, 43, 100, 0.45);
+  transform: translateY(-5px);
+  box-shadow:
+    0 2px 4px rgba(29, 43, 100, 0.06),
+    0 18px 32px -18px rgba(29, 43, 100, 0.55);
 }
 
 /* For a tile that should swell slightly rather than rise — the lounge shortcuts. */
@@ -347,6 +391,7 @@ textarea:focus-visible {
 }
 .hover-pop:hover {
   transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 12px 20px -14px rgba(217, 130, 11, 0.9);
 }
 
 /* A button that acknowledges the click it is about to navigate away from. */

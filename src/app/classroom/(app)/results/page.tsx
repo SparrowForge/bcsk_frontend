@@ -24,7 +24,7 @@ export default async function ResultsPage() {
       {semesters.map((sem) => (
         <section key={sem}>
           <h2 className="font-display text-lg font-semibold text-ink mb-3">Semester {sem}</h2>
-          <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+          <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-cream text-navy text-left">

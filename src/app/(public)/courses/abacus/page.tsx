@@ -134,7 +134,7 @@ export default async function AbacusPage() {
           Each level has a Student Book and a Work Book.{" "}
           {enrolled ? "Download yours below." : "Enrolled students can download the PDFs; guests see the list only."}
         </p>
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white max-w-3xl">
+        <div className="scroll-fade overflow-x-auto rounded-2xl border border-line max-w-3xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-cream text-navy text-left">

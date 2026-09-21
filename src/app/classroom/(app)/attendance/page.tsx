@@ -28,7 +28,7 @@ export default async function AttendancePage() {
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Attendance</p>
         </div>
       </div>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+      <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-cream text-navy text-left">

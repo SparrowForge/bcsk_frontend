@@ -88,7 +88,12 @@ function DeskCard({
             className="w-11 h-11 rounded-full object-cover border border-line"
           />
         ) : (
-          <span className="w-11 h-11 rounded-full bg-sky-soft text-navy flex items-center justify-center" aria-hidden>
+          <span
+            className={`w-11 h-11 rounded-full text-navy flex items-center justify-center ${
+              ["bg-sky-soft", "bg-teal-soft", "bg-band-soft", "bg-cream-deep"][index % 4]
+            }`}
+            aria-hidden
+          >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.5-8 5.5V22h16v-2.5c0-3-3.6-5.5-8-5.5Z" />
             </svg>

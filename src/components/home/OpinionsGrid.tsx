@@ -28,6 +28,23 @@ export function OpinionsGrid({
     { label: t.home.roleCommunityLeader, slug: null },
   ];
 
+  // Three soft tints: enough to make a row of six read as a set of distinct cards rather
+  // than as one grey block, without inventing a colour per role.
+  //
+  // The colours run diagonally, and that takes two rotations rather than one: this grid is
+  // two columns below `lg` and three at `lg`, and a rotation that steps diagonally across
+  // three columns stacks the same tint twice in a column of two.
+  //
+  // Over two columns a plain `i % 3` already steps diagonally, because 2 and 3 share no
+  // factor. Over three columns it does not — it gives every column one fixed colour — so
+  // that grid adds a one-tile shift per row. Each tile therefore carries both: the base
+  // class for the two-column grid and an `lg:` class for the three-column one. The arrays
+  // hold the class names in full because Tailwind scans the source for literals; a name
+  // assembled from a prefix and a variable would never be generated.
+  const tints = ["bg-sky-soft", "bg-teal-soft", "bg-band-soft"];
+  const lgTints = ["lg:bg-sky-soft", "lg:bg-teal-soft", "lg:bg-band-soft"];
+  const tintFor = (i: number) => `${tints[i % 3]} ${lgTints[(i + Math.floor(i / 3)) % 3]}`;
+
   return (
     <section className="mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.opinions}</SectionBar>
@@ -46,15 +63,19 @@ export function OpinionsGrid({
                 // Only a tile that leads somewhere responds to the pointer — the placeholder
                 // ones stay inert, which is the honest signal that there is nothing to play.
                 <Link href={href} className="group block">
-                  <PlayerGlyph interactive />
-                  <span className="mt-1.5 block text-[11px] font-bold text-sky group-hover:underline underline-offset-4">
+                  <div className={`hover-lift rounded-2xl p-5 ${tintFor(i)}`}>
+                    <PlayerGlyph interactive />
+                  </div>
+                  <span className="mt-2 block text-[11px] font-bold text-sky group-hover:underline underline-offset-4">
                     {t.common.readFullMessage} →
                   </span>
                 </Link>
               ) : (
                 <>
-                  <PlayerGlyph />
-                  <span className="mt-1.5 block text-[11px] text-ink-soft">{t.home.opinionsSoon}</span>
+                  <div className={`rounded-2xl p-5 ${tintFor(i)}`}>
+                    <PlayerGlyph />
+                  </div>
+                  <span className="mt-2 block text-[11px] text-ink-soft">{t.home.opinionsSoon}</span>
                 </>
               )}
             </li>
@@ -74,7 +95,7 @@ function PlayerGlyph({ interactive }: { interactive?: boolean }) {
   return (
     <svg
       viewBox="0 0 100 86"
-      className={`w-full text-ink/85 ${
+      className={`w-full text-navy/75 ${
         interactive
           ? "transition-[transform,color] duration-300 group-hover:-translate-y-1 group-hover:text-navy motion-reduce:transform-none"
           : ""

@@ -74,7 +74,7 @@ export default async function DeenPage() {
       {/* schedule (FR-DEEN-04) */}
       <section className="mx-auto max-w-7xl px-4 mt-16">
         <h2 className="font-display text-3xl font-semibold text-ink mb-6">Class Schedule</h2>
-        <div className="overflow-x-auto rounded-2xl border border-line bg-white max-w-4xl">
+        <div className="scroll-fade overflow-x-auto rounded-2xl border border-line max-w-4xl">
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-cream text-navy text-left">

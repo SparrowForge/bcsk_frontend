@@ -29,8 +29,11 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
           <li key={n.id} {...reveal("up", i, 110)}>
             <Link
               href={`/events/news/${n.id}`}
-              className="hover-lift group h-full flex flex-col rounded-2xl border border-line hover:border-sky/40 bg-white overflow-hidden"
+              className="hover-lift group h-full flex flex-col rounded-2xl border border-line hover:border-sky/40 bg-white overflow-hidden relative"
             >
+              {/* One warm edge at the top: without it three white rectangles in a row read as
+                  a table of text rather than as three things worth opening. */}
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-sunrise z-10" />
               {n.imageUrl && (
                 <div className="overflow-hidden">
                   {/* The photograph pushes in slightly under the pointer while the frame holds

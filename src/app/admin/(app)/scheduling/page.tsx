@@ -37,7 +37,7 @@ export default async function SchedulingPage() {
         teachers={teacherOptions}
       />
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-line bg-white">
+      <div className="mt-6 scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-cream text-navy text-left">

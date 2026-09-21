@@ -39,7 +39,7 @@ export function SchoolOverview({
 
   return (
     <section id="school-overview" className="mx-auto max-w-7xl px-4 mt-12 scroll-mt-24">
-      <SectionBar tone="band">{t.home.overview}</SectionBar>
+      <SectionBar>{t.home.overview}</SectionBar>
 
       <div className="mt-4 rounded-xl bg-white border border-line p-4 sm:p-5 space-y-5">
         {(whyBcsk || missionVision) && (

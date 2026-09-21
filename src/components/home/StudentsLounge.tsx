@@ -41,7 +41,9 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
           <li key={tile.label} {...reveal("zoom", i, 45)}>
             <Link
               href={tile.href}
-              className="hover-pop block rounded bg-band-soft hover:bg-sunrise text-navy text-center text-[11px] font-bold px-3 py-2"
+              // Navy tiles under a navy bar: twelve shortcuts are a block of one thing, and
+              // the marigold hover is what picks the one under the pointer out of the block.
+              className="hover-pop block rounded-lg bg-navy text-white hover:bg-sunrise hover:text-navy text-center text-[11.5px] font-bold px-3 py-2.5 shadow-[0_6px_14px_-10px_rgba(29,43,100,0.9)]"
             >
               {tile.label}
             </Link>

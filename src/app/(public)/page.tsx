@@ -89,30 +89,44 @@ export default async function HomePage() {
   return (
     <>
       {/* ---------------- LP-1 · HERO (FR-HOME-03) ---------------- */}
-      <section className="mx-auto max-w-7xl px-4 pt-8">
-        <div className="grid lg:grid-cols-[minmax(0,1fr)_1.15fr] gap-8 lg:gap-10 items-center">
+      {/* The page used to open on bare white, which made the strongest content on the site
+          look like a draft. The band below is pure decoration — a warm-to-cool wash, the
+          deck's dot motif, and two blurred discs of the accent colours — so the headline
+          arrives on a surface rather than on nothing. "isolate" keeps the -z-10 layer inside
+          this section; "aria-hidden" keeps all of it out of the accessibility tree. */}
+      <section className="relative isolate overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-sky-soft via-cream/50 to-white" />
+          <div className="dot-grid absolute inset-x-0 top-0 h-48 opacity-50" />
+          <div className="absolute -left-28 top-6 h-72 w-72 rounded-full bg-sunrise/15 blur-3xl" />
+          <div className="absolute -right-20 -top-16 h-80 w-80 rounded-full bg-sky/15 blur-3xl" />
+        </div>
+        <div className="mx-auto max-w-7xl px-4 pt-10 pb-12 grid lg:grid-cols-[minmax(0,1fr)_1.15fr] gap-8 lg:gap-10 items-center">
           <div>
             {/* The CMS page owns the headline; the fallback is the deck's exact wording.
                 The hero's three pieces arrive in reading order, a beat apart. */}
-            <h1 {...reveal()} className="text-[1.9rem] sm:text-[2.2rem] leading-[1.2] font-extrabold text-ink">
+            <h1
+              {...reveal()}
+              className="text-[2.1rem] sm:text-[2.6rem] lg:text-[3rem] leading-[1.12] font-extrabold text-navy"
+            >
               {hero?.title ?? t.home.firstSchool}
             </h1>
             <div
               {...reveal("up", 1, 110)}
-              className="mt-4 text-ink-soft text-[13.5px] leading-[1.75] max-w-lg [&_strong]:text-navy"
+              className="mt-5 text-ink-soft text-[14.5px] leading-[1.8] max-w-lg [&_strong]:text-navy"
               dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
             />
             {/* Deck order: Read More first, Apply Now second — both small and orange. */}
             <div {...reveal("up", 2, 110)} className="mt-6 flex flex-wrap gap-2.5">
               <Link
                 href="/bcsk/about-us"
-                className="press bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded px-4 py-1.5 text-[11px]"
+                className="press bg-white hover:bg-cream text-navy font-bold rounded-full border-2 border-navy/15 px-5 py-2.5 text-[12.5px]"
               >
                 {t.home.readMoreHero}
               </Link>
               <Link
                 href="/apply"
-                className="press nudge bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded px-4 py-1.5 text-[11px] inline-flex items-center gap-1.5"
+                className="press nudge bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-full px-6 py-2.5 text-[12.5px] inline-flex items-center gap-1.5 shadow-[0_10px_20px_-12px_rgba(217,130,11,0.9)]"
               >
                 {t.nav.applyNow}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
@@ -133,7 +147,7 @@ export default async function HomePage() {
       </section>
 
       {/* ---------------- LP-1 · STATS BAND (FR-HOME-04) ---------------- */}
-      <section className="mx-auto max-w-7xl px-4 mt-8">
+      <section className="mx-auto max-w-7xl px-4 -mt-4">
         <ul className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {statCards.map((s, i) => (
             <li
@@ -141,9 +155,15 @@ export default async function HomePage() {
               {...reveal("up", i, 90)}
               // Navy blocks, not another tint: these four figures are the page's opening claim,
               // and set against the pale band underneath they read as the anchor of the hero
-              // rather than as a second, weaker copy of it.
-              className="hover-lift bg-navy rounded-lg px-5 py-6 text-center"
+              // rather than as a second, weaker copy of it. The marigold cap and the shadow are
+              // what stop four identical rectangles from reading as a table.
+              className="hover-lift relative overflow-hidden bg-gradient-to-br from-navy to-navy-deep rounded-xl px-5 py-7 text-center shadow-[0_14px_30px_-20px_rgba(29,43,100,0.95)]"
             >
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-sunrise" />
+              <span
+                aria-hidden
+                className="absolute -right-6 -bottom-8 h-24 w-24 rounded-full bg-white/[0.06]"
+              />
               {/* The deck runs the class count into its own label — "6 Classes" on one line —
                   and stacks the other three. `inline` carries that difference. */}
               <p className="font-display text-[1.6rem] leading-tight font-semibold text-sunrise">

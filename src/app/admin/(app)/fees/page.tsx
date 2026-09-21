@@ -13,7 +13,7 @@ export default async function FeesPage() {
       <p className="text-xs text-ink-soft mb-6">
         Amounts in KRW. These drive the public tuition table and every payment amount. Changes apply immediately.
       </p>
-      <div className="overflow-x-auto rounded-2xl border border-line bg-white">
+      <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-cream text-navy text-left">
