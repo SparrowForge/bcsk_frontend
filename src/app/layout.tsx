@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { Fraunces, Nunito_Sans, Hind_Siliguri, Noto_Sans_KR } from "next/font/google";
+import { Fraunces, Nunito_Sans, Noto_Sans_KR } from "next/font/google";
+import localFont from "next/font/local";
 import { getLang } from "@/lib/i18n";
 import { MOTION_BOOTSTRAP } from "@/lib/motion";
 import "./globals.css";
@@ -15,10 +16,27 @@ const nunito = Nunito_Sans({
   variable: "--font-nunito",
   weight: ["400", "600", "700", "800"],
 });
-const hindSiliguri = Hind_Siliguri({
-  subsets: ["bengali", "latin"],
+/**
+ * SolaimanLipi, self-hosted — the face Bangladeshi readers expect, and not on Google Fonts,
+ * so the two weights live in `src/fonts` and ship with the build. Self-hosting also keeps
+ * the CSP in `src/proxy.ts` closed: no third-party font origin to allowlist.
+ *
+ * `size-adjust` is how the Bangla text gets its extra 2px. Bumping `font-size` instead
+ * would not work here: `:lang(bn)` matches by inheritance, so a `calc(1em + 2px)` would
+ * compound once per nesting level, and a root bump would move only the rem-based sizes and
+ * leave every `text-[13px]` behind. This scales the glyphs inside the em box instead — one
+ * ratio, applied wherever a Bangla glyph is drawn, including Bangla words sitting inside an
+ * English sentence, where the Latin face beside them keeps its own size. 112.5% is +2px at
+ * the 16px body size and the same proportion everywhere else.
+ */
+const solaimanLipi = localFont({
+  src: [
+    { path: "../fonts/solaimanlipi-normal-v1.0.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/solaimanlipi-bold-v1.0.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-bangla",
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  declarations: [{ prop: "size-adjust", value: "112.5%" }],
 });
 const notoKr = Noto_Sans_KR({
   subsets: ["latin"],
@@ -43,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang={lang}
-      className={`${fraunces.variable} ${nunito.variable} ${hindSiliguri.variable} ${notoKr.variable}`}
+      className={`${fraunces.variable} ${nunito.variable} ${solaimanLipi.variable} ${notoKr.variable}`}
       // The bootstrap below sets `data-motion` here before React hydrates; React compares the
       // root element's attributes and would otherwise report that as a mismatch on every load.
       suppressHydrationWarning

@@ -18,12 +18,17 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
   return (
     <>
       {/* desktop */}
+      {/* `whitespace-nowrap` on the items: a menu label that breaks across two lines stops
+          reading as one item and makes the whole bar two rows tall. Bengali labels are longer
+          than the English ones and SolaimanLipi sets them wider again, so at the narrow end of
+          the desktop range two of them used to wrap. Nowrap keeps the bar one row; the masthead
+          beside it yields first, which is what its `truncate` is for. */}
       <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
         {items.map((item) =>
           item.children ? (
             <div key={item.label} className="relative group">
               <button
-                className={`px-3 py-2 text-sm font-bold rounded-md flex items-center gap-1 hover:text-sky transition-colors ${
+                className={`px-2.5 py-2 text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-sky transition-colors ${
                   item.children.some((c) => pathname.startsWith(c.href)) ? "text-sky" : "text-ink"
                 }`}
                 aria-haspopup="true"
@@ -53,7 +58,7 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
             <Link
               key={item.label}
               href={item.href!}
-              className={`px-3 py-2 text-sm font-bold rounded-md hover:text-sky transition-colors ${
+              className={`px-2.5 py-2 text-sm font-bold rounded-md whitespace-nowrap hover:text-sky transition-colors ${
                 pathname === item.href ? "text-sky" : "text-ink"
               }`}
             >
@@ -63,7 +68,7 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
         )}
         <Link
           href="/contact"
-          className="ml-2 bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors"
+          className="ml-2 shrink-0 whitespace-nowrap bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors"
         >
           {contactLabel}
         </Link>
