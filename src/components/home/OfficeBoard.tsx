@@ -34,7 +34,7 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
           {board.desks.length === 0 ? (
             <p className="py-8 text-center text-sm text-ink-soft">{t.home.boardEmpty}</p>
           ) : (
-            <ul className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
               {board.desks.map((d, i) => (
                 <DeskCard key={d.id} desk={d} index={i} t={t} />
               ))}
@@ -72,29 +72,29 @@ function DeskCard({
       {...reveal("zoom", index, 55)}
       className="hover-lift rounded-lg border border-green-mid/25 hover:border-green-mid/60 bg-white overflow-hidden flex flex-col"
     >
-      <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-green-mid">
+      <p className="pt-2.5 text-center text-[11px] font-extrabold uppercase tracking-wide text-green-mid">
         {t.home.deskDesk}
       </p>
-      <p className="px-1.5 text-center font-bold text-[12px] text-green leading-tight truncate" title={desk.deskName}>
+      <p className="px-2.5 text-center font-bold text-[15px] text-green leading-tight truncate" title={desk.deskName}>
         {desk.deskName}
       </p>
 
-      <div className="relative mx-auto my-1.5">
+      <div className="relative mx-auto my-3">
         {desk.photoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={desk.photoUrl}
             alt={desk.teacherName}
-            className="w-11 h-11 rounded-full object-cover border border-line"
+            className="w-16 h-16 rounded-full object-cover border border-line"
           />
         ) : (
           <span
-            className={`w-11 h-11 rounded-full text-green flex items-center justify-center ${
+            className={`w-16 h-16 rounded-full text-green flex items-center justify-center ${
               ["bg-green-soft", "bg-green-soft", "bg-crimson-band", "bg-mist-deep"][index % 4]
             }`}
             aria-hidden
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.5-8 5.5V22h16v-2.5c0-3-3.6-5.5-8-5.5Z" />
             </svg>
           </span>
@@ -103,14 +103,14 @@ function DeskCard({
         {inClass && (
           // The dot keeps its white ring — a Tailwind `ring` is a box-shadow, so the spreading
           // pulse is a second element behind it rather than a shadow that would replace it.
-          <span className="absolute -top-0.5 -right-0.5 flex w-2.5 h-2.5" aria-hidden>
+          <span className="absolute -top-0.5 -right-0.5 flex w-3 h-3" aria-hidden>
             <span className="absolute inline-flex w-full h-full rounded-full bg-red-500 opacity-70 animate-ping motion-reduce:hidden" />
-            <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-red-600 ring-2 ring-white" />
+            <span className="relative inline-flex w-3 h-3 rounded-full bg-red-600 ring-2 ring-white" />
           </span>
         )}
       </div>
 
-      <div className="px-2 pb-1.5 text-[10px] leading-tight">
+      <div className="px-3 pb-3 text-[12px] leading-snug">
         <p className="text-ink-soft">
           {t.common.status}:{" "}
           <span className={`font-bold ${inClass ? "text-red-600" : desk.status === "DESK" ? "text-green" : "text-ink"}`}>

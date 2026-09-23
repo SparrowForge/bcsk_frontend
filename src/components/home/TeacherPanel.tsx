@@ -183,7 +183,9 @@ export function TeacherPanel({ teachers, t }: { teachers: PublicTeacher[]; t: Di
           )}
           <Link
             href="/bcsk/teachers"
-            className="text-green-mid text-xs font-bold hover:underline underline-offset-4"
+            // The deeper green, not the link green: this band carries the logo shade, and
+            // `--green-mid` over the mark's darkest point is 3.8:1. `--green` is 4.9:1 there.
+            className="text-green text-xs font-bold hover:underline underline-offset-4"
           >
             {t.home.viewTeachers} →
           </Link>

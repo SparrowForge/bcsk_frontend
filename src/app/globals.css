@@ -313,7 +313,7 @@ h3,
   z-index: -1;
   pointer-events: none;
   background-color: var(--green);
-  opacity: 0.12;
+  opacity: 0.24;
   -webkit-mask-image: url("/images/bcsk-mark.svg");
   mask-image: url("/images/bcsk-mark.svg");
   -webkit-mask-repeat: no-repeat;

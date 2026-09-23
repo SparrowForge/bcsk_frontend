@@ -66,7 +66,7 @@ export function OpinionsGrid({
                   <div className={`hover-lift rounded-2xl p-5 ${tintFor(i)}`}>
                     <PlayerGlyph interactive />
                   </div>
-                  <span className="mt-2 block text-[11px] font-bold text-green-mid group-hover:underline underline-offset-4">
+                  <span className="mt-2 block text-[11px] font-bold text-green group-hover:underline underline-offset-4">
                     {t.common.readFullMessage} →
                   </span>
                 </Link>

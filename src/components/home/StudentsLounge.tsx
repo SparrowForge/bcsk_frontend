@@ -79,7 +79,7 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
           <p {...reveal()} className="mt-4 text-right">
             <Link
               href="/events/gallery"
-              className="nudge inline-flex items-center gap-1 text-green-mid text-sm font-bold hover:underline underline-offset-4"
+              className="nudge inline-flex items-center gap-1 text-green text-sm font-bold hover:underline underline-offset-4"
             >
               {t.home.viewAll} <span className="nudge-mark inline-block">→</span>
             </Link>
