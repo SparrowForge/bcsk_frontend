@@ -9,14 +9,14 @@ export default async function FeesPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-2">Fee Configuration</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-2">Fee Configuration</h1>
       <p className="text-xs text-ink-soft mb-6">
         Amounts in KRW. These drive the public tuition table and every payment amount. Changes apply immediately.
       </p>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-4 py-3.5 font-bold">Item</th>
               <th className="px-4 py-3.5 font-bold">Admission</th>
               <th className="px-4 py-3.5 font-bold">Semester</th>

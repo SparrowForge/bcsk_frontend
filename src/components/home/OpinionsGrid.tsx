@@ -41,8 +41,8 @@ export function OpinionsGrid({
   // class for the two-column grid and an `lg:` class for the three-column one. The arrays
   // hold the class names in full because Tailwind scans the source for literals; a name
   // assembled from a prefix and a variable would never be generated.
-  const tints = ["bg-sky-soft", "bg-teal-soft", "bg-band-soft"];
-  const lgTints = ["lg:bg-sky-soft", "lg:bg-teal-soft", "lg:bg-band-soft"];
+  const tints = ["bg-green-soft", "bg-green-soft", "bg-crimson-band"];
+  const lgTints = ["lg:bg-green-soft", "lg:bg-green-soft", "lg:bg-crimson-band"];
   const tintFor = (i: number) => `${tints[i % 3]} ${lgTints[(i + Math.floor(i / 3)) % 3]}`;
 
   return (
@@ -55,7 +55,7 @@ export function OpinionsGrid({
           return (
             <li key={r.label} {...reveal("up", i, 80)} className="w-full max-w-[220px] text-center">
               <p className="mb-2">
-                <span className="inline-block rounded bg-sunrise px-5 py-1 text-[11px] font-extrabold text-navy">
+                <span className="inline-block rounded bg-crimson px-5 py-1 text-[11px] font-extrabold text-white">
                   {r.label}
                 </span>
               </p>
@@ -66,7 +66,7 @@ export function OpinionsGrid({
                   <div className={`hover-lift rounded-2xl p-5 ${tintFor(i)}`}>
                     <PlayerGlyph interactive />
                   </div>
-                  <span className="mt-2 block text-[11px] font-bold text-sky group-hover:underline underline-offset-4">
+                  <span className="mt-2 block text-[11px] font-bold text-green-mid group-hover:underline underline-offset-4">
                     {t.common.readFullMessage} →
                   </span>
                 </Link>
@@ -95,9 +95,9 @@ function PlayerGlyph({ interactive }: { interactive?: boolean }) {
   return (
     <svg
       viewBox="0 0 100 86"
-      className={`w-full text-navy/75 ${
+      className={`w-full text-green/75 ${
         interactive
-          ? "transition-[transform,color] duration-300 group-hover:-translate-y-1 group-hover:text-navy motion-reduce:transform-none"
+          ? "transition-[transform,color] duration-300 group-hover:-translate-y-1 group-hover:text-green motion-reduce:transform-none"
           : ""
       }`}
       aria-hidden

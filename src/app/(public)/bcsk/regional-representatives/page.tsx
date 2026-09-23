@@ -15,15 +15,15 @@ export default async function RegionalRepsPage() {
         <div className="grid sm:grid-cols-2 gap-6">
           {members.map((m) => (
             <div key={m.id} className="bg-white border border-line rounded-2xl p-6">
-              <p className="text-xs font-bold uppercase tracking-wide text-sky">{m.region}</p>
+              <p className="text-xs font-bold uppercase tracking-wide text-green-mid">{m.region}</p>
               <h2 className="mt-1 font-bold text-ink">{m.name}</h2>
               <p className="text-xs text-ink-soft mt-0.5">{m.role}</p>
               {m.bio && <p className="mt-3 text-sm text-ink-soft leading-relaxed">{m.bio}</p>}
             </div>
           ))}
         </div>
-        <div className="mt-8 bg-cream rounded-2xl p-6">
-          <h2 className="font-display text-lg font-semibold text-navy">Become a representative</h2>
+        <div className="mt-8 bg-mist rounded-2xl p-6">
+          <h2 className="font-display text-lg font-semibold text-green">Become a representative</h2>
           <p className="mt-2 text-sm text-ink-soft">
             BCSK is recruiting regional representatives across South Korea. If you would like to represent your
             city, contact the office at {c.email} or {c.phone2}.

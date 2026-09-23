@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { changePassword, type ChangePasswordState } from "@/lib/actions/auth-actions";
 
 const input =
-  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function ChangePasswordForm() {
   const [state, formAction, pending] = useActionState<ChangePasswordState, FormData>(
@@ -51,7 +51,7 @@ export function ChangePasswordForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full bg-navy hover:bg-navy-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
+        className="w-full bg-green hover:bg-green-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
       >
         {pending ? "Saving…" : "Save password"}
       </button>

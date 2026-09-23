@@ -20,7 +20,7 @@ export default async function AskTeacherPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Ask Teacher</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Ask Teacher</h1>
       <div className="bg-white rounded-2xl border border-line p-6 mb-8">
         <AskForm teachers={teacherOptions} />
       </div>
@@ -31,14 +31,14 @@ export default async function AskTeacherPage() {
           <div key={q.id} className="bg-white rounded-2xl border border-line p-5">
             <div className="flex items-center justify-between gap-3">
               <p className="font-bold text-ink text-sm">{q.subject}</p>
-              <span className={`text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-ink"}`}>
+              <span className={`text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-green/15 text-green" : "bg-amber/15 text-amber-ink"}`}>
                 {q.answer ? "Answered" : "Waiting"}
               </span>
             </div>
             <p className="mt-2 text-sm text-ink-soft">{q.body}</p>
             {q.answer && (
-              <div className="mt-3 bg-cream rounded-lg p-3.5 text-sm text-ink">
-                <p className="text-xs font-bold text-navy mb-1">Teacher replied:</p>
+              <div className="mt-3 bg-mist rounded-lg p-3.5 text-sm text-ink">
+                <p className="text-xs font-bold text-green mb-1">Teacher replied:</p>
                 {q.answer}
               </div>
             )}

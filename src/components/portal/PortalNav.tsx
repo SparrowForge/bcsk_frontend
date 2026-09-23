@@ -14,7 +14,7 @@ export function PortalNav({ links }: { links: { href: string; label: string }[] 
             key={l.href}
             href={l.href}
             className={`whitespace-nowrap text-xs font-bold px-3 py-2.5 border-b-2 transition-colors ${
-              active ? "border-sunrise text-navy" : "border-transparent text-ink-soft hover:text-navy"
+              active ? "border-crimson text-green" : "border-transparent text-ink-soft hover:text-green"
             }`}
           >
             {l.label}

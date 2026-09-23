@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { createUser, type UserFormState } from "./actions";
 
-const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-sky focus:outline-none";
+const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-green-mid focus:outline-none";
 
 export function NewUserForm() {
   const [state, action, pending] = useActionState<UserFormState, FormData>(createUser, null);
@@ -11,7 +11,7 @@ export function NewUserForm() {
 
   return (
     <details className="bg-white rounded-2xl border border-line">
-      <summary className="cursor-pointer px-5 py-3.5 font-bold text-navy text-sm">+ Create user account</summary>
+      <summary className="cursor-pointer px-5 py-3.5 font-bold text-green text-sm">+ Create user account</summary>
       <form action={action} className="px-5 pb-5 flex flex-wrap gap-3 items-end">
         <label className="block text-xs font-bold text-ink">
           Role
@@ -51,11 +51,11 @@ export function NewUserForm() {
             <input name="designation" placeholder="e.g. English Teacher" className={`block mt-1 ${input}`} />
           </label>
         )}
-        <button disabled={pending} className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors">
+        <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors">
           {pending ? "Creating…" : "Create"}
         </button>
         {state?.error && <p className="w-full text-xs font-semibold text-red-600">{state.error}</p>}
-        {state?.ok && <p className="w-full text-xs font-semibold text-teal">{state.ok}</p>}
+        {state?.ok && <p className="w-full text-xs font-semibold text-green">{state.ok}</p>}
       </form>
     </details>
   );

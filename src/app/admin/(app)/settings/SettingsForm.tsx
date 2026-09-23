@@ -17,7 +17,7 @@ export function SettingsForm({
       {groups.map((g) => (
         <fieldset key={g.title} className="bg-white rounded-2xl border border-line p-6">
           <legend className="sr-only">{g.title}</legend>
-          <h2 className="font-display text-lg font-semibold text-navy mb-1">{g.title}</h2>
+          <h2 className="font-display text-lg font-semibold text-green mb-1">{g.title}</h2>
           {g.note && <p className="text-xs text-ink-soft mb-3">{g.note}</p>}
           <div className="grid sm:grid-cols-2 gap-4 mt-3">
             {g.keys.map(([key, label]) => (
@@ -26,7 +26,7 @@ export function SettingsForm({
                 <input
                   name={key}
                   defaultValue={values[key] ?? ""}
-                  className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+                  className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
                 />
               </label>
             ))}
@@ -36,11 +36,11 @@ export function SettingsForm({
       <div className="flex items-center gap-3">
         <button
           disabled={pending}
-          className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
+          className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
         >
           {pending ? "Saving…" : "Save all settings"}
         </button>
-        {state?.ok && <span className="text-sm font-bold text-teal">Saved ✓</span>}
+        {state?.ok && <span className="text-sm font-bold text-green">Saved ✓</span>}
       </div>
     </form>
   );

@@ -12,7 +12,7 @@ export default async function ClassroomLoginPage() {
   const { t } = await getDict();
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-cream/60">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-mist/60">
       <LoginCard
         title={t.auth.studentLogin}
         idLabel={t.auth.studentId}

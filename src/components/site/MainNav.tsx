@@ -24,12 +24,19 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
           the desktop range two of them used to wrap. Nowrap keeps the bar one row; the masthead
           beside it yields first, which is what its `truncate` is for. */}
       <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
-        {items.map((item) =>
-          item.children ? (
+        {items.map((item, i) => {
+          // The two menus nearest the right edge open leftwards. A dropdown is 224px wide and
+          // sits `absolute` under its trigger, so anchoring every one of them to its left edge
+          // pushes the last panel past the viewport on a narrow desktop — and because the panel
+          // is `invisible` rather than `display: none`, it still takes part in layout and puts
+          // the whole page into horizontal scroll while closed. Korean surfaced it first, but
+          // the English menu clears the edge by only a few pixels.
+          const alignRight = i >= items.length - 2;
+          return item.children ? (
             <div key={item.label} className="relative group">
               <button
-                className={`px-2.5 py-2 text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-sky transition-colors ${
-                  item.children.some((c) => pathname.startsWith(c.href)) ? "text-sky" : "text-ink"
+                className={`px-2.5 py-2 text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-green-mid transition-colors ${
+                  item.children.some((c) => pathname.startsWith(c.href)) ? "text-green-mid" : "text-ink"
                 }`}
                 aria-haspopup="true"
               >
@@ -38,14 +45,18 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               </button>
-              <div className="absolute left-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all z-40">
+              <div
+                className={`absolute ${
+                  alignRight ? "right-0" : "left-0"
+                } top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all z-40`}
+              >
                 <div className="bg-white rounded-xl shadow-lg border border-line py-2 min-w-56">
                   {item.children.map((c) => (
                     <Link
                       key={c.href}
                       href={c.href}
-                      className={`block px-4 py-2 text-sm font-semibold hover:bg-cream hover:text-navy ${
-                        pathname === c.href ? "text-sky" : "text-ink-soft"
+                      className={`block px-4 py-2 text-sm font-semibold hover:bg-mist hover:text-green ${
+                        pathname === c.href ? "text-green-mid" : "text-ink-soft"
                       }`}
                     >
                       {c.label}
@@ -58,17 +69,17 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
             <Link
               key={item.label}
               href={item.href!}
-              className={`px-2.5 py-2 text-sm font-bold rounded-md whitespace-nowrap hover:text-sky transition-colors ${
-                pathname === item.href ? "text-sky" : "text-ink"
+              className={`px-2.5 py-2 text-sm font-bold rounded-md whitespace-nowrap hover:text-green-mid transition-colors ${
+                pathname === item.href ? "text-green-mid" : "text-ink"
               }`}
             >
               {item.label}
             </Link>
-          )
-        )}
+          );
+        })}
         <Link
           href="/contact"
-          className="ml-2 shrink-0 whitespace-nowrap bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors"
+          className="ml-2 shrink-0 whitespace-nowrap bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors"
         >
           {contactLabel}
         </Link>
@@ -119,7 +130,7 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
                           key={c.href}
                           href={c.href}
                           onClick={() => setOpen(false)}
-                          className="block py-2 pl-4 text-sm font-semibold text-ink-soft hover:text-sky"
+                          className="block py-2 pl-4 text-sm font-semibold text-ink-soft hover:text-green-mid"
                         >
                           {c.label}
                         </Link>
@@ -141,7 +152,7 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="block mt-3 mb-2 bg-navy text-white text-center text-sm font-bold rounded-lg px-4 py-2.5"
+              className="block mt-3 mb-2 bg-green text-white text-center text-sm font-bold rounded-lg px-4 py-2.5"
             >
               {contactLabel}
             </Link>

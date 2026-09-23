@@ -90,7 +90,7 @@ export function PaymentOptions({
           aria-selected={method === "CARD"}
           onClick={() => setMethod("CARD")}
           className={`rounded-xl px-4 py-3.5 text-sm font-bold border-2 transition-colors ${
-            method === "CARD" ? "border-sunrise bg-sunrise/5 text-navy" : "border-line bg-white text-ink-soft"
+            method === "CARD" ? "border-crimson bg-crimson/5 text-green" : "border-line bg-white text-ink-soft"
           }`}
         >
           💳 Card Payment
@@ -101,7 +101,7 @@ export function PaymentOptions({
           aria-selected={method === "BANK"}
           onClick={() => setMethod("BANK")}
           className={`rounded-xl px-4 py-3.5 text-sm font-bold border-2 transition-colors ${
-            method === "BANK" ? "border-sunrise bg-sunrise/5 text-navy" : "border-line bg-white text-ink-soft"
+            method === "BANK" ? "border-crimson bg-crimson/5 text-green" : "border-line bg-white text-ink-soft"
           }`}
         >
           🏦 Bank Transfer ({bank.name})
@@ -118,7 +118,7 @@ export function PaymentOptions({
           <button
             onClick={payByCard}
             disabled={cardBusy}
-            className="mt-5 w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+            className="mt-5 w-full bg-crimson hover:bg-crimson-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
           >
             {cardBusy ? "Opening secure checkout…" : `Pay ${krw(amount)} by card`}
           </button>
@@ -126,14 +126,14 @@ export function PaymentOptions({
       ) : (
         <div className="bg-white border border-line rounded-2xl p-6">
           <p className="text-sm text-ink-soft leading-relaxed">
-            Transfer <span className="font-bold text-navy">{krw(amount)}</span> to the school account, then upload
+            Transfer <span className="font-bold text-green">{krw(amount)}</span> to the school account, then upload
             your transfer receipt. Our office verifies transfers within 1–2 working days (your application stays{" "}
             <em>Pending Verification</em> until then).
           </p>
-          <dl className="mt-4 bg-cream rounded-xl p-4 text-sm space-y-1.5">
+          <dl className="mt-4 bg-mist rounded-xl p-4 text-sm space-y-1.5">
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Bank</dt><dd className="font-bold text-ink">{bank.name}</dd></div>
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account name</dt><dd>{bank.accountName}</dd></div>
-            <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account number</dt><dd className="font-bold text-navy">{bank.accountNumber}</dd></div>
+            <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account number</dt><dd className="font-bold text-green">{bank.accountNumber}</dd></div>
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Transfer memo</dt><dd>Applicant's name</dd></div>
           </dl>
           <form action={bankAction} className="mt-5 space-y-4">
@@ -146,13 +146,13 @@ export function PaymentOptions({
                 name="receipt"
                 required
                 accept="image/jpeg,image/png,image/webp,application/pdf"
-                className="mt-1.5 block w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-cream file:px-4 file:py-2.5 file:text-xs file:font-bold file:text-navy"
+                className="mt-1.5 block w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-mist file:px-4 file:py-2.5 file:text-xs file:font-bold file:text-green"
               />
             </label>
             {bankState?.error && <p className="text-sm font-semibold text-red-600">{bankState.error}</p>}
             <button
               disabled={bankPending}
-              className="w-full bg-navy hover:bg-navy-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+              className="w-full bg-green hover:bg-green-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
             >
               {bankPending ? "Uploading…" : "Submit receipt for verification"}
             </button>

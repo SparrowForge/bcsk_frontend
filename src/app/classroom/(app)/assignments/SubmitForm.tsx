@@ -13,18 +13,18 @@ export function SubmitForm({ assignmentId }: { assignmentId: number }) {
         name="text"
         rows={2}
         placeholder="Write your answer (optional if uploading a file)…"
-        className="w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+        className="w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
       />
       <div className="flex flex-wrap items-center gap-3">
         <input
           type="file"
           name="file"
           accept=".jpg,.jpeg,.png,.webp,.pdf"
-          className="text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-cream file:px-3 file:py-2 file:text-xs file:font-bold file:text-navy"
+          className="text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-mist file:px-3 file:py-2 file:text-xs file:font-bold file:text-green"
         />
         <button
           disabled={pending}
-          className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
+          className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
         >
           {pending ? "Submitting…" : "Submit homework"}
         </button>

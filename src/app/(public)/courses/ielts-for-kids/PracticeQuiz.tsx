@@ -77,14 +77,14 @@ export function PracticeQuiz({ enrolled, studentUserId }: { enrolled: boolean; s
     return (
       <div className="bg-white border border-line rounded-3xl p-8 max-w-xl text-center">
         <p className="text-4xl" aria-hidden>{score >= 4 ? "🌟" : score >= 3 ? "👏" : "💪"}</p>
-        <h3 className="mt-3 font-display text-2xl font-semibold text-navy">
+        <h3 className="mt-3 font-display text-2xl font-semibold text-green">
           {score} / {QUESTIONS.length} correct
         </h3>
         <p className="mt-2 text-sm text-ink-soft">
           {score >= 4 ? "Excellent! Ready for the next level." : score >= 3 ? "Good work — keep practicing!" : "Nice try — practice makes perfect!"}
-          {saved && <span className="block mt-1 text-teal font-bold">Saved to your progress report ✓</span>}
+          {saved && <span className="block mt-1 text-green font-bold">Saved to your progress report ✓</span>}
         </p>
-        <button onClick={restart} className="mt-5 bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
+        <button onClick={restart} className="mt-5 bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
           Try again
         </button>
       </div>
@@ -94,7 +94,7 @@ export function PracticeQuiz({ enrolled, studentUserId }: { enrolled: boolean; s
   return (
     <div className="bg-white border border-line rounded-3xl p-8 max-w-xl">
       <div className="flex items-center justify-between mb-4">
-        <span className="text-xs font-extrabold uppercase tracking-wide text-sky">{q.skill}</span>
+        <span className="text-xs font-extrabold uppercase tracking-wide text-green-mid">{q.skill}</span>
         <span className="text-xs font-bold text-ink-soft">
           {i + 1} / {QUESTIONS.length}
         </span>
@@ -111,10 +111,10 @@ export function PracticeQuiz({ enrolled, studentUserId }: { enrolled: boolean; s
               disabled={picked !== null}
               className={`text-left text-sm font-semibold rounded-xl border-2 px-4 py-3 transition-colors ${
                 state === "correct"
-                  ? "border-teal bg-teal/10 text-teal"
+                  ? "border-green bg-green/10 text-green"
                   : state === "wrong"
                   ? "border-red-400 bg-red-50 text-red-600"
-                  : "border-line hover:border-sky text-ink"
+                  : "border-line hover:border-green-mid text-ink"
               }`}
             >
               {opt}

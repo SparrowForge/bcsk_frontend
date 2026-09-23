@@ -29,7 +29,7 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
       <section className="bg-white rounded-3xl border border-line p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-navy">{cs.title}</h1>
+            <h1 className="font-display text-2xl font-semibold text-green">{cs.title}</h1>
             <p className="text-sm text-ink-soft mt-1">
               {cs.dayOfWeek} · {cs.startTime}{cs.endTime ? `–${cs.endTime}` : ""} · {roster.length} students
             </p>

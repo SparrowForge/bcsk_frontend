@@ -9,7 +9,7 @@ export default async function AdminStudentCornerPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Student Corner</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Student Corner</h1>
       <CornerEditor
         posts={posts.map((p) => ({
           id: p.id,

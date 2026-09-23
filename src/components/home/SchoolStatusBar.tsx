@@ -25,13 +25,13 @@ export function SchoolStatusBar({
   weekend?: string;
 }) {
   return (
-    <div {...reveal()} className="sheen rounded-lg bg-band px-5 py-4 text-center">
-      <h2 className="font-display text-xl sm:text-2xl font-semibold text-navy">{SCHOOL.name}</h2>
+    <div {...reveal()} className="sheen rounded-lg bg-green-band px-5 py-4 text-center">
+      <h2 className="font-display text-xl sm:text-2xl font-semibold text-green">{SCHOOL.name}</h2>
 
       {(weekday || weekend) && (
         <>
-          <p className="mt-1.5 text-[12px] font-bold text-navy">{t.home.schoolTime}:</p>
-          <p className="text-[12px] text-navy/85">
+          <p className="mt-1.5 text-[12px] font-bold text-green">{t.home.schoolTime}:</p>
+          <p className="text-[12px] text-green/85">
             {weekday && (
               <span className="whitespace-nowrap">
                 {t.home.weekday}: {weekday}
@@ -48,8 +48,8 @@ export function SchoolStatusBar({
       )}
 
       <p className="mt-1 flex flex-wrap items-center justify-center gap-1.5 text-[12px]">
-        <span className="font-bold text-navy">{t.home.currentStatus}:</span>
-        <span className={`font-extrabold ${open ? "text-teal" : "text-ink-soft"}`}>
+        <span className="font-bold text-green">{t.home.currentStatus}:</span>
+        <span className={`font-extrabold ${open ? "text-green" : "text-ink-soft"}`}>
           {open ? t.home.statusOpen : t.home.statusClosed}
         </span>
         {open && (

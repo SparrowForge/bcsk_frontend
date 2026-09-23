@@ -17,11 +17,11 @@ export default async function GuardiansPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Guardians Contact Directory</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Guardians Contact Directory</h1>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-5 py-3.5 font-bold">Student</th>
               <th className="px-5 py-3.5 font-bold">Class</th>
               <th className="px-5 py-3.5 font-bold">Father / Mother</th>
@@ -47,7 +47,7 @@ export default async function GuardiansPage() {
                 <td className="px-5 py-3">{profile.guardianPhone ?? "—"}</td>
                 <td className="px-5 py-3">
                   {profile.guardianEmail ? (
-                    <a className="text-sky hover:underline" href={`mailto:${profile.guardianEmail}`}>{profile.guardianEmail}</a>
+                    <a className="text-green-mid hover:underline" href={`mailto:${profile.guardianEmail}`}>{profile.guardianEmail}</a>
                   ) : "—"}
                 </td>
                 <td className="px-5 py-3 text-ink-soft">{profile.emergencyContact ?? "—"}</td>

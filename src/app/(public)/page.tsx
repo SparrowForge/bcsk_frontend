@@ -18,7 +18,7 @@ import { StudentsLounge } from "@/components/home/StudentsLounge";
  *   LP-1  hero + the four headline figures
  *   LP-2  school hours, current status, and the office board — who is at their desk
  *   LP-3  the classroom board — which rooms are running right now
- *   LP-4  school overview: why BCSK, mission, management, tuition
+ *   LP-4  school overview: why BCSK, mission, the teacher strip, management, tuition
  *   LP-5  six recorded opinions about the school
  *   LP-6  the student shortcuts and the seminar gallery
  *
@@ -44,6 +44,7 @@ export default async function HomePage() {
     chairmanMsg,
     principalMsg,
     governingBody,
+    teachers,
     news,
   ] = await Promise.all([
     cms.page("home-hero", lang).catch(() => null),
@@ -65,6 +66,7 @@ export default async function HomePage() {
     cms.page("message-chairman", lang).catch(() => null),
     cms.page("message-principal", lang).catch(() => null),
     cms.governingBody().catch(() => []),
+    cms.teachers().catch(() => []),
     cms.news(3).catch(() => []),
   ]);
 
@@ -96,10 +98,10 @@ export default async function HomePage() {
           this section; "aria-hidden" keeps all of it out of the accessibility tree. */}
       <section className="relative isolate overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-soft via-cream/50 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-soft via-mist/50 to-white" />
           <div className="dot-grid absolute inset-x-0 top-0 h-48 opacity-50" />
-          <div className="absolute -left-28 top-6 h-72 w-72 rounded-full bg-sunrise/15 blur-3xl" />
-          <div className="absolute -right-20 -top-16 h-80 w-80 rounded-full bg-sky/15 blur-3xl" />
+          <div className="absolute -left-28 top-6 h-72 w-72 rounded-full bg-crimson/15 blur-3xl" />
+          <div className="absolute -right-20 -top-16 h-80 w-80 rounded-full bg-green-mid/15 blur-3xl" />
         </div>
         <div className="mx-auto max-w-7xl px-4 pt-10 pb-12 grid lg:grid-cols-[minmax(0,1fr)_1.15fr] gap-8 lg:gap-10 items-center">
           <div>
@@ -107,26 +109,26 @@ export default async function HomePage() {
                 The hero's three pieces arrive in reading order, a beat apart. */}
             <h1
               {...reveal()}
-              className="text-[2.1rem] sm:text-[2.6rem] lg:text-[3rem] leading-[1.12] font-extrabold text-navy"
+              className="text-[2.1rem] sm:text-[2.6rem] lg:text-[3rem] leading-[1.12] font-extrabold text-green"
             >
               {hero?.title ?? t.home.firstSchool}
             </h1>
             <div
               {...reveal("up", 1, 110)}
-              className="mt-5 text-ink-soft text-[14.5px] leading-[1.8] max-w-lg [&_strong]:text-navy"
+              className="mt-5 text-ink-soft text-[14.5px] leading-[1.8] max-w-lg [&_strong]:text-green"
               dangerouslySetInnerHTML={{ __html: hero?.html ?? "" }}
             />
             {/* Deck order: Read More first, Apply Now second — both small and orange. */}
             <div {...reveal("up", 2, 110)} className="mt-6 flex flex-wrap gap-2.5">
               <Link
                 href="/bcsk/about-us"
-                className="press bg-white hover:bg-cream text-navy font-bold rounded-full border-2 border-navy/15 px-5 py-2.5 text-[12.5px]"
+                className="press bg-white hover:bg-mist text-green font-bold rounded-full border-2 border-green/15 px-5 py-2.5 text-[12.5px]"
               >
                 {t.home.readMoreHero}
               </Link>
               <Link
                 href="/apply"
-                className="press nudge bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-full px-6 py-2.5 text-[12.5px] inline-flex items-center gap-1.5 shadow-[0_10px_20px_-12px_rgba(217,130,11,0.9)]"
+                className="press nudge bg-crimson hover:bg-crimson-deep text-white font-bold rounded-full px-6 py-2.5 text-[12.5px] inline-flex items-center gap-1.5 shadow-[0_10px_20px_-12px_rgba(163,23,42,0.9)]"
               >
                 {t.nav.applyNow}
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
@@ -153,25 +155,25 @@ export default async function HomePage() {
             <li
               key={s.label}
               {...reveal("up", i, 90)}
-              // Navy blocks, not another tint: these four figures are the page's opening claim,
+              // Green blocks, not another tint: these four figures are the page's opening claim,
               // and set against the pale band underneath they read as the anchor of the hero
-              // rather than as a second, weaker copy of it. The marigold cap and the shadow are
+              // rather than as a second, weaker copy of it. The red cap and the shadow are
               // what stop four identical rectangles from reading as a table.
-              className="hover-lift relative overflow-hidden bg-gradient-to-br from-navy to-navy-deep rounded-xl px-5 py-7 text-center shadow-[0_14px_30px_-20px_rgba(29,43,100,0.95)]"
+              className="hover-lift relative overflow-hidden bg-gradient-to-br from-green to-green-deep rounded-xl px-5 py-7 text-center shadow-[0_14px_30px_-20px_rgba(0,77,57,0.95)]"
             >
-              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-sunrise" />
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-crimson" />
               <span
                 aria-hidden
                 className="absolute -right-6 -bottom-8 h-24 w-24 rounded-full bg-white/[0.06]"
               />
               {/* The deck runs the class count into its own label — "6 Classes" on one line —
                   and stacks the other three. `inline` carries that difference. */}
-              <p className="font-display text-[1.6rem] leading-tight font-semibold text-sunrise">
+              <p className="font-display text-[1.6rem] leading-tight font-semibold text-white">
                 {/* `tabular-nums` so a figure counting up to 120 does not jitter its own card. */}
                 <CountUp value={s.value} className="tabular-nums" />
                 {s.inline && <span className="ml-1.5">{s.label}</span>}
               </p>
-              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-white">{s.label}</p>}
+              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-white/85">{s.label}</p>}
               {s.sub && <p className="mt-0.5 text-[12px] text-white/75">{s.sub}</p>}
             </li>
           ))}
@@ -192,6 +194,9 @@ export default async function HomePage() {
           <ClassroomBoard board={board} t={t} />
         </section>
       )}
+
+      {/* ---------------- TEACHER PANEL ---------------- */}
+      <TeacherPanel t={t} teachers={teachers} />
 
       {/* ---------------- LP-4 · SCHOOL OVERVIEW ---------------- */}
       <SchoolOverview

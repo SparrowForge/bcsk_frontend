@@ -65,7 +65,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">System Settings</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">System Settings</h1>
       <SettingsForm groups={GROUPS} values={values} />
     </div>
   );

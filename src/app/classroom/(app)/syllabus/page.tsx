@@ -12,11 +12,11 @@ export default async function StudentSyllabusPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Syllabus</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Syllabus</h1>
       <div className="space-y-4">
         {items.map((i, idx) => (
           <div key={idx} className="bg-white rounded-2xl border border-line p-6">
-            <h2 className="font-bold text-navy">
+            <h2 className="font-bold text-green">
               {i.courseName}
               {i.levelName && <span className="text-ink-soft font-semibold"> — {i.levelName}</span>}
             </h2>
@@ -24,12 +24,12 @@ export default async function StudentSyllabusPage() {
               {i.syllabus ?? "Syllabus will be published by your teacher."}
             </p>
             {i.studentBookUrl && (
-              <a href={`/api/files/${i.studentBookUrl}`} className="inline-block mt-3 text-sky text-sm font-bold hover:underline">
+              <a href={`/api/files/${i.studentBookUrl}`} className="inline-block mt-3 text-green-mid text-sm font-bold hover:underline">
                 Student Book (PDF)
               </a>
             )}
             {i.workBookUrl && (
-              <a href={`/api/files/${i.workBookUrl}`} className="inline-block mt-3 ml-4 text-sky text-sm font-bold hover:underline">
+              <a href={`/api/files/${i.workBookUrl}`} className="inline-block mt-3 ml-4 text-green-mid text-sm font-bold hover:underline">
                 Work Book (PDF)
               </a>
             )}

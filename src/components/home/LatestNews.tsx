@@ -29,11 +29,11 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
           <li key={n.id} {...reveal("up", i, 110)}>
             <Link
               href={`/events/news/${n.id}`}
-              className="hover-lift group h-full flex flex-col rounded-2xl border border-line hover:border-sky/40 bg-white overflow-hidden relative"
+              className="hover-lift group h-full flex flex-col rounded-2xl border border-line hover:border-green-mid/40 bg-white overflow-hidden relative"
             >
               {/* One warm edge at the top: without it three white rectangles in a row read as
                   a table of text rather than as three things worth opening. */}
-              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-sunrise z-10" />
+              <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-crimson z-10" />
               {n.imageUrl && (
                 <div className="overflow-hidden">
                   {/* The photograph pushes in slightly under the pointer while the frame holds
@@ -48,8 +48,8 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
                 </div>
               )}
               <div className="p-5 flex flex-col flex-1">
-                <p className="text-[11px] font-extrabold uppercase tracking-wide text-sunrise-ink">{n.type}</p>
-                <h3 className="mt-1.5 font-display text-lg font-semibold text-navy group-hover:text-sky transition-colors leading-snug">
+                <p className="text-[11px] font-extrabold uppercase tracking-wide text-crimson-ink">{n.type}</p>
+                <h3 className="mt-1.5 font-display text-lg font-semibold text-green group-hover:text-green-mid transition-colors leading-snug">
                   {n.title}
                 </h3>
                 <p className="mt-2 text-sm text-ink-soft leading-relaxed line-clamp-3">{n.body}</p>
@@ -65,7 +65,7 @@ export function LatestNews({ t, lang, news }: { t: Dictionary; lang: Lang; news:
       <p {...reveal()} className="mt-4 text-right">
         <Link
           href="/events/news"
-          className="nudge inline-flex items-center gap-1 text-sky text-sm font-bold hover:underline underline-offset-4"
+          className="nudge inline-flex items-center gap-1 text-green-mid text-sm font-bold hover:underline underline-offset-4"
         >
           {t.home.viewAll} <span className="nudge-mark inline-block">→</span>
         </Link>

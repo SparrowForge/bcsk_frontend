@@ -19,7 +19,7 @@ export default async function CurriculumPage() {
     <PageShell title={t.nav.curriculum} eyebrow={t.nav.academic}>
       <div className="max-w-4xl">
         <p className="text-sm text-ink-soft mb-6 max-w-2xl">
-          BCSK follows the updated <strong className="text-navy">NCTB (National Curriculum and Textbook Board)</strong>{" "}
+          BCSK follows the updated <strong className="text-green">NCTB (National Curriculum and Textbook Board)</strong>{" "}
           curriculum of Bangladesh, with Global English Teaching across speaking, reading, writing, and listening.
           Religious Studies is offered in Islamic and Hindu tracks.
         </p>

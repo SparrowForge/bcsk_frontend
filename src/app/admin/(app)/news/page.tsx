@@ -10,7 +10,7 @@ export default async function AdminNewsPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">News & Events</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">News & Events</h1>
       <NewsEditor
         items={items.map((n) => ({
           id: n.id,

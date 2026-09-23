@@ -12,7 +12,7 @@ export default async function OfficeLoginPage() {
   const { t } = await getDict();
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-sky-soft/50">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-green-soft/50">
       <LoginCard
         title={t.auth.teacherLogin}
         idLabel={t.auth.teacherId}
@@ -21,7 +21,7 @@ export default async function OfficeLoginPage() {
         forgotLabel={t.auth.forgotPassword}
         invalidMessage={t.auth.invalidCredentials}
         action={loginTeacher}
-        accent="bg-sky hover:bg-sky/85"
+        accent="bg-green-mid hover:bg-green-mid/85"
         demoHint={isDemoMode() ? "Demo: BCSK-T-003 / bcsk1234" : undefined}
       />
     </div>

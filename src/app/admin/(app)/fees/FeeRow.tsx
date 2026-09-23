@@ -15,7 +15,7 @@ type Fee = {
   active: boolean;
 };
 
-const cell = "w-24 rounded border border-line px-2 py-1.5 text-xs text-right focus:border-sky focus:outline-none";
+const cell = "w-24 rounded border border-line px-2 py-1.5 text-xs text-right focus:border-green-mid focus:outline-none";
 
 export function FeeRow({ fee }: { fee: Fee }) {
   const [pending, start] = useTransition();
@@ -59,14 +59,14 @@ function FormCells({ fee, pending, saved, error, onSave }: { fee: Fee; pending: 
       <td className="px-4 py-2.5"><input form={formId} name="bcskPrice" type="number" defaultValue={fee.bcskPrice ?? ""} className={cell} /></td>
       <td className="px-4 py-2.5"><input form={formId} name="nonBcskPrice" type="number" defaultValue={fee.nonBcskPrice ?? ""} className={cell} /></td>
       <td className="px-4 py-2.5 text-center">
-        <input form={formId} name="active" type="checkbox" defaultChecked={fee.active} className="w-4 h-4 accent-teal" />
+        <input form={formId} name="active" type="checkbox" defaultChecked={fee.active} className="w-4 h-4 accent-green" />
       </td>
       <td className="px-4 py-2.5">
         <form id={formId} action={onSave} className="flex items-center gap-2">
-          <button disabled={pending} className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors">
+          <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors">
             Save
           </button>
-          {saved && <span className="text-[11px] font-bold text-teal">✓</span>}
+          {saved && <span className="text-[11px] font-bold text-green">✓</span>}
           {error && <span className="text-[11px] font-semibold text-red-600">{error}</span>}
         </form>
       </td>

@@ -9,8 +9,8 @@ import { getContact } from "@/lib/contact";
  * on the left, the ways to reach the school in the middle, the two calls to action on the
  * right.
  *
- * The band is navy rather than the deck's pale tint: it closes the page the same way the
- * top bar opens it, and it is the one place where the marigold buttons have a dark field to
+ * The band is deep green rather than the deck's pale tint: it closes the page the same way the
+ * top bar opens it, and it is the one place where the red buttons have a dark field to
  * sit on instead of competing with the white page above them.
  *
  * Every contact line is an **admin setting** with the `SCHOOL` constant as its fallback, so
@@ -33,7 +33,7 @@ export async function Footer() {
   const fbHandle = c.facebookHandle;
 
   return (
-    <footer className="bg-navy text-white mt-14">
+    <footer className="bg-green text-white mt-14">
       <div className="mx-auto max-w-7xl px-4 py-8 grid gap-7 lg:grid-cols-[auto_1fr_auto] lg:gap-10 lg:items-center">
         <Link href="/" className="flex items-center gap-3.5" aria-label="BCSK — Home">
           <LogoMark size={58} />
@@ -64,17 +64,17 @@ export async function Footer() {
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="m2 7 10 6L22 7" />
             </Icon>
-            <a href={`mailto:${email}`} className="hover:text-sunrise">
+            <a href={`mailto:${email}`} className="hover:text-crimson">
               {email}
             </a>
           </li>
           <li className="flex gap-2.5 items-center">
-            <span className="shrink-0 text-sunrise" aria-hidden>
+            <span className="shrink-0 text-crimson" aria-hidden>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z" />
               </svg>
             </span>
-            <a href={c.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-sunrise">
+            <a href={c.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-crimson">
               {fbHandle}
             </a>
           </li>
@@ -93,7 +93,7 @@ export async function Footer() {
         <div className="flex flex-col items-start lg:items-end gap-2">
           <Link
             href="/apply"
-            className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded px-5 py-2 text-[13px] transition-colors inline-flex items-center gap-1.5"
+            className="bg-crimson hover:bg-crimson-deep text-white font-bold rounded px-5 py-2 text-[13px] transition-colors inline-flex items-center gap-1.5"
           >
             {t.nav.applyNow}
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" aria-hidden>
@@ -103,13 +103,13 @@ export async function Footer() {
           <div className="flex gap-1.5">
             <Link
               href="/contact"
-              className="rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1 transition-colors"
+              className="rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1 transition-colors"
             >
               {t.home.adminSupport}
             </Link>
             <Link
               href="/contact?topic=IT"
-              className="rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1 transition-colors"
+              className="rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1 transition-colors"
             >
               {t.home.itSupport}
             </Link>
@@ -124,10 +124,10 @@ export async function Footer() {
           </p>
           <div className="flex gap-4">
             {/* NFR-LEGAL-02: policy links on every page */}
-            <Link href="/privacy-policy" className="hover:text-sunrise">
+            <Link href="/privacy-policy" className="hover:text-crimson">
               {t.footer.privacy}
             </Link>
-            <Link href="/refund-policy" className="hover:text-sunrise">
+            <Link href="/refund-policy" className="hover:text-crimson">
               {t.footer.refund}
             </Link>
           </div>
@@ -137,8 +137,8 @@ export async function Footer() {
   );
 }
 
-/** The footer contact glyphs — one stroke weight, one size, marigold so they stay findable
- * against the navy without pulling as hard as the buttons beside them. */
+/** The footer contact glyphs — one stroke weight, one size, red so they stay findable
+ * against the green without pulling as hard as the buttons beside them. */
 function Icon({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <svg
@@ -148,7 +148,7 @@ function Icon({ children, className = "" }: { children: React.ReactNode; classNa
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
-      className={`shrink-0 text-sunrise ${className}`}
+      className={`shrink-0 text-crimson ${className}`}
       aria-hidden
     >
       {children}

@@ -14,7 +14,7 @@ export function AdminNav({ items }: { items: { href: string; label: string }[] }
             key={n.href}
             href={n.href}
             className={`block px-5 py-2.5 text-[13px] font-bold transition-colors ${
-              active ? "bg-white/10 text-white border-l-[3px] border-sunrise" : "text-white/65 hover:text-white border-l-[3px] border-transparent"
+              active ? "bg-white/10 text-white border-l-[3px] border-crimson" : "text-white/65 hover:text-white border-l-[3px] border-transparent"
             }`}
           >
             {n.label}

@@ -19,18 +19,18 @@ export function DecisionButtons({ applicationId, status }: { applicationId: numb
 
   return (
     <div className="bg-white rounded-2xl border border-line p-6">
-      <h2 className="font-display text-lg font-semibold text-navy mb-4">Decision</h2>
+      <h2 className="font-display text-lg font-semibold text-green mb-4">Decision</h2>
       <div className="flex flex-wrap gap-3">
         <button
           disabled={pending}
           onClick={() => run(() => approveApplication(applicationId))}
-          className="bg-teal hover:bg-teal/85 disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
+          className="bg-green hover:bg-green/85 disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
         >
           ✓ Approve
         </button>
         <button
           onClick={() => setMode(mode === "corrections" ? "none" : "corrections")}
-          className="border-2 border-line hover:border-sky text-navy text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
+          className="border-2 border-line hover:border-green-mid text-green text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
         >
           Request corrections…
         </button>
@@ -47,9 +47,9 @@ export function DecisionButtons({ applicationId, status }: { applicationId: numb
             name="note"
             required
             placeholder="What needs to be corrected? (emailed to the guardian)"
-            className="flex-1 rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+            className="flex-1 rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
           />
-          <button disabled={pending} className="bg-navy text-white text-sm font-bold rounded-lg px-5 py-2.5">Send</button>
+          <button disabled={pending} className="bg-green text-white text-sm font-bold rounded-lg px-5 py-2.5">Send</button>
         </form>
       )}
       {mode === "reject" && (
@@ -57,7 +57,7 @@ export function DecisionButtons({ applicationId, status }: { applicationId: numb
           <input
             name="reason"
             placeholder="Reason (emailed to the guardian)"
-            className="flex-1 rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+            className="flex-1 rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
           />
           <button disabled={pending} className="bg-red-600 text-white text-sm font-bold rounded-lg px-5 py-2.5">Confirm rejection</button>
         </form>

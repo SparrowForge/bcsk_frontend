@@ -50,10 +50,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             name="q"
             defaultValue={query}
             placeholder={`${t.common.search}…`}
-            className="flex-1 rounded-lg border border-line px-4 py-3 text-sm focus:border-sky focus:outline-none"
+            className="flex-1 rounded-lg border border-line px-4 py-3 text-sm focus:border-green-mid focus:outline-none"
             autoFocus
           />
-          <button className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 text-sm transition-colors">
+          <button className="bg-green hover:bg-green-deep text-white font-bold rounded-lg px-6 text-sm transition-colors">
             {t.common.search}
           </button>
         </form>
@@ -67,12 +67,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         <div className="mt-6 space-y-8">
           {pages.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">Pages</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink mb-3">Pages</h2>
               <ul className="space-y-3">
                 {pages.map((p) => (
                   <li key={p.id}>
                     <Link href={PAGE_ROUTES[p.slug] ?? "/"} className="group block bg-white border border-line rounded-xl p-4 hover:shadow-sm">
-                      <span className="font-bold text-navy group-hover:text-sky">{p.title}</span>
+                      <span className="font-bold text-green group-hover:text-green-mid">{p.title}</span>
                       <span className="block text-xs text-ink-soft mt-1 line-clamp-2">{p.content.replace(/[#*|]/g, "").slice(0, 180)}</span>
                     </Link>
                   </li>
@@ -82,7 +82,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
           {courses.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">Courses</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink mb-3">Courses</h2>
               <ul className="space-y-3">
                 {courses.map((c) => (
                   <li key={c.id}>
@@ -90,7 +90,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                       href={["deen", "ielts-for-kids", "abacus"].includes(c.slug) ? `/courses/${c.slug}` : "/admission/special-course"}
                       className="group block bg-white border border-line rounded-xl p-4 hover:shadow-sm"
                     >
-                      <span className="font-bold text-navy group-hover:text-sky">{c.name}</span>
+                      <span className="font-bold text-green group-hover:text-green-mid">{c.name}</span>
                       <span className="block text-xs text-ink-soft mt-1 line-clamp-2">{c.description}</span>
                     </Link>
                   </li>
@@ -100,12 +100,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           )}
           {news.length > 0 && (
             <section>
-              <h2 className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink mb-3">News & Events</h2>
+              <h2 className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink mb-3">News & Events</h2>
               <ul className="space-y-3">
                 {news.map((n) => (
                   <li key={n.id}>
                     <Link href={`/events/news/${n.id}`} className="group block bg-white border border-line rounded-xl p-4 hover:shadow-sm">
-                      <span className="font-bold text-navy group-hover:text-sky">{n.title}</span>
+                      <span className="font-bold text-green group-hover:text-green-mid">{n.title}</span>
                       <span className="block text-xs text-ink-soft mt-1 line-clamp-2">{n.body}</span>
                     </Link>
                   </li>

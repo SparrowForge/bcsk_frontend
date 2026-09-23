@@ -44,7 +44,7 @@ export function GalleryGrid({ albums }: { albums: Album[] }) {
               key={c}
               onClick={() => setFilter(c)}
               className={`px-4 py-2 rounded-full text-sm font-bold transition-colors ${
-                filter === c ? "bg-navy text-white" : "bg-cream text-navy hover:bg-cream-deep"
+                filter === c ? "bg-green text-white" : "bg-mist text-green hover:bg-mist-deep"
               }`}
             >
               {c === "ALL" ? "All albums" : c}
@@ -56,10 +56,10 @@ export function GalleryGrid({ albums }: { albums: Album[] }) {
       <div className="space-y-10">
         {visible.map((album) => (
           <section key={album.id}>
-            <h2 className="font-display text-xl font-semibold text-navy mb-4">
+            <h2 className="font-display text-xl font-semibold text-green mb-4">
               {album.title}
               {album.category && (
-                <span className="ml-3 text-xs font-body font-bold uppercase tracking-wide text-sunrise-ink">{album.category}</span>
+                <span className="ml-3 text-xs font-body font-bold uppercase tracking-wide text-crimson-ink">{album.category}</span>
               )}
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -67,7 +67,7 @@ export function GalleryGrid({ albums }: { albums: Album[] }) {
                 <button
                   key={item.id}
                   onClick={() => setLightbox({ album, index: i })}
-                  className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-cream"
+                  className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-mist"
                   aria-label={item.caption ?? album.title}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}

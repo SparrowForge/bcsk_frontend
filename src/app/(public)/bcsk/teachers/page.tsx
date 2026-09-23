@@ -21,7 +21,7 @@ export default async function TeachersPage() {
               ) : (
                 <div
                   className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-display font-semibold shrink-0 ${
-                    ["bg-navy text-white", "bg-sky text-white", "bg-teal text-white", "bg-sunrise text-navy"][i % 4]
+                    ["bg-green text-white", "bg-green-mid text-white", "bg-green-deep text-white", "bg-crimson text-white"][i % 4]
                   }`}
                   aria-hidden
                 >
@@ -30,13 +30,13 @@ export default async function TeachersPage() {
               )}
               <div>
                 <h2 className="font-bold text-ink leading-snug">{tp.name}</h2>
-                <p className="text-xs font-bold uppercase tracking-wide text-sunrise-ink mt-0.5">{tp.designation}</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-crimson-ink mt-0.5">{tp.designation}</p>
               </div>
             </div>
             {tp.bio && <p className="mt-4 text-sm text-ink-soft leading-relaxed">{tp.bio}</p>}
             {tp.subjects && (
               <p className="mt-auto pt-4 text-xs text-ink-soft">
-                <span className="font-bold text-navy">{t.common.teacher}:</span> {tp.subjects}
+                <span className="font-bold text-green">{t.common.teacher}:</span> {tp.subjects}
               </p>
             )}
           </div>

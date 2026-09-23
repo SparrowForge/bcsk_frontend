@@ -21,7 +21,7 @@ export function LiveControls({
         value={link}
         onChange={(e) => setLink(e.target.value)}
         placeholder="Zoom meeting link"
-        className="rounded-lg border border-line px-3 py-2 text-xs w-64 focus:border-sky focus:outline-none"
+        className="rounded-lg border border-line px-3 py-2 text-xs w-64 focus:border-green-mid focus:outline-none"
       />
       {isLive ? (
         <>
@@ -30,7 +30,7 @@ export function LiveControls({
               href={zoomLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-sky hover:bg-sky/85 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+              className="bg-green-mid hover:bg-green-mid/85 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
             >
               Open Zoom
             </a>
@@ -47,7 +47,7 @@ export function LiveControls({
         <button
           disabled={pending}
           onClick={() => start(() => toggleLive(classSessionId, true, link || undefined))}
-          className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-crimson hover:bg-crimson-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
         >
           ▶ Start live class
         </button>

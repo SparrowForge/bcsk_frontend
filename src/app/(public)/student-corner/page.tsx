@@ -2,12 +2,12 @@ import { site } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 
-/** Each pill carries its own label colour: the three dark fills take white, marigold takes navy. */
+/** Each pill carries its own label colour: every fill here is dark enough to take white. */
 const KIND_COLORS: Record<string, string> = {
-  POEM: "bg-teal text-white",
-  ARTICLE: "bg-sky text-white",
-  ARTWORK: "bg-sunrise text-navy",
-  ACHIEVEMENT: "bg-navy text-white",
+  POEM: "bg-green text-white",
+  ARTICLE: "bg-green-mid text-white",
+  ARTWORK: "bg-crimson text-white",
+  ACHIEVEMENT: "bg-green-deep text-white",
 };
 
 /** FR-NEWS-03: curated student articles, poems, artwork, achievements. */
@@ -25,10 +25,10 @@ export default async function StudentCornerPage() {
         <div className="grid sm:grid-cols-2 gap-6">
           {posts.map((p) => (
             <article key={p.id} className="bg-white border border-line rounded-2xl p-6 flex flex-col">
-              <span className={`self-start text-[10px] font-extrabold uppercase tracking-wider rounded-full px-2.5 py-1 ${KIND_COLORS[p.kind] ?? "bg-navy text-white"}`}>
+              <span className={`self-start text-[10px] font-extrabold uppercase tracking-wider rounded-full px-2.5 py-1 ${KIND_COLORS[p.kind] ?? "bg-green text-white"}`}>
                 {p.kind}
               </span>
-              <h2 className="mt-3 font-display text-xl font-semibold text-navy leading-snug">{p.title}</h2>
+              <h2 className="mt-3 font-display text-xl font-semibold text-green leading-snug">{p.title}</h2>
               <div className="mt-3 text-sm text-ink leading-relaxed whitespace-pre-line">{p.body}</div>
               <p className="mt-auto pt-4 text-xs font-bold text-ink-soft">— {p.studentName}</p>
             </article>

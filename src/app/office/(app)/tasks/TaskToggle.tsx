@@ -11,7 +11,7 @@ export function TaskToggle({ taskId, done }: { taskId: number; done: boolean }) 
       checked={done}
       disabled={pending}
       onChange={() => start(() => toggleTask(taskId, !done))}
-      className="w-5 h-5 accent-teal cursor-pointer"
+      className="w-5 h-5 accent-green cursor-pointer"
       aria-label="Mark task done"
     />
   );

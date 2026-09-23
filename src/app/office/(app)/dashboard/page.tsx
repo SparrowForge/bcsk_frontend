@@ -13,11 +13,11 @@ export default async function TeacherDashboard() {
   return (
     <div className="space-y-8">
       <section className="bg-white rounded-3xl border border-line p-6 sm:p-8 flex flex-wrap items-center gap-6">
-        <div className="w-20 h-20 rounded-full bg-navy flex items-center justify-center text-3xl font-display font-semibold text-white">
+        <div className="w-20 h-20 rounded-full bg-green flex items-center justify-center text-3xl font-display font-semibold text-white">
           {session.name.split(" ").slice(-1)[0][0]}
         </div>
         <div>
-          <h1 className="font-display text-2xl font-semibold text-navy">{session.name}</h1>
+          <h1 className="font-display text-2xl font-semibold text-green">{session.name}</h1>
           <p className="text-sm text-ink-soft mt-1">
             <span className="font-bold text-ink">{profile?.teacherId}</span>
             {profile?.designation ? ` · ${profile.designation}` : ""}
@@ -25,7 +25,7 @@ export default async function TeacherDashboard() {
           </p>
         </div>
         <div className="ml-auto text-right">
-          <p className="font-display text-3xl font-semibold text-sunrise-ink">{openQuestions}</p>
+          <p className="font-display text-3xl font-semibold text-crimson-ink">{openQuestions}</p>
           <p className="text-xs font-bold text-ink-soft uppercase">Questions waiting</p>
         </div>
       </section>
@@ -41,7 +41,7 @@ export default async function TeacherDashboard() {
                 className="group bg-white rounded-2xl border border-line p-5 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-bold text-navy group-hover:text-sky transition-colors leading-snug">{s.title}</h3>
+                  <h3 className="font-bold text-green group-hover:text-green-mid transition-colors leading-snug">{s.title}</h3>
                   {s.isLive && (
                     <span className="shrink-0 inline-flex items-center gap-1.5 bg-red-600 text-white text-[10px] font-extrabold rounded-full px-2.5 py-1">
                       <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" aria-hidden />
@@ -52,7 +52,7 @@ export default async function TeacherDashboard() {
                 <p className="mt-1.5 text-xs text-ink-soft">
                   {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""} · {s._count.enrollments} students
                 </p>
-                <span className="inline-block mt-3 text-sunrise-ink text-xs font-bold uppercase tracking-wide">
+                <span className="inline-block mt-3 text-crimson-ink text-xs font-bold uppercase tracking-wide">
                   Manage class →
                 </span>
               </Link>
@@ -75,13 +75,13 @@ export default async function TeacherDashboard() {
           )}
 
           <div className="bg-white rounded-2xl border border-line p-5">
-            <h2 className="font-display text-lg font-semibold text-navy">Notifications</h2>
+            <h2 className="font-display text-lg font-semibold text-green">Notifications</h2>
             <ul className="mt-3 space-y-3">
               {notifications.length === 0 && <li className="text-sm text-ink-soft">Nothing new.</li>}
               {notifications.map((n) => (
-                <li key={n.id} className="border-l-2 border-sky pl-3">
+                <li key={n.id} className="border-l-2 border-green-mid pl-3">
                   {n.link ? (
-                    <Link href={n.link} className="text-sm font-bold text-ink hover:text-sky leading-snug">{n.title}</Link>
+                    <Link href={n.link} className="text-sm font-bold text-ink hover:text-green-mid leading-snug">{n.title}</Link>
                   ) : (
                     <p className="text-sm font-bold text-ink leading-snug">{n.title}</p>
                   )}

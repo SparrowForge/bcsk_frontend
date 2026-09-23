@@ -41,9 +41,9 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
           <li key={tile.label} {...reveal("zoom", i, 45)}>
             <Link
               href={tile.href}
-              // Navy tiles under a navy bar: twelve shortcuts are a block of one thing, and
-              // the marigold hover is what picks the one under the pointer out of the block.
-              className="hover-pop block rounded-lg bg-navy text-white hover:bg-sunrise hover:text-navy text-center text-[11.5px] font-bold px-3 py-2.5 shadow-[0_6px_14px_-10px_rgba(29,43,100,0.9)]"
+              // Green tiles under a green bar: twelve shortcuts are a block of one thing, and
+              // the red hover is what picks the one under the pointer out of the block.
+              className="hover-pop block rounded-lg bg-green text-white hover:bg-crimson hover:text-white text-center text-[11.5px] font-bold px-3 py-2.5 shadow-[0_6px_14px_-10px_rgba(0,77,57,0.9)]"
             >
               {tile.label}
             </Link>
@@ -63,7 +63,7 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
               <li key={p.id} {...reveal("fade", i, 50)}>
                 <Link
                   href="/events/gallery"
-                  className="group block rounded overflow-hidden border border-line hover:border-sky/50 transition-colors"
+                  className="group block rounded overflow-hidden border border-line hover:border-green-mid/50 transition-colors"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -79,7 +79,7 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
           <p {...reveal()} className="mt-4 text-right">
             <Link
               href="/events/gallery"
-              className="nudge inline-flex items-center gap-1 text-sky text-sm font-bold hover:underline underline-offset-4"
+              className="nudge inline-flex items-center gap-1 text-green-mid text-sm font-bold hover:underline underline-offset-4"
             >
               {t.home.viewAll} <span className="nudge-mark inline-block">→</span>
             </Link>

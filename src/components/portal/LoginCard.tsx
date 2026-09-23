@@ -5,7 +5,7 @@ import { useActionState } from "react";
 import type { LoginState } from "@/lib/actions/auth-actions";
 
 const input =
-  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function LoginCard({
   title,
@@ -16,7 +16,7 @@ export function LoginCard({
   requestIdLabel,
   invalidMessage,
   action,
-  accent = "bg-navy hover:bg-navy-deep",
+  accent = "bg-green hover:bg-green-deep",
   demoHint,
 }: {
   title: string;
@@ -34,7 +34,7 @@ export function LoginCard({
 
   return (
     <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
-      <h1 className="font-display text-2xl font-semibold text-navy text-center">{title}</h1>
+      <h1 className="font-display text-2xl font-semibold text-green text-center">{title}</h1>
       <form action={formAction} className="mt-6 space-y-4">
         <label className="block">
           <span className="text-xs font-bold text-ink">{idLabel}</span>
@@ -56,16 +56,16 @@ export function LoginCard({
         </button>
       </form>
       <div className="mt-5 flex items-center justify-between text-xs">
-        <Link href="/forgot-password" className="text-sky font-bold hover:underline">
+        <Link href="/forgot-password" className="text-green-mid font-bold hover:underline">
           {forgotLabel}
         </Link>
         {requestIdLabel && (
-          <Link href="/apply" className="text-sky font-bold hover:underline">
+          <Link href="/apply" className="text-green-mid font-bold hover:underline">
             {requestIdLabel}
           </Link>
         )}
       </div>
-      {demoHint && <p className="mt-5 text-[11px] text-ink-soft bg-cream rounded-lg p-3">{demoHint}</p>}
+      {demoHint && <p className="mt-5 text-[11px] text-ink-soft bg-mist rounded-lg p-3">{demoHint}</p>}
     </div>
   );
 }

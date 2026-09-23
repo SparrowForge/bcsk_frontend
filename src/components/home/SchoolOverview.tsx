@@ -12,8 +12,8 @@ const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
  *
  * The deck draws them as panels *within* a single band, not as four free-floating cards: one
  * cool band bar names the section, one sheet holds everything, and each panel is a white card
- * under a warm head. The sheet is white rather than tinted — with a cream sheet behind them
- * the cream heads had nothing to sit against and the whole band read as one beige block.
+ * under a warm head. The sheet is white rather than tinted — with a tinted sheet behind them
+ * the tinted heads had nothing to sit against and the whole band read as one flat block.
  *
  * The first three are admin-authored CMS pages and a missing one drops its panel rather
  * than leaving an empty frame. The fourth is *not* prose: tuition is money, so it comes
@@ -54,10 +54,10 @@ export function SchoolOverview({
         {educationManagement && (
           <Panel title={t.home.educationManagement} html={educationManagement.html} columns>
             <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold">
-              <Link href="/bcsk/teachers" className="text-sky hover:underline underline-offset-4">
+              <Link href="/bcsk/teachers" className="text-green-mid hover:underline underline-offset-4">
                 {t.home.viewTeachers} →
               </Link>
-              <Link href="/academic/class-schedule" className="text-sky hover:underline underline-offset-4">
+              <Link href="/academic/class-schedule" className="text-green-mid hover:underline underline-offset-4">
                 {t.home.viewSchedule} →
               </Link>
             </div>
@@ -70,7 +70,7 @@ export function SchoolOverview({
                 plain heading and a rule — a fifth bar here would just be another stripe. */}
             <h3
               {...reveal()}
-              className="font-display text-[15px] font-semibold text-navy border-t border-line pt-4"
+              className="font-display text-[15px] font-semibold text-green border-t border-line pt-4"
             >
               {t.home.tuitionFeeOthers}
             </h3>
@@ -81,7 +81,7 @@ export function SchoolOverview({
             <p {...reveal()} className="mt-3 text-right">
               <Link
                 href="/admission/tuition-fee"
-                className="text-sky text-xs font-bold hover:underline underline-offset-4"
+                className="text-green-mid text-xs font-bold hover:underline underline-offset-4"
               >
                 {t.home.tuitionFeesLink} →
               </Link>
@@ -151,9 +151,9 @@ function FeeTable({
         <tbody>
           {rows.map((f) => (
             // A fee row is the line a parent traces with a finger; the tint follows the pointer.
-            <tr key={f.id} className="border-t border-line transition-colors hover:bg-sky-soft/60">
+            <tr key={f.id} className="border-t border-line transition-colors hover:bg-green-soft/60">
               <td className="px-4 py-1.5 text-ink">{f.label}</td>
-              <td className="px-4 py-1.5 text-right font-bold text-navy whitespace-nowrap">
+              <td className="px-4 py-1.5 text-right font-bold text-green whitespace-nowrap">
                 {krw(f.semesterFee || f.bcskPrice || f.nonBcskPrice || 0)}
               </td>
             </tr>

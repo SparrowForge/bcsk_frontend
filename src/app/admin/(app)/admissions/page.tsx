@@ -5,10 +5,10 @@ import { classLevelLabel } from "@/lib/constants";
 import { formatDate } from "@/lib/dates";
 
 const STATUS_STYLE: Record<string, string> = {
-  APPROVED: "bg-teal/15 text-teal",
-  PAID: "bg-sky-soft text-navy",
-  PENDING_VERIFICATION: "bg-sunrise/15 text-sunrise-ink",
-  PENDING_PAYMENT: "bg-cream text-ink-soft",
+  APPROVED: "bg-green/15 text-green",
+  PAID: "bg-green-soft text-green",
+  PENDING_VERIFICATION: "bg-amber/15 text-amber-ink",
+  PENDING_PAYMENT: "bg-mist text-ink-soft",
   REJECTED: "bg-red-50 text-red-600",
   CORRECTIONS_REQUESTED: "bg-purple-50 text-purple-600",
 };
@@ -20,11 +20,11 @@ export default async function AdmissionsPage() {
 
   return (
     <div>
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Admissions</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Admissions</h1>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-4 py-3.5 font-bold">#</th>
               <th className="px-4 py-3.5 font-bold">Applicant</th>
               <th className="px-4 py-3.5 font-bold">Type</th>
@@ -46,12 +46,12 @@ export default async function AdmissionsPage() {
                   {formatDate(a.createdAt, "en", { year: "numeric", month: "short", day: "numeric" })}
                 </td>
                 <td className="px-4 py-3.5">
-                  <span className={`text-[11px] font-bold rounded-full px-2.5 py-1 ${STATUS_STYLE[a.status] ?? "bg-cream"}`}>
+                  <span className={`text-[11px] font-bold rounded-full px-2.5 py-1 ${STATUS_STYLE[a.status] ?? "bg-mist"}`}>
                     {a.status.replace(/_/g, " ")}
                   </span>
                 </td>
                 <td className="px-4 py-3.5">
-                  <Link href={`/admin/admissions/${a.id}`} className="text-sky text-xs font-bold hover:underline">
+                  <Link href={`/admin/admissions/${a.id}`} className="text-green-mid text-xs font-bold hover:underline">
                     Review →
                   </Link>
                 </td>

@@ -10,8 +10,8 @@ export function ClassScreen({ live, liveLabel }: { live: boolean; liveLabel: str
     <div className="relative px-1.5 pt-1.5">
       <svg viewBox="0 0 100 74" className="w-full" aria-hidden>
         {/* lid */}
-        <rect x="6" y="0" width="88" height="58" rx="3" fill="#2b3566" />
-        <rect x="9" y="3" width="82" height="52" rx="1.5" fill="#46528f" />
+        <rect x="6" y="0" width="88" height="58" rx="3" fill="#0b5540" />
+        <rect x="9" y="3" width="82" height="52" rx="1.5" fill="#12795c" />
         {[0, 1, 2, 3, 4, 5].map((i) => {
           const x = 11 + (i % 3) * 27;
           const y = 5 + Math.floor(i / 3) * 25;
@@ -24,7 +24,7 @@ export function ClassScreen({ live, liveLabel }: { live: boolean; liveLabel: str
           );
         })}
         {/* base */}
-        <rect x="0" y="59" width="100" height="6" rx="2.5" fill="#2b3566" />
+        <rect x="0" y="59" width="100" height="6" rx="2.5" fill="#0b5540" />
         <rect x="42" y="59" width="16" height="2.4" rx="1.2" fill="#ffffff" opacity="0.35" />
       </svg>
 

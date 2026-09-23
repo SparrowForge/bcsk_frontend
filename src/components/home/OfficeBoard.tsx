@@ -18,8 +18,8 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
   return (
     <section aria-labelledby="office-board" className="mt-6">
       <div {...reveal()} className="text-center">
-        <h3 id="office-board" className="font-display text-xl font-semibold text-navy inline-flex items-center gap-2">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-sky" aria-hidden>
+        <h3 id="office-board" className="font-display text-xl font-semibold text-green inline-flex items-center gap-2">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-mid" aria-hidden>
             <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5" />
           </svg>
           {t.home.office}
@@ -70,12 +70,12 @@ function DeskCard({
   return (
     <li
       {...reveal("zoom", index, 55)}
-      className="hover-lift rounded-lg border border-sky/25 hover:border-sky/60 bg-white overflow-hidden flex flex-col"
+      className="hover-lift rounded-lg border border-green-mid/25 hover:border-green-mid/60 bg-white overflow-hidden flex flex-col"
     >
-      <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-sky">
+      <p className="pt-1 text-center text-[9px] font-extrabold uppercase tracking-wide text-green-mid">
         {t.home.deskDesk}
       </p>
-      <p className="px-1.5 text-center font-bold text-[12px] text-navy leading-tight truncate" title={desk.deskName}>
+      <p className="px-1.5 text-center font-bold text-[12px] text-green leading-tight truncate" title={desk.deskName}>
         {desk.deskName}
       </p>
 
@@ -89,8 +89,8 @@ function DeskCard({
           />
         ) : (
           <span
-            className={`w-11 h-11 rounded-full text-navy flex items-center justify-center ${
-              ["bg-sky-soft", "bg-teal-soft", "bg-band-soft", "bg-cream-deep"][index % 4]
+            className={`w-11 h-11 rounded-full text-green flex items-center justify-center ${
+              ["bg-green-soft", "bg-green-soft", "bg-crimson-band", "bg-mist-deep"][index % 4]
             }`}
             aria-hidden
           >
@@ -113,7 +113,7 @@ function DeskCard({
       <div className="px-2 pb-1.5 text-[10px] leading-tight">
         <p className="text-ink-soft">
           {t.common.status}:{" "}
-          <span className={`font-bold ${inClass ? "text-red-600" : desk.status === "DESK" ? "text-teal" : "text-ink"}`}>
+          <span className={`font-bold ${inClass ? "text-red-600" : desk.status === "DESK" ? "text-green" : "text-ink"}`}>
             {statusText}
           </span>
         </p>

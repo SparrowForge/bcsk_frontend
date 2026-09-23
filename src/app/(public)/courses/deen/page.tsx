@@ -14,17 +14,17 @@ export default async function DeenPage() {
     <>
       {/* hero */}
       <section className="mx-auto max-w-7xl px-4 pt-6">
-        <div className="relative bg-navy rounded-3xl px-6 sm:px-12 py-14 overflow-hidden text-white">
-          <div className="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-teal/20" aria-hidden />
-          <div className="absolute right-32 bottom-6 w-20 h-20 rounded-full bg-sunrise/25" aria-hidden />
-          <p className="relative text-xs font-extrabold tracking-[0.2em] uppercase text-sky-soft">Qur'an & Islamic Studies</p>
+        <div className="relative bg-green rounded-3xl px-6 sm:px-12 py-14 overflow-hidden text-white">
+          <div className="absolute -right-10 -top-10 w-56 h-56 rounded-full bg-green/20" aria-hidden />
+          <div className="absolute right-32 bottom-6 w-20 h-20 rounded-full bg-crimson/25" aria-hidden />
+          <p className="relative text-xs font-extrabold tracking-[0.2em] uppercase text-green-soft">Qur'an & Islamic Studies</p>
           <h1 className="relative mt-3 font-display text-4xl sm:text-5xl font-semibold max-w-2xl leading-tight">
             {course?.heroText ?? "Nurture your child's Deen"}
           </h1>
           <p className="relative mt-4 text-white/75 text-sm max-w-xl leading-relaxed">{course?.description}</p>
           <Link
             href="/apply/special?course=deen"
-            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="relative inline-block mt-7 bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
           >
             Apply for the Deen program
           </Link>
@@ -38,18 +38,18 @@ export default async function DeenPage() {
           <div className="mt-6 space-y-4">
             {course?.levels.map((l) => (
               <details key={l.id} className="bg-white border border-line rounded-2xl group">
-                <summary className="cursor-pointer px-6 py-4 font-bold text-navy flex items-center justify-between">
+                <summary className="cursor-pointer px-6 py-4 font-bold text-green flex items-center justify-between">
                   {l.name}
-                  <span className="text-sky group-open:rotate-180 transition-transform" aria-hidden>▾</span>
+                  <span className="text-green-mid group-open:rotate-180 transition-transform" aria-hidden>▾</span>
                 </summary>
                 <p className="px-6 pb-5 text-sm text-ink-soft leading-relaxed">{l.syllabus}</p>
               </details>
             ))}
           </div>
         </div>
-        <div className="bg-cream rounded-3xl p-8">
-          <p className="text-xs font-extrabold tracking-wide uppercase text-sunrise-ink">KOIE</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold text-navy">Korea Online Islamic Education</h2>
+        <div className="bg-mist rounded-3xl p-8">
+          <p className="text-xs font-extrabold tracking-wide uppercase text-crimson-ink">KOIE</p>
+          <h2 className="mt-2 font-display text-2xl font-semibold text-green">Korea Online Islamic Education</h2>
           <p className="mt-3 text-sm text-ink leading-relaxed">
             BCSK's flagship online Islamic education program for children across Korea:
           </p>
@@ -63,7 +63,7 @@ export default async function DeenPage() {
               "Islamic manners — adab & akhlaq",
             ].map((x) => (
               <li key={x} className="flex gap-2.5">
-                <span className="w-2 h-2 rounded-full bg-teal mt-1.5 shrink-0" aria-hidden />
+                <span className="w-2 h-2 rounded-full bg-green mt-1.5 shrink-0" aria-hidden />
                 {x}
               </li>
             ))}
@@ -77,7 +77,7 @@ export default async function DeenPage() {
         <div className="scroll-fade overflow-x-auto rounded-2xl border border-line max-w-4xl">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-cream text-navy text-left">
+              <tr className="bg-mist text-green text-left">
                 <th className="px-5 py-3.5 font-bold">Track</th>
                 <th className="px-5 py-3.5 font-bold">Day</th>
                 <th className="px-5 py-3.5 font-bold">Time</th>
@@ -94,11 +94,11 @@ export default async function DeenPage() {
                   <td className="px-5 py-3.5 text-ink-soft">{s.teacher?.user.name ?? "—"}</td>
                   <td className="px-5 py-3.5">
                     {enrolled && s.zoomLink ? (
-                      <a href={s.zoomLink} target="_blank" rel="noopener noreferrer" className="text-white bg-teal hover:bg-teal/85 text-xs font-bold rounded-lg px-3 py-1.5 transition-colors">
+                      <a href={s.zoomLink} target="_blank" rel="noopener noreferrer" className="text-white bg-green hover:bg-green/85 text-xs font-bold rounded-lg px-3 py-1.5 transition-colors">
                         Join Zoom
                       </a>
                     ) : (
-                      <Link href="/classroom" className="text-xs font-bold text-sky hover:underline">
+                      <Link href="/classroom" className="text-xs font-bold text-green-mid hover:underline">
                         Enrolled students
                       </Link>
                     )}
@@ -113,22 +113,22 @@ export default async function DeenPage() {
       {/* resources (FR-DEEN-05) + Hifz note (FR-DEEN-06) */}
       <section className="mx-auto max-w-7xl px-4 mt-16 grid md:grid-cols-2 gap-6 max-w-4xl">
         <div className="bg-white border border-line rounded-2xl p-7">
-          <h2 className="font-display text-xl font-semibold text-navy">Learning Resources</h2>
+          <h2 className="font-display text-xl font-semibold text-green">Learning Resources</h2>
           <p className="mt-2 text-sm text-ink-soft leading-relaxed">
             Recitation audio, Tajweed guides, and printable dua sheets are provided to enrolled students inside the
             Classroom portal. Premium resources are unlocked after enrollment.
           </p>
-          <Link href={enrolled ? "/classroom/syllabus" : "/classroom"} className="inline-block mt-4 text-sky text-sm font-bold hover:underline">
+          <Link href={enrolled ? "/classroom/syllabus" : "/classroom"} className="inline-block mt-4 text-green-mid text-sm font-bold hover:underline">
             {enrolled ? "Open my resources →" : "Log in to access →"}
           </Link>
         </div>
         <div className="bg-white border border-line rounded-2xl p-7">
-          <h2 className="font-display text-xl font-semibold text-navy">Hifz Progress Tracking</h2>
+          <h2 className="font-display text-xl font-semibold text-green">Hifz Progress Tracking</h2>
           <p className="mt-2 text-sm text-ink-soft leading-relaxed">
             Every Hifz student's memorization is tracked surah-by-surah and juz-by-juz. Students and guardians can
             follow progress on the Classroom dashboard; teachers update it after each session.
           </p>
-          <Link href={enrolled ? "/classroom/results" : "/apply/special?course=hifz"} className="inline-block mt-4 text-sky text-sm font-bold hover:underline">
+          <Link href={enrolled ? "/classroom/results" : "/apply/special?course=hifz"} className="inline-block mt-4 text-green-mid text-sm font-bold hover:underline">
             {enrolled ? "See my Hifz progress →" : "Join the Hifz program →"}
           </Link>
         </div>
@@ -136,14 +136,14 @@ export default async function DeenPage() {
 
       {/* CTA (FR-DEEN-07) */}
       <section className="mx-auto max-w-7xl px-4 mt-16">
-        <div className="bg-cream rounded-3xl px-6 sm:px-12 py-10 text-center max-w-4xl mx-auto">
-          <h2 className="font-display text-2xl font-semibold text-navy">Ready to begin?</h2>
+        <div className="bg-mist rounded-3xl px-6 sm:px-12 py-10 text-center max-w-4xl mx-auto">
+          <h2 className="font-display text-2xl font-semibold text-green">Ready to begin?</h2>
           <p className="mt-2 text-sm text-ink-soft">Apply for Qur'an & Islamic Studies, or the Hifz program — boys', girls', and ladies' tracks available.</p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <Link href="/apply/special?course=deen" className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
+            <Link href="/apply/special?course=deen" className="bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
               Apply — Qur'an & Deen
             </Link>
-            <Link href="/apply/special?course=hifz" className="bg-navy hover:bg-navy-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
+            <Link href="/apply/special?course=hifz" className="bg-green hover:bg-green-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors">
               Apply — Hifz Program
             </Link>
           </div>

@@ -31,14 +31,14 @@ export function DeskStatusCard({
 
   return (
     <section className="bg-white rounded-2xl border border-line p-5">
-      <h2 className="font-display text-lg font-semibold text-navy">Office board</h2>
+      <h2 className="font-display text-lg font-semibold text-green">Office board</h2>
       <p className="mt-1 text-xs text-ink-soft">
         Shown on the public homepage{deskName ? ` as “${deskName}”` : ""}.
       </p>
 
       <p className="mt-3 text-sm">
         <span className="text-ink-soft">Right now: </span>
-        <span className={`font-bold ${atDesk ? "text-teal" : "text-ink-soft"}`}>
+        <span className={`font-bold ${atDesk ? "text-green" : "text-ink-soft"}`}>
           {atDesk ? "At my desk" : "Offline"}
         </span>
         {!atDesk && backAt && <span className="text-ink-soft"> · back at {backAt}</span>}
@@ -55,7 +55,7 @@ export function DeskStatusCard({
                   name="awayMinutes"
                   value={m}
                   disabled={pending}
-                  className="bg-cream hover:bg-cream-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-3 py-2 transition-colors"
+                  className="bg-mist hover:bg-mist-deep disabled:opacity-60 text-green text-xs font-bold rounded-lg px-3 py-2 transition-colors"
                 >
                   Away {m} min
                 </button>
@@ -64,7 +64,7 @@ export function DeskStatusCard({
                 name="awayMinutes"
                 value="0"
                 disabled={pending}
-                className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-3 py-2 transition-colors"
+                className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-3 py-2 transition-colors"
               >
                 Go offline
               </button>
@@ -75,7 +75,7 @@ export function DeskStatusCard({
             <input type="hidden" name="status" value="DESK" />
             <button
               disabled={pending}
-              className="bg-teal hover:bg-teal/85 disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+              className="bg-green hover:bg-green/85 disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
             >
               I&apos;m at my desk
             </button>

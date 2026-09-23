@@ -17,7 +17,7 @@ export function AttendanceSheet({
 
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
-      <h2 className="font-display text-lg font-semibold text-navy mb-1">Attendance — {date}</h2>
+      <h2 className="font-display text-lg font-semibold text-green mb-1">Attendance — {date}</h2>
       <p className="text-xs text-ink-soft mb-4">Class roster. Choose a status per student and save.</p>
       <form
         action={(formData) => {
@@ -40,7 +40,7 @@ export function AttendanceSheet({
                 name={`att-${s.userId}`}
                 defaultValue={s.current || "PRESENT"}
                 aria-label={`Attendance for ${s.name}`}
-                className="ml-auto rounded-lg border border-line px-3 py-2 text-xs font-bold focus:border-sky focus:outline-none"
+                className="ml-auto rounded-lg border border-line px-3 py-2 text-xs font-bold focus:border-green-mid focus:outline-none"
               >
                 <option value="PRESENT">Present</option>
                 <option value="LATE">Late</option>
@@ -55,11 +55,11 @@ export function AttendanceSheet({
           <div className="mt-4 flex items-center gap-3">
             <button
               disabled={pending}
-              className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
+              className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
             >
               {pending ? "Saving…" : "Save attendance"}
             </button>
-            {saved && <span className="text-xs font-bold text-teal">Saved ✓</span>}
+            {saved && <span className="text-xs font-bold text-green">Saved ✓</span>}
           </div>
         )}
       </form>

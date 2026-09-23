@@ -28,10 +28,10 @@ export function PageEditor({
 
   return (
     <div className="max-w-3xl">
-      <Link href="/admin/cms" className="text-xs font-bold text-ink-soft hover:text-sky">← All pages</Link>
-      <h1 className="mt-2 font-display text-2xl font-semibold text-navy mb-6">
+      <Link href="/admin/cms" className="text-xs font-bold text-ink-soft hover:text-green-mid">← All pages</Link>
+      <h1 className="mt-2 font-display text-2xl font-semibold text-green mb-6">
         {isNew ? "New page" : `Edit: ${slug}`}
-        {!isNew && <span className="ml-3 text-sm font-body font-bold text-sunrise-ink">{langLabel}</span>}
+        {!isNew && <span className="ml-3 text-sm font-body font-bold text-crimson-ink">{langLabel}</span>}
       </h1>
 
       <form action={action} className="space-y-4 bg-white rounded-2xl border border-line p-6">
@@ -43,12 +43,12 @@ export function PageEditor({
               defaultValue={slug}
               readOnly={!isNew}
               required
-              className={`mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm font-mono ${!isNew ? "bg-cream text-ink-soft" : "focus:border-sky focus:outline-none"}`}
+              className={`mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm font-mono ${!isNew ? "bg-mist text-ink-soft" : "focus:border-green-mid focus:outline-none"}`}
             />
           </label>
           <label className="block">
             <span className="text-xs font-bold text-ink">Language</span>
-            <select name="lang" defaultValue={lang} disabled={!isNew} className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm disabled:bg-cream">
+            <select name="lang" defaultValue={lang} disabled={!isNew} className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm disabled:bg-mist">
               <option value="en">English</option>
               <option value="bn">বাংলা</option>
               <option value="ko">한국어</option>
@@ -58,7 +58,7 @@ export function PageEditor({
         </div>
         <label className="block">
           <span className="text-xs font-bold text-ink">Title</span>
-          <input name="title" defaultValue={initialTitle} required className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none" />
+          <input name="title" defaultValue={initialTitle} required className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none" />
         </label>
         <label className="block">
           <span className="text-xs font-bold text-ink">Content (Markdown — headings ##, lists, tables, links)</span>
@@ -66,17 +66,17 @@ export function PageEditor({
             name="content"
             defaultValue={initialContent}
             rows={20}
-            className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm font-mono leading-relaxed focus:border-sky focus:outline-none"
+            className="mt-1.5 w-full rounded-lg border border-line px-3.5 py-2.5 text-sm font-mono leading-relaxed focus:border-green-mid focus:outline-none"
           />
         </label>
         <div className="flex flex-wrap items-center gap-4">
           <label className="flex items-center gap-2 text-sm font-bold text-ink">
-            <input type="checkbox" name="publish" defaultChecked={published} className="w-4 h-4 accent-teal" />
+            <input type="checkbox" name="publish" defaultChecked={published} className="w-4 h-4 accent-green" />
             Published (visible on the public site)
           </label>
           <button
             disabled={pending}
-            className="ml-auto bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
+            className="ml-auto bg-green hover:bg-green-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
           >
             {pending ? "Saving…" : "Save page"}
           </button>
@@ -96,7 +96,7 @@ export function PageEditor({
           )}
         </div>
         {state?.error && <p className="text-sm font-semibold text-red-600">{state.error}</p>}
-        {state?.ok && <p className="text-sm font-semibold text-teal">Saved — the public site is updated.</p>}
+        {state?.ok && <p className="text-sm font-semibold text-green">Saved — the public site is updated.</p>}
       </form>
     </div>
   );

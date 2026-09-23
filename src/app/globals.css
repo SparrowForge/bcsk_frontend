@@ -2,66 +2,81 @@
 
 :root {
   /* ------------------------------------------------------------------
-     BCSK palette — navy + azure from the school logo, marigold as the one
-     warm accent, and two quiet band tints.
+     BCSK palette — the school's own mark. The logo is Bangladesh green
+     and red on a light grey ring, so the site is green-led, with red
+     reserved for the actions that matter and white carrying the reading.
 
-     Three rules keep it from turning into the fairground it was:
-       1. Navy carries authority (header, footer, headings), azure carries
-          interaction (links, board headers), marigold carries the call to
-          action. Nothing else competes for attention.
-       2. A colour is either a *fill* or a *text colour*, and every pairing in
-          use clears WCAG AA: white sits on navy / azure / teal, navy sits on
-          marigold and on the band tints. Marigold never carries white text —
-          that pairing was 2.6:1, which is why the buttons read as cheap.
-       3. Bands are tints of the two anchors — cool for a whole band, warm for
-          a panel inside one — not a third hue. The olive sage and the maroon
-          beside it are gone: muddy earth tones read as municipal, the opposite
-          of what a children's school wants.
+     Roughly 60% green / 30% white-and-grey / 10% red. Four rules keep it
+     from turning into a flag:
+
+       1. Green carries identity *and* interaction — header, footer,
+          headings, links, primary fills. Red carries one thing only: the
+          call to action. Nothing else competes.
+       2. A colour is either a *fill* or a *text colour*, and every pairing
+          in use clears WCAG AA. The flag red #F42A41 is only 4.0:1 against
+          white, so it never sits behind normal-size white text; --crimson
+          is the fill that does (4.8:1) and --crimson-bright is decoration.
+          This is the same trap the previous marigold fell into at 2.6:1.
+       3. Bands are tints of the two brand hues — cool green for a whole
+          band, warm red for a panel inside one — plus a neutral grey. Never
+          a third brand hue.
+       4. Amber is a *status* colour, not a brand one. It means "pending"
+          and appears only in badges; red already means failed, green means
+          done, and collapsing pending into either loses the distinction.
      ------------------------------------------------------------------ */
-  --navy: #1d2b64;
-  --navy-deep: #131f4a;
-  /* Azure deep enough to work both ways — 4.6:1 as link text on white and as
-     white text on the fill — so one token serves links, chips and headers. */
-  --sky: #1a7ea8;
-  /* The logo's lighter blue: decoration only (illustration, gradients), never text. */
-  --sky-bright: #38a8dc;
-  --sky-soft: #e4f1fa;
-  /* Band tints: cool names a whole band, warm names a panel inside one. */
-  --band: #d8eaf7;
-  --band-soft: #fdeedb;
-  --cream: #fdf8f0;
-  --cream-deep: #f7edda;
-  /* Marigold: bright enough to feel like a school, always with navy on top. */
-  --sunrise: #f7a325;
-  --sunrise-deep: #d9820b;
-  /* Amber as *text* has to be this dark to be legible on white or on a 15% tint. */
-  --sunrise-ink: #a45c07;
-  /* Teal reads "open / live / done" and is dark enough to hold white text. */
-  --teal: #0d7f74;
-  --teal-soft: #ddf1ee;
+
+  /* --- Bangladesh green: identity and interaction --- */
+  --green: #006a4e; /* 6.6:1 on white — header, headings, primary fills */
+  --green-deep: #004d39; /* 9.9:1 — footer, hover, gradient end */
+  /* Deep enough to work both ways — 5.1:1 as link text on white and as white
+     text on the fill — so one token serves links, chips and board headers. */
+  --green-mid: #0a7d5c;
+  /* The bright emerald: decoration only (illustration, gradients), never text. */
+  --green-bright: #1fae83;
+  --green-soft: #e6f3ee;
+
+  /* --- Flag red: the call to action, and nothing else --- */
+  --crimson: #e01f35; /* 4.8:1 — the only red that may carry white text */
+  --crimson-bright: #f42a41; /* the exact flag red: decoration and large fills only */
+  --crimson-deep: #a3172a; /* 7.7:1 — hover and pressed */
+  --crimson-ink: #8e1424; /* red *as text*, on white or on a tint */
+
+  /* --- Band tints: cool names a whole band, warm names a panel inside one --- */
+  --green-green-band: #dcede5;
+  --crimson-green-band: #fbe9eb;
+
+  /* --- Neutrals: the 30% that keeps the page readable --- */
   --paper: #ffffff;
-  --ink: #232323;
-  --ink-soft: #5b5b6b;
-  --line: #e6e9ef;
+  --mist: #f5f6f5; /* alternate sections */
+  --mist-deep: #e5e5e5; /* cards, borders, the quieter band */
+  --ink: #171717; /* charcoal, 17.9:1 */
+  --ink-soft: #57605b; /* 6.5:1 — still AA for body text */
+  --line: #e2e8e4;
+
+  /* --- Status only. Never branding. --- */
+  --amber: #f5a524;
+  --amber-ink: #8a5200; /* 6.4:1 — "pending" as text */
+
   --font-display: var(--font-fraunces), var(--font-bangla), Georgia, serif;
   --font-body: var(--font-nunito), var(--font-bangla), var(--font-korean), system-ui, sans-serif;
 }
 
 @theme inline {
-  --color-navy: var(--navy);
-  --color-navy-deep: var(--navy-deep);
-  --color-sky: var(--sky);
-  --color-sky-bright: var(--sky-bright);
-  --color-sky-soft: var(--sky-soft);
-  --color-band: var(--band);
-  --color-band-soft: var(--band-soft);
-  --color-cream: var(--cream);
-  --color-cream-deep: var(--cream-deep);
-  --color-sunrise: var(--sunrise);
-  --color-sunrise-deep: var(--sunrise-deep);
-  --color-sunrise-ink: var(--sunrise-ink);
-  --color-teal: var(--teal);
-  --color-teal-soft: var(--teal-soft);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-mid: var(--green-mid);
+  --color-green-bright: var(--green-bright);
+  --color-green-soft: var(--green-soft);
+  --color-green-green-band: var(--green-green-band);
+  --color-crimson: var(--crimson);
+  --color-crimson-bright: var(--crimson-bright);
+  --color-crimson-deep: var(--crimson-deep);
+  --color-crimson-ink: var(--crimson-ink);
+  --color-crimson-green-band: var(--crimson-green-band);
+  --color-mist: var(--mist);
+  --color-mist-deep: var(--mist-deep);
+  --color-amber: var(--amber);
+  --color-amber-ink: var(--amber-ink);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
@@ -92,6 +107,13 @@ h3,
 }
 :lang(ko) {
   font-family: var(--font-korean), sans-serif;
+  /* Korean has no inter-word breaking rule in the default algorithm, so a browser wraps it
+     at any character — the headline split 학교 across two lines, which reads to a Korean
+     reader the way "scho / ol" reads to an English one. `keep-all` breaks at spaces
+     instead; `overflow-wrap` is the escape hatch for a single token longer than its box,
+     which would otherwise push the layout sideways rather than wrap. */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* ---------- prose styling for CMS markdown ---------- */
@@ -102,14 +124,14 @@ h3,
   font-family: var(--font-display);
   font-size: 1.6rem;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--green);
   margin: 1.6em 0 0.6em;
 }
 .prose-bcsk h3 {
   font-family: var(--font-display);
   font-size: 1.2rem;
   font-weight: 600;
-  color: var(--navy);
+  color: var(--green);
   margin: 1.4em 0 0.5em;
 }
 .prose-bcsk p {
@@ -129,15 +151,15 @@ h3,
   margin: 0.3em 0;
 }
 .prose-bcsk a {
-  color: var(--sky);
+  color: var(--green-mid);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 .prose-bcsk strong {
-  color: var(--navy);
+  color: var(--green);
 }
 .prose-bcsk blockquote {
-  border-left: 3px solid var(--sunrise);
+  border-left: 3px solid var(--crimson);
   padding-left: 1em;
   color: var(--ink-soft);
   margin: 1em 0;
@@ -149,8 +171,8 @@ h3,
   font-size: 0.95rem;
 }
 .prose-bcsk th {
-  background: var(--cream);
-  color: var(--navy);
+  background: var(--mist);
+  color: var(--green);
   text-align: left;
   font-weight: 700;
 }
@@ -217,8 +239,8 @@ h3,
   background:
     linear-gradient(to right, var(--paper) 40%, rgba(255, 255, 255, 0)) left center,
     linear-gradient(to left, var(--paper) 40%, rgba(255, 255, 255, 0)) right center,
-    linear-gradient(to right, rgba(29, 43, 100, 0.28), rgba(29, 43, 100, 0)) left center,
-    linear-gradient(to left, rgba(29, 43, 100, 0.28), rgba(29, 43, 100, 0)) right center;
+    linear-gradient(to right, rgba(0,77,57, 0.28), rgba(0,77,57, 0)) left center,
+    linear-gradient(to left, rgba(0,77,57, 0.28), rgba(0,77,57, 0)) right center;
   background-repeat: no-repeat;
   /* The covers must be at least as wide as the shadows they park over, or a table that
      fits its box leaks a sliver of shading at both ends. */
@@ -229,6 +251,17 @@ h3,
     28px 100%;
   background-attachment: local, local, scroll, scroll;
   background-color: var(--paper);
+}
+
+/* A strip that scrolls sideways on purpose and says so with arrows instead of a bar — the
+   teacher panel. The scrollbar is hidden, never the scrolling: swipe, trackpad, wheel and
+   keyboard all still work, which is the whole reason that strip is a real scroller. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* dotted decorative pattern (screenshot motif) */
@@ -243,7 +276,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--sky);
+  outline: 2px solid var(--green-mid);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -368,8 +401,8 @@ textarea:focus-visible {
      wireframe. This is small enough to stay quiet behind twenty cards at once and is what
      the lift then has something to lift *from*. */
   box-shadow:
-    0 1px 2px rgba(29, 43, 100, 0.04),
-    0 8px 18px -14px rgba(29, 43, 100, 0.3);
+    0 1px 2px rgba(0,77,57, 0.04),
+    0 8px 18px -14px rgba(0,77,57, 0.3);
   transition:
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     box-shadow 0.28s ease,
@@ -378,8 +411,8 @@ textarea:focus-visible {
 .hover-lift:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 2px 4px rgba(29, 43, 100, 0.06),
-    0 18px 32px -18px rgba(29, 43, 100, 0.55);
+    0 2px 4px rgba(0,77,57, 0.06),
+    0 18px 32px -18px rgba(0,77,57, 0.55);
 }
 
 /* For a tile that should swell slightly rather than rise — the lounge shortcuts. */
@@ -391,7 +424,7 @@ textarea:focus-visible {
 }
 .hover-pop:hover {
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 12px 20px -14px rgba(217, 130, 11, 0.9);
+  box-shadow: 0 12px 20px -14px rgba(163,23,42, 0.9);
 }
 
 /* A button that acknowledges the click it is about to navigate away from. */
@@ -403,7 +436,7 @@ textarea:focus-visible {
 }
 .press:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px -10px rgba(217, 130, 11, 0.55);
+  box-shadow: 0 8px 16px -10px rgba(163,23,42, 0.55);
 }
 .press:active {
   transform: translateY(0) scale(0.97);
@@ -430,11 +463,11 @@ textarea:focus-visible {
    same signal the red badge carries, visible from across the board. */
 @keyframes bcsk-live-ring {
   0% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    box-shadow: 0 0 0 0 rgba(224,31,53, 0.4);
   }
   70%,
   100% {
-    box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
+    box-shadow: 0 0 0 7px rgba(224,31,53, 0);
   }
 }
 .live-ring {

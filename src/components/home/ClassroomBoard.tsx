@@ -19,7 +19,7 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
   return (
     <section aria-labelledby="classroom-board" className="mt-10">
       <div {...reveal()} className="text-center">
-        <h3 id="classroom-board" className="font-display text-xl font-semibold text-navy">
+        <h3 id="classroom-board" className="font-display text-xl font-semibold text-green">
           {t.home.classroom}
         </h3>
         <p className="mt-0.5 text-[13px] font-bold text-ink-soft">
@@ -46,7 +46,7 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
       <div {...reveal("right")} className="mt-4 flex flex-col items-end gap-1.5">
         <Link
           href="/classroom/ask-teacher"
-          className="group inline-flex items-center gap-1.5 text-[13px] font-bold text-navy hover:text-sky transition-colors"
+          className="group inline-flex items-center gap-1.5 text-[13px] font-bold text-green hover:text-green-mid transition-colors"
         >
           <svg
             width="17"
@@ -63,13 +63,13 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
         <span className="flex gap-1.5">
           <Link
             href="/contact"
-            className="press rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1"
           >
             {t.home.adminSupport}
           </Link>
           <Link
             href="/contact?topic=IT"
-            className="press rounded bg-sunrise hover:bg-sunrise-deep text-navy text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1"
           >
             {t.home.itSupport}
           </Link>
@@ -90,15 +90,15 @@ function ClassCard({
   t: Dictionary;
 }) {
   const label = row.classLevel ? classLevelLabel(row.classLevel) : row.label;
-  // The regular ladder wears the school's azure so the six of them read as one block;
-  // a special course wears teal, which is the same signal the boards use elsewhere for
+  // The regular ladder wears the mid green so the six of them read as one block;
+  // a special course wears the deeper brand green, which is the same signal the boards use for
   // "extra / open". Both hold white text at AA, which the old orange and maroon did not.
-  const headerTone = row.courseSlug ? "bg-teal" : "bg-sky";
+  const headerTone = row.courseSlug ? "bg-green" : "bg-green-mid";
 
   return (
     <li
       {...reveal("zoom", index, 60)}
-      className="hover-lift rounded-lg border border-sky/25 hover:border-sky/60 bg-white overflow-hidden flex flex-col"
+      className="hover-lift rounded-lg border border-green-mid/25 hover:border-green-mid/60 bg-white overflow-hidden flex flex-col"
     >
       <p className={`${headerTone} px-2 py-1 text-center text-[11px] font-extrabold text-white truncate`} title={label}>
         {label}
@@ -109,7 +109,7 @@ function ClassCard({
       <dl className="px-2 py-2 text-[10.5px] leading-tight text-ink-soft">
         <div className="flex gap-1">
           <dt>{t.home.currentClass}:</dt>
-          <dd className="font-bold text-navy truncate">{row.currentCourseName ?? "—"}</dd>
+          <dd className="font-bold text-green truncate">{row.currentCourseName ?? "—"}</dd>
         </div>
         <div className="flex gap-1">
           <dt>{t.home.duration}:</dt>

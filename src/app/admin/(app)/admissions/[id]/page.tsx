@@ -42,12 +42,12 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
 
   return (
     <div className="max-w-3xl">
-      <Link href="/admin/admissions" className="text-xs font-bold text-ink-soft hover:text-sky">← All applications</Link>
+      <Link href="/admin/admissions" className="text-xs font-bold text-ink-soft hover:text-green-mid">← All applications</Link>
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
-        <h1 className="font-display text-2xl font-semibold text-navy">
+        <h1 className="font-display text-2xl font-semibold text-green">
           Application #{app.id} — {app.applicantName}
         </h1>
-        <span className="text-xs font-bold bg-cream rounded-full px-3 py-1.5">{app.status.replace(/_/g, " ")}</span>
+        <span className="text-xs font-bold bg-mist rounded-full px-3 py-1.5">{app.status.replace(/_/g, " ")}</span>
       </div>
 
       <div className="mt-6 grid sm:grid-cols-[180px_1fr] gap-6">
@@ -56,7 +56,7 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
             // eslint-disable-next-line @next/next/no-img-element
             <img src={`/api/files/${app.photoUrl}`} alt={`Photo of ${app.applicantName}`} className="w-full rounded-2xl border border-line object-cover" />
           ) : (
-            <div className="aspect-[3/4] rounded-2xl bg-cream flex items-center justify-center text-ink-soft text-xs">No photo</div>
+            <div className="aspect-[3/4] rounded-2xl bg-mist flex items-center justify-center text-ink-soft text-xs">No photo</div>
           )}
         </div>
         <div className="bg-white rounded-2xl border border-line divide-y divide-line">
@@ -69,7 +69,7 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
         </div>
       </div>
 
-      <h2 className="mt-8 font-display text-lg font-semibold text-navy mb-3">Payments</h2>
+      <h2 className="mt-8 font-display text-lg font-semibold text-green mb-3">Payments</h2>
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {payments.length === 0 && <p className="px-5 py-4 text-sm text-ink-soft">No payment attempts yet.</p>}
         {payments.map((p) => (
@@ -77,13 +77,13 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
             <span className="font-bold text-ink">{krw(p.amount)}</span>
             <span>{p.method === "CARD" ? "Card" : "Bank transfer"}</span>
             {p.virtualRef && <span className="text-xs text-ink-soft">{p.virtualRef}</span>}
-            <span className="text-xs font-bold rounded-full px-2.5 py-1 bg-cream">{p.status.replace(/_/g, " ")}</span>
+            <span className="text-xs font-bold rounded-full px-2.5 py-1 bg-mist">{p.status.replace(/_/g, " ")}</span>
             {p.receiptUploadUrl && (
-              <a href={`/api/files/${p.receiptUploadUrl}`} target="_blank" className="text-sky text-xs font-bold hover:underline">
+              <a href={`/api/files/${p.receiptUploadUrl}`} target="_blank" className="text-green-mid text-xs font-bold hover:underline">
                 Receipt upload
               </a>
             )}
-            <Link href="/admin/payments?filter=pending" className="ml-auto text-xs text-sky font-bold hover:underline">
+            <Link href="/admin/payments?filter=pending" className="ml-auto text-xs text-green-mid font-bold hover:underline">
               Manage in Payments →
             </Link>
           </div>

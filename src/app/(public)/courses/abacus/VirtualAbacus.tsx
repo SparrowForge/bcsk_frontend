@@ -33,12 +33,12 @@ export function VirtualAbacus() {
   return (
     <div className="max-w-3xl">
       <div className="flex flex-wrap items-center gap-4 mb-4">
-        <div className="bg-navy text-white font-mono text-2xl font-bold rounded-xl px-6 py-3 tabular-nums" aria-live="polite">
+        <div className="bg-green text-white font-mono text-2xl font-bold rounded-xl px-6 py-3 tabular-nums" aria-live="polite">
           {value.toLocaleString("en-US")}
         </div>
         <button
           onClick={reset}
-          className="bg-white border border-line hover:border-sky text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+          className="bg-white border border-line hover:border-green-mid text-green text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
         >
           Reset beads
         </button>
@@ -73,7 +73,7 @@ export function VirtualAbacus() {
                       onClick={() => clickEarth(rod, k)}
                       aria-label={`Rod ${rod + 1} earth bead ${k + 1} ${raised ? "counted" : "not counted"}`}
                       aria-pressed={raised}
-                      className={`relative z-10 w-10 h-7 sm:w-12 sm:h-8 rounded-[50%] bg-gradient-to-b from-sky-400 to-sky-600 border-2 border-sky-800 shadow-md transition-all duration-150 hover:brightness-110 ${
+                      className={`relative z-10 w-10 h-7 sm:w-12 sm:h-8 rounded-[50%] bg-gradient-to-b from-green-mid-400 to-green-mid-600 border-2 border-green-mid-800 shadow-md transition-all duration-150 hover:brightness-110 ${
                         raised ? "mt-1" : k === earth[rod] ? "mt-[26px]" : "mt-1"
                       }`}
                     />

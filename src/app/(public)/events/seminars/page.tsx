@@ -17,14 +17,14 @@ export default async function SeminarsPage() {
         )}
         {items.map((n) => (
           <Link key={n.id} href={`/events/news/${n.id}`} className="group flex gap-5 bg-white border border-line rounded-2xl p-6 hover:shadow-md transition-shadow">
-            <div className="bg-cream rounded-xl px-4 py-3 text-center shrink-0 self-start">
-              <p className="font-display text-2xl font-semibold text-navy">{dayOfMonth(n.date)}</p>
+            <div className="bg-mist rounded-xl px-4 py-3 text-center shrink-0 self-start">
+              <p className="font-display text-2xl font-semibold text-green">{dayOfMonth(n.date)}</p>
               <p className="text-xs font-bold uppercase text-ink-soft">
                 {monthShort(n.date, lang)}
               </p>
             </div>
             <div>
-              <h2 className="font-display text-lg font-semibold text-navy group-hover:text-sky transition-colors">{n.title}</h2>
+              <h2 className="font-display text-lg font-semibold text-green group-hover:text-green-mid transition-colors">{n.title}</h2>
               <p className="mt-1.5 text-sm text-ink-soft line-clamp-2">{n.body}</p>
             </div>
           </Link>

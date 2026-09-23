@@ -3,7 +3,7 @@
 import { useActionState, useState } from "react";
 import { postAssignment, gradeSubmission, type TeacherFormState } from "./actions";
 
-const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 type Sub = {
   id: number;
@@ -32,17 +32,17 @@ export function AssignmentPanel({
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-display text-lg font-semibold text-navy">Assignments & Homework</h2>
+        <h2 className="font-display text-lg font-semibold text-green">Assignments & Homework</h2>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors"
+          className="bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
         >
           {showForm ? "Close" : "+ Post assignment"}
         </button>
       </div>
 
       {showForm && (
-        <form action={postAction} className="bg-cream rounded-xl p-4 space-y-3 mb-6">
+        <form action={postAction} className="bg-mist rounded-xl p-4 space-y-3 mb-6">
           <input type="hidden" name="classSessionId" value={classSessionId} />
           <input name="title" required placeholder="Assignment title" className={input} />
           <textarea name="description" rows={2} placeholder="Instructions…" className={input} />
@@ -55,17 +55,17 @@ export function AssignmentPanel({
               type="file"
               name="file"
               accept=".jpg,.jpeg,.png,.webp,.pdf"
-              className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-2 file:text-xs file:font-bold file:text-navy"
+              className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-white file:px-3 file:py-2 file:text-xs file:font-bold file:text-green"
             />
             <button
               disabled={posting}
-              className="ml-auto bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
+              className="ml-auto bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
             >
               {posting ? "Posting…" : "Post to class"}
             </button>
           </div>
           {postState?.error && <p className="text-xs font-semibold text-red-600">{postState.error}</p>}
-          {postState?.ok && <p className="text-xs font-semibold text-teal">Posted — students were notified.</p>}
+          {postState?.ok && <p className="text-xs font-semibold text-green">Posted — students were notified.</p>}
         </form>
       )}
 
@@ -76,7 +76,7 @@ export function AssignmentPanel({
             <summary className="cursor-pointer px-5 py-3.5 flex flex-wrap items-center gap-3">
               <span className="font-bold text-ink text-sm">{a.title}</span>
               {a.dueDate && <span className="text-xs text-ink-soft">due {a.dueDate}</span>}
-              <span className="ml-auto text-xs font-bold text-sky">
+              <span className="ml-auto text-xs font-bold text-green-mid">
                 {a.submissions.length}/{enrolledCount} submitted
               </span>
             </summary>
@@ -101,34 +101,34 @@ function SubmissionRow({ sub }: { sub: Sub }) {
         <span className="font-bold text-ink">{sub.studentName}</span>
         <span className="text-[11px] text-ink-soft">{sub.studentCode} · {sub.submittedAt}</span>
         {sub.fileUrl && (
-          <a href={`/api/files/${sub.fileUrl}`} target="_blank" className="text-sky text-xs font-bold hover:underline">
+          <a href={`/api/files/${sub.fileUrl}`} target="_blank" className="text-green-mid text-xs font-bold hover:underline">
             View file
           </a>
         )}
       </div>
-      {sub.text && <p className="mt-1.5 text-xs text-ink bg-cream rounded-lg p-3">{sub.text}</p>}
+      {sub.text && <p className="mt-1.5 text-xs text-ink bg-mist rounded-lg p-3">{sub.text}</p>}
       <form action={action} className="mt-2 flex flex-wrap items-center gap-2">
         <input type="hidden" name="submissionId" value={sub.id} />
         <input
           name="grade"
           defaultValue={sub.grade ?? ""}
           placeholder="Grade (e.g. A+, 90)"
-          className="rounded-lg border border-line px-3 py-1.5 text-xs w-32 focus:border-sky focus:outline-none"
+          className="rounded-lg border border-line px-3 py-1.5 text-xs w-32 focus:border-green-mid focus:outline-none"
         />
         <input
           name="feedback"
           defaultValue={sub.feedback ?? ""}
           placeholder="Feedback (optional)"
-          className="rounded-lg border border-line px-3 py-1.5 text-xs flex-1 min-w-40 focus:border-sky focus:outline-none"
+          className="rounded-lg border border-line px-3 py-1.5 text-xs flex-1 min-w-40 focus:border-green-mid focus:outline-none"
         />
         <button
           disabled={pending}
-          className="bg-teal hover:bg-teal/85 disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-1.5 transition-colors"
+          className="bg-green hover:bg-green/85 disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-1.5 transition-colors"
         >
           {sub.grade ? "Update" : "Grade"}
         </button>
         {state?.error && <span className="text-xs text-red-600 font-semibold">{state.error}</span>}
-        {state?.ok && <span className="text-xs text-teal font-semibold">✓</span>}
+        {state?.ok && <span className="text-xs text-green font-semibold">✓</span>}
       </form>
     </div>
   );

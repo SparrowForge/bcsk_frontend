@@ -15,7 +15,7 @@ type Member = {
   bio: string | null;
   displayOrder: number;
 };
-const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function GoverningEditor({ members }: { members: Member[] }) {
   const [editing, setEditing] = useState<Member | "new" | null>(null);
@@ -27,7 +27,7 @@ export function GoverningEditor({ members }: { members: Member[] }) {
     <div>
       <button
         onClick={() => setEditing(editing === "new" ? null : "new")}
-        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+        className="mb-5 bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
       >
         {editing === "new" ? "Close" : "+ Add member"}
       </button>
@@ -81,10 +81,10 @@ export function GoverningEditor({ members }: { members: Member[] }) {
             <textarea name="bio" rows={2} defaultValue={current?.bio ?? ""} className={`mt-1.5 ${input}`} />
           </label>
           <div className="flex items-center gap-3">
-            <button disabled={pending} className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
+            <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
               {pending ? "Saving…" : "Save member"}
             </button>
-            {state?.ok && <span className="text-sm font-bold text-teal">Saved ✓</span>}
+            {state?.ok && <span className="text-sm font-bold text-green">Saved ✓</span>}
             {state?.error && <span className="text-sm font-semibold text-red-600">{state.error}</span>}
           </div>
         </form>
@@ -93,14 +93,14 @@ export function GoverningEditor({ members }: { members: Member[] }) {
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {members.map((m) => (
           <div key={m.id} className="px-5 py-3.5 flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-extrabold uppercase bg-cream rounded-full px-2.5 py-1 w-24 text-center">
+            <span className="text-[10px] font-extrabold uppercase bg-mist rounded-full px-2.5 py-1 w-24 text-center">
               {m.kind === "GOVERNING" ? "Governing" : "Regional"}
             </span>
             <div className="min-w-48 flex-1">
               <p className="font-bold text-ink text-sm">{m.name}</p>
               <p className="text-[11px] text-ink-soft">{m.role}{m.organization ? ` · ${m.organization}` : ""}</p>
             </div>
-            <button onClick={() => setEditing(m)} className="text-xs font-bold text-sky hover:underline">Edit</button>
+            <button onClick={() => setEditing(m)} className="text-xs font-bold text-green-mid hover:underline">Edit</button>
             <button
               onClick={() => { if (confirm(`Remove ${m.name}?`)) startDelete(() => deleteMember(m.id)); }}
               className="text-xs font-bold text-red-600 hover:underline"

@@ -44,13 +44,13 @@ export default async function PaymentPage({
         <div className="bg-white border border-line rounded-2xl p-6 mb-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="text-xs font-bold uppercase tracking-wide text-sky">
+              <p className="text-xs font-bold uppercase tracking-wide text-green-mid">
                 Application #{app.id} · {app.type === "REGULAR" ? "Regular Course" : "Special Course"}
               </p>
               <h2 className="mt-1 font-bold text-ink">{app.applicantName}</h2>
               <p className="text-xs text-ink-soft mt-1">{fee.breakdown}</p>
             </div>
-            <p className="font-display text-3xl font-semibold text-navy">{krw(fee.amount)}</p>
+            <p className="font-display text-3xl font-semibold text-green">{krw(fee.amount)}</p>
           </div>
         </div>
 

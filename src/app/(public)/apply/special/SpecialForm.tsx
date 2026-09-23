@@ -21,7 +21,7 @@ export function SpecialForm({
   return (
     <form action={action} className="space-y-5">
       <label className="block">
-        <span className="text-xs font-bold text-ink">Course <span className="text-sunrise-ink">*</span></span>
+        <span className="text-xs font-bold text-ink">Course <span className="text-crimson-ink">*</span></span>
         <select name="courseName" required defaultValue={preselect ?? ""} className={`mt-1.5 ${inputCls}`}>
           <option value="" disabled>Choose a course…</option>
           {courses.map((o) => (
@@ -35,7 +35,7 @@ export function SpecialForm({
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block">
-          <span className="text-xs font-bold text-ink">Gender <span className="text-sunrise-ink">*</span></span>
+          <span className="text-xs font-bold text-ink">Gender <span className="text-crimson-ink">*</span></span>
           <select name="gender" required defaultValue="" className={`mt-1.5 ${inputCls}`}>
             <option value="" disabled>Select…</option>
             <option>Male</option>
@@ -43,7 +43,7 @@ export function SpecialForm({
           </select>
         </label>
         <label className="block">
-          <span className="text-xs font-bold text-ink">Religion <span className="text-sunrise-ink">*</span></span>
+          <span className="text-xs font-bold text-ink">Religion <span className="text-crimson-ink">*</span></span>
           <select name="religion" required defaultValue="" className={`mt-1.5 ${inputCls}`}>
             <option value="" disabled>Select…</option>
             <option>Islam</option>
@@ -64,7 +64,7 @@ export function SpecialForm({
       <Field label="Address in Bangladesh" name="addressBangladesh" required />
       <Field label="Emergency contact (name + phone)" name="emergencyContact" required />
 
-      <label className="flex items-start gap-3 bg-sky-soft rounded-xl p-4">
+      <label className="flex items-start gap-3 bg-green-soft rounded-xl p-4">
         <input type="checkbox" name="isBcskStudent" className="mt-0.5" />
         <span className="text-xs text-ink leading-relaxed">
           <span className="font-bold">The applicant is a current BCSK regular student.</span> BCSK students pay the
@@ -77,7 +77,7 @@ export function SpecialForm({
       <Recaptcha siteKey={recaptchaSiteKey} />
       <button
         disabled={pending}
-        className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+        className="w-full bg-crimson hover:bg-crimson-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
       >
         {pending ? "Submitting…" : "Continue to payment →"}
       </button>

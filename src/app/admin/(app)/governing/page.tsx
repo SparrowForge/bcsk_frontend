@@ -12,7 +12,7 @@ export default async function AdminGoverningPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Governing Body & Regional Representatives</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Governing Body & Regional Representatives</h1>
       <GoverningEditor
         members={members.map((m) => ({
           id: m.id,

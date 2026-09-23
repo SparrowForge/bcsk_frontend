@@ -11,7 +11,7 @@ export function TicketActions({ ticketId, status }: { ticketId: number; status: 
     return (
       <button
         onClick={() => start(() => setTicketStatus(ticketId, "OPEN"))}
-        className="text-xs font-bold text-sky hover:underline"
+        className="text-xs font-bold text-green-mid hover:underline"
       >
         Reopen ticket
       </button>
@@ -25,22 +25,22 @@ export function TicketActions({ ticketId, status }: { ticketId: number; status: 
         name="reply"
         rows={2}
         placeholder="Write a reply (emailed to the sender)…"
-        className="w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+        className="w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
       />
       <div className="flex flex-wrap items-center gap-3">
         <label className="flex items-center gap-2 text-xs font-bold text-ink">
-          <input type="checkbox" name="close" defaultChecked className="w-4 h-4 accent-teal" />
+          <input type="checkbox" name="close" defaultChecked className="w-4 h-4 accent-green" />
           Close ticket after reply
         </label>
         <button
           disabled={pending}
-          className="ml-auto bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
+          className="ml-auto bg-green hover:bg-green-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-5 py-2.5 transition-colors"
         >
           {pending ? "Sending…" : "Send reply"}
         </button>
       </div>
       {state?.error && <p className="text-xs font-semibold text-red-600">{state.error}</p>}
-      {state?.ok && <p className="text-xs font-semibold text-teal">Reply sent ✓</p>}
+      {state?.ok && <p className="text-xs font-semibold text-green">Reply sent ✓</p>}
     </form>
   );
 }

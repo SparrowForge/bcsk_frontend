@@ -19,14 +19,14 @@ export default async function TuitionFeePage() {
     <PageShell title={t.nav.tuitionFee} eyebrow={t.nav.admission} cta={{ label: t.nav.applyNow, href: "/apply" }}>
       <div className="max-w-4xl space-y-12">
         <section>
-          <h2 className="font-display text-2xl font-semibold text-navy mb-2">{t.nav.regularCourse}</h2>
+          <h2 className="font-display text-2xl font-semibold text-green mb-2">{t.nav.regularCourse}</h2>
           <p className="text-sm text-ink-soft mb-5">
             Semester 1: {settings.semester_1_dates} · Semester 2: {settings.semester_2_dates}
           </p>
           <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-cream text-navy text-left">
+                <tr className="bg-mist text-green text-left">
                   <th className="px-5 py-3.5 font-bold">Class</th>
                   <th className="px-5 py-3.5 font-bold">Admission Fee</th>
                   <th className="px-5 py-3.5 font-bold">Semester Fee</th>
@@ -51,11 +51,11 @@ export default async function TuitionFeePage() {
         </section>
 
         <section>
-          <h2 className="font-display text-2xl font-semibold text-navy mb-5">{t.nav.specialCourses}</h2>
+          <h2 className="font-display text-2xl font-semibold text-green mb-5">{t.nav.specialCourses}</h2>
           <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-cream text-navy text-left">
+                <tr className="bg-mist text-green text-left">
                   <th className="px-5 py-3.5 font-bold">Course</th>
                   <th className="px-5 py-3.5 font-bold">Admission Fee</th>
                   <th className="px-5 py-3.5 font-bold">BCSK Student</th>

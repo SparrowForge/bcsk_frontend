@@ -13,12 +13,12 @@ export function FunAbacus({ loggedIn }: { loggedIn: boolean }) {
     <div className="max-w-3xl">
       {!mode && (
         <div className="grid sm:grid-cols-2 gap-5">
-          <button onClick={() => setMode("flash-race")} className="text-left bg-gradient-to-br from-sky to-navy text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
+          <button onClick={() => setMode("flash-race")} className="text-left bg-gradient-to-br from-green-mid to-green text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
             <span className="text-4xl" aria-hidden>⚡</span>
             <h3 className="mt-3 font-display text-2xl font-semibold">Flash Race</h3>
             <p className="mt-1.5 text-sm text-white/80">Numbers flash one by one — keep the running sum in your head, anzan style!</p>
           </button>
-          <button onClick={() => setMode("balloon-pop")} className="text-left bg-gradient-to-br from-sunrise-ink to-red-700 text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
+          <button onClick={() => setMode("balloon-pop")} className="text-left bg-gradient-to-br from-crimson-ink to-red-700 text-white rounded-3xl p-8 hover:scale-[1.02] transition-transform">
             <span className="text-4xl" aria-hidden>🎈</span>
             <h3 className="mt-3 font-display text-2xl font-semibold">Balloon Pop</h3>
             <p className="mt-1.5 text-sm text-white/80">Pop the balloon with the right answer before the 60 seconds run out!</p>
@@ -83,7 +83,7 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
   return (
     <div className="bg-white border border-line rounded-3xl p-8 text-center">
       <div className="flex items-center justify-between mb-6 text-xs font-bold text-ink-soft">
-        <button onClick={onExit} className="hover:text-sky">← All games</button>
+        <button onClick={onExit} className="hover:text-green-mid">← All games</button>
         <span>Round {Math.min(round, 5)} / 5 · Score {score}</span>
       </div>
 
@@ -92,7 +92,7 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
           <p className="text-sm text-ink-soft mb-5">
             {round === 1 ? "Numbers will flash one at a time. Add them in your head!" : lastCorrect ? "Correct! 🎉 Next round is faster…" : "Not quite — next round!"}
           </p>
-          <button onClick={startRound} className="bg-sky hover:bg-sky/85 text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors">
+          <button onClick={startRound} className="bg-green-mid hover:bg-green-mid/85 text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors">
             {round === 1 ? "Start Flash Race" : `Start round ${round}`}
           </button>
         </>
@@ -100,7 +100,7 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
 
       {phase === "flashing" && (
         <div className="h-36 flex items-center justify-center">
-          <span className="font-display text-7xl font-bold text-navy tabular-nums" aria-live="assertive">
+          <span className="font-display text-7xl font-bold text-green tabular-nums" aria-live="assertive">
             {current ?? ""}
           </span>
         </div>
@@ -120,9 +120,9 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
             inputMode="numeric"
             value={input}
             onChange={(e) => setInput(e.target.value.replace(/\D/g, ""))}
-            className="text-center font-display text-3xl font-bold text-navy border-2 border-line focus:border-sky rounded-xl px-4 py-2 w-40 focus:outline-none"
+            className="text-center font-display text-3xl font-bold text-green border-2 border-line focus:border-green-mid rounded-xl px-4 py-2 w-40 focus:outline-none"
           />
-          <button className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-2.5 text-sm transition-colors">
+          <button className="bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-8 py-2.5 text-sm transition-colors">
             Check ✓
           </button>
         </form>
@@ -131,14 +131,14 @@ function FlashRace({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => void
       {phase === "done" && (
         <>
           <p className="text-5xl" aria-hidden>{score >= 200 ? "🏆" : score >= 120 ? "🌟" : "💪"}</p>
-          <h3 className="mt-3 font-display text-3xl font-semibold text-navy">{score} points</h3>
+          <h3 className="mt-3 font-display text-3xl font-semibold text-green">{score} points</h3>
           <p className="mt-2 text-sm text-ink-soft">
             {lastCorrect ? "Finished with a correct answer — brilliant anzan!" : "Great effort — keep training that mental abacus!"}
-            {saved && <span className="block mt-1 text-teal font-bold">Saved to your progress report ✓</span>}
+            {saved && <span className="block mt-1 text-green font-bold">Saved to your progress report ✓</span>}
           </p>
           <button
             onClick={() => { setRound(1); setScore(0); setPhase("ready"); setSaved(false); }}
-            className="mt-5 bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
+            className="mt-5 bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors"
           >
             Play again
           </button>
@@ -204,14 +204,14 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
   return (
     <div className="bg-white border border-line rounded-3xl p-8 text-center">
       <div className="flex items-center justify-between mb-6 text-xs font-bold text-ink-soft">
-        <button onClick={onExit} className="hover:text-sky">← All games</button>
+        <button onClick={onExit} className="hover:text-green-mid">← All games</button>
         <span>⏱ {timeLeft}s · Score {score}</span>
       </div>
 
       {!running && !done && (
         <>
           <p className="text-sm text-ink-soft mb-5">Pop the balloon with the correct answer. +10 for right, −5 for wrong. 60 seconds!</p>
-          <button onClick={start} className="bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-3 text-sm transition-colors">
+          <button onClick={start} className="bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors">
             Start Balloon Pop
           </button>
         </>
@@ -219,7 +219,7 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
 
       {running && problem && (
         <>
-          <p className="font-display text-5xl font-bold text-navy mb-8 tabular-nums">
+          <p className="font-display text-5xl font-bold text-green mb-8 tabular-nums">
             {problem.a} {problem.op} {problem.b} = ?
           </p>
           <div className="flex justify-center gap-6">
@@ -228,7 +228,7 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
                 key={`${n}-${i}`}
                 onClick={() => pop(n)}
                 className={`relative w-24 h-28 rounded-[50%_50%_50%_50%/60%_60%_40%_40%] font-display text-2xl font-bold shadow-lg hover:scale-110 transition-transform ${
-                  ["bg-sunrise text-navy", "bg-sky text-white", "bg-teal text-white"][i]
+                  ["bg-crimson text-white", "bg-green-mid text-white", "bg-green text-white"][i]
                 }`}
               >
                 {n}
@@ -242,9 +242,9 @@ function BalloonPop({ loggedIn, onExit }: { loggedIn: boolean; onExit: () => voi
       {done && (
         <>
           <p className="text-5xl" aria-hidden>{score >= 150 ? "🏆" : score >= 80 ? "🌟" : "💪"}</p>
-          <h3 className="mt-3 font-display text-3xl font-semibold text-navy">{score} points</h3>
-          {saved && <p className="mt-1 text-teal text-sm font-bold">Saved to your progress report ✓</p>}
-          <button onClick={start} className="mt-5 bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
+          <h3 className="mt-3 font-display text-3xl font-semibold text-green">{score} points</h3>
+          {saved && <p className="mt-1 text-green text-sm font-bold">Saved to your progress report ✓</p>}
+          <button onClick={start} className="mt-5 bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
             Play again
           </button>
         </>

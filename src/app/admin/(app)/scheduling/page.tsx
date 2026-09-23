@@ -27,7 +27,7 @@ export default async function SchedulingPage() {
 
   return (
     <div className="max-w-5xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-2">Scheduling — Semester {SEMESTER_CURRENT}</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-2">Scheduling — Semester {SEMESTER_CURRENT}</h1>
       <p className="text-xs text-ink-soft mb-6">
         The class routine and teacher assignments. Changes show immediately on student/teacher dashboards and course pages.
       </p>
@@ -40,7 +40,7 @@ export default async function SchedulingPage() {
       <div className="mt-6 scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-4 py-3.5 font-bold">Class / Session</th>
               <th className="px-4 py-3.5 font-bold">Day</th>
               <th className="px-4 py-3.5 font-bold">Time</th>

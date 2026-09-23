@@ -10,7 +10,7 @@ export default async function QuestionsPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Student Questions</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Student Questions</h1>
       <div className="space-y-4">
         {questions.length === 0 && (
           <p className="bg-white rounded-2xl border border-line p-6 text-sm text-ink-soft">No questions yet.</p>
@@ -23,7 +23,7 @@ export default async function QuestionsPage() {
                 — {q.student.name} ({q.student.studentProfile?.studentId}) ·{" "}
                 {formatDate(q.createdAt)}
               </span>
-              <span className={`ml-auto text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-teal/15 text-teal" : "bg-sunrise/15 text-sunrise-ink"}`}>
+              <span className={`ml-auto text-xs font-bold rounded-full px-3 py-1 ${q.answer ? "bg-green/15 text-green" : "bg-amber/15 text-amber-ink"}`}>
                 {q.answer ? "Answered" : "Waiting"}
               </span>
             </div>

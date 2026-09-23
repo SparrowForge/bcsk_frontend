@@ -13,25 +13,25 @@ export default async function AttendancePage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Attendance Report</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Attendance Report</h1>
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-2xl border border-line p-5 text-center">
-          <p className="font-display text-3xl font-semibold text-navy">{total}</p>
+          <p className="font-display text-3xl font-semibold text-green">{total}</p>
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Sessions</p>
         </div>
         <div className="bg-white rounded-2xl border border-line p-5 text-center">
-          <p className="font-display text-3xl font-semibold text-teal">{present}</p>
+          <p className="font-display text-3xl font-semibold text-green">{present}</p>
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Present</p>
         </div>
         <div className="bg-white rounded-2xl border border-line p-5 text-center">
-          <p className="font-display text-3xl font-semibold text-sunrise-ink">{rate != null ? `${rate}%` : "—"}</p>
+          <p className="font-display text-3xl font-semibold text-crimson-ink">{rate != null ? `${rate}%` : "—"}</p>
           <p className="text-xs font-bold text-ink-soft uppercase mt-1">Attendance</p>
         </div>
       </div>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-5 py-3.5 font-bold">Date</th>
               <th className="px-5 py-3.5 font-bold">Class</th>
               <th className="px-5 py-3.5 font-bold">Status</th>
@@ -47,7 +47,7 @@ export default async function AttendancePage() {
                 <td className="px-5 py-3">{r.classSession.title}</td>
                 <td className="px-5 py-3">
                   <span className={`text-xs font-bold rounded-full px-3 py-1 ${
-                    r.status === "PRESENT" ? "bg-teal/15 text-teal" : r.status === "LATE" ? "bg-sunrise/15 text-sunrise-ink" : "bg-red-50 text-red-600"
+                    r.status === "PRESENT" ? "bg-green/15 text-green" : r.status === "LATE" ? "bg-amber/15 text-amber-ink" : "bg-red-50 text-red-600"
                   }`}>
                     {r.status}
                   </span>

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { updateSession, type SchedState } from "./actions";
 
 const DAYS = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-const cell = "rounded border border-line px-2 py-1.5 text-xs focus:border-sky focus:outline-none";
+const cell = "rounded border border-line px-2 py-1.5 text-xs focus:border-green-mid focus:outline-none";
 
 export function SessionRow({
   session,
@@ -53,13 +53,13 @@ export function SessionRow({
         <form id={formId} action={action} className="flex items-center gap-2">
           <input type="hidden" name="id" value={session.id} />
           <label className="flex items-center gap-1 text-[10px] font-bold text-ink-soft">
-            <input type="checkbox" name="active" defaultChecked={session.active} className="w-3.5 h-3.5 accent-teal" />
+            <input type="checkbox" name="active" defaultChecked={session.active} className="w-3.5 h-3.5 accent-green" />
             on
           </label>
-          <button disabled={pending} className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors">
+          <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors">
             Save
           </button>
-          {state?.ok && <span className="text-[11px] font-bold text-teal">✓</span>}
+          {state?.ok && <span className="text-[11px] font-bold text-green">✓</span>}
         </form>
       </td>
     </tr>

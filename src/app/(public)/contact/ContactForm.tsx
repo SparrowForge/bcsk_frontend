@@ -6,7 +6,7 @@ import { useActionState } from "react";
 import { submitContact, type ContactState } from "./actions";
 
 const input =
-  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+  "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function ContactForm({
   recaptchaSiteKey,
@@ -21,10 +21,10 @@ export function ContactForm({
   if (state?.ok) {
     return (
       <div className="bg-white rounded-xl p-6 text-center">
-        <div className="mx-auto w-12 h-12 rounded-full bg-teal/15 text-teal flex items-center justify-center">
+        <div className="mx-auto w-12 h-12 rounded-full bg-green/15 text-green flex items-center justify-center">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6 9 17l-5-5" /></svg>
         </div>
-        <h3 className="mt-3 font-display text-lg font-semibold text-navy">Message sent</h3>
+        <h3 className="mt-3 font-display text-lg font-semibold text-green">Message sent</h3>
         <p className="mt-1.5 text-sm text-ink-soft">
           Your message is now a support ticket with our office. We reply by email, usually within 1–2 working days.
         </p>
@@ -71,7 +71,7 @@ export function ContactForm({
       <button
         type="submit"
         disabled={pending}
-        className="bg-navy hover:bg-navy-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors"
+        className="bg-green hover:bg-green-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors"
       >
         {pending ? "Sending…" : "Send message"}
       </button>

@@ -16,15 +16,15 @@ export default async function OfficeLayout({ children }: { children: React.React
   ];
 
   return (
-    <div className="min-h-screen bg-sky-soft/30 flex flex-col">
+    <div className="min-h-screen bg-green-soft/30 flex flex-col">
       <header className="bg-white border-b border-line sticky top-0 z-40 no-print">
         <div className="mx-auto max-w-7xl px-4 h-16 flex items-center justify-between gap-4">
           <Logo href="/office/dashboard" />
           <div className="flex items-center gap-3">
-            <Link href="/" className="hidden sm:block text-xs font-bold text-ink-soft hover:text-sky">
+            <Link href="/" className="hidden sm:block text-xs font-bold text-ink-soft hover:text-green-mid">
               ← Public site
             </Link>
-            <span className="text-sm font-bold text-navy hidden sm:block">{session.name}</span>
+            <span className="text-sm font-bold text-green hidden sm:block">{session.name}</span>
             <LogoutButton dest="/office" />
           </div>
         </div>

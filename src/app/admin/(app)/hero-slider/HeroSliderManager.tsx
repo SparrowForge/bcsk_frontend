@@ -4,7 +4,7 @@ import { useActionState, useTransition } from "react";
 import { addHeroImage, deleteHeroImage, type HeroSliderState } from "./actions";
 
 type Image = { id: number; url: string; caption: string | null };
-const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-sky focus:outline-none";
+const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-green-mid focus:outline-none";
 const LIMIT = 5;
 
 export function HeroSliderManager({ images }: { images: Image[] }) {
@@ -16,7 +16,7 @@ export function HeroSliderManager({ images }: { images: Image[] }) {
     <div className="space-y-6">
       <div className="bg-white rounded-2xl border border-line p-5">
         <div className="flex flex-wrap items-center gap-3 mb-4">
-          <h2 className="font-bold text-navy">Homepage slider</h2>
+          <h2 className="font-bold text-green">Homepage slider</h2>
           <span className="text-xs text-ink-soft">
             {images.length} / {LIMIT} images
           </span>
@@ -57,12 +57,12 @@ export function HeroSliderManager({ images }: { images: Image[] }) {
               name="image"
               required
               accept="image/jpeg,image/png,image/webp"
-              className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-cream file:px-3 file:py-2 file:text-xs file:font-bold file:text-navy"
+              className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-mist file:px-3 file:py-2 file:text-xs file:font-bold file:text-green"
             />
             <input name="caption" placeholder="Caption (optional, not shown publicly)" className={`flex-1 min-w-52 ${input}`} />
             <button
               disabled={pending}
-              className="bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy text-xs font-bold rounded-lg px-4 py-2 transition-colors"
+              className="bg-crimson hover:bg-crimson-deep disabled:opacity-60 text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
             >
               {pending ? "Uploading…" : "Add to slider"}
             </button>

@@ -15,27 +15,27 @@ const BUBBLES = [
     key: "bn",
     lang: "bn",
     text: "অ আ",
-    bg: "bg-teal text-white",
+    bg: "bg-green text-white",
     corner: "rounded-[2rem] rounded-bl-md",
-    tailBorder: "border-t-teal",
+    tailBorder: "border-t-green",
     tailPos: "-bottom-3 left-6",
   },
   {
     key: "en",
     lang: undefined,
     text: "ABC",
-    bg: "bg-sunrise text-navy",
+    bg: "bg-crimson text-white",
     corner: "rounded-[2.4rem] rounded-br-md",
-    tailBorder: "border-t-sunrise",
+    tailBorder: "border-t-crimson",
     tailPos: "-bottom-3 right-6",
   },
   {
     key: "ko",
     lang: "ko",
     text: "한글",
-    bg: "bg-sky text-white",
+    bg: "bg-green-mid text-white",
     corner: "rounded-[2rem] rounded-bl-md",
-    tailBorder: "border-t-sky",
+    tailBorder: "border-t-green-mid",
     tailPos: "-bottom-3 left-6",
   },
 ] as const;
@@ -125,25 +125,25 @@ function IllustrationSlider() {
       {/* the child beneath the bubbles: open book, shifted up to leave room for the dots */}
       <div className="absolute left-1/2 -translate-x-1/2 bottom-8 sm:bottom-10">
         <svg width="220" height="130" viewBox="0 0 220 130" fill="none" aria-hidden>
-          <ellipse cx="110" cy="122" rx="85" ry="8" fill="#F6ECD6" />
+          <ellipse cx="110" cy="122" rx="85" ry="8" fill="#E4EFE9" />
           <path
             d="M110 45c-14-12-38-16-60-10v62c22-6 46-2 60 10 14-12 38-16 60-10V35c-22-6-46-2-60 10Z"
             fill="#fff"
-            stroke="#1D2B64"
+            stroke="#006A4E"
             strokeWidth="4"
             strokeLinejoin="round"
           />
-          <path d="M110 45v62" stroke="#1D2B64" strokeWidth="4" />
+          <path d="M110 45v62" stroke="#006A4E" strokeWidth="4" />
           <path
             d="M62 52c14-3 28-1 38 5M62 66c14-3 28-1 38 5M62 80c14-3 28-1 38 5M158 52c-14-3-28-1-38 5M158 66c-14-3-28-1-38 5M158 80c-14-3-28-1-38 5"
-            stroke="#38A8DC"
+            stroke="#1FAE83"
             strokeWidth="3.5"
             strokeLinecap="round"
           />
-          <path d="m40 30 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5 2.5-6Z" fill="#F5820B" />
-          <path d="m184 22 2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2 2-4.8Z" fill="#0FB5A6" />
-          <circle cx="170" cy="52" r="4" fill="#38A8DC" />
-          <circle cx="52" cy="14" r="3" fill="#1D2B64" />
+          <path d="m40 30 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5 2.5-6Z" fill="#F42A41" />
+          <path d="m184 22 2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2 2-4.8Z" fill="#1FAE83" />
+          <circle cx="170" cy="52" r="4" fill="#1FAE83" />
+          <circle cx="52" cy="14" r="3" fill="#006A4E" />
         </svg>
       </div>
 
@@ -152,7 +152,7 @@ function IllustrationSlider() {
         {BUBBLES.map((b, i) => (
           <span
             key={b.key}
-            className={`w-2 h-2 rounded-full transition-colors duration-300 ${i === active ? "bg-navy" : "bg-navy/20"}`}
+            className={`w-2 h-2 rounded-full transition-colors duration-300 ${i === active ? "bg-green" : "bg-green/20"}`}
           />
         ))}
       </div>

@@ -13,11 +13,11 @@ export default async function StudentPaymentsPage() {
 
   return (
     <div className="max-w-3xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Payment Report</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Payment Report</h1>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-5 py-3.5 font-bold">Date</th>
               <th className="px-5 py-3.5 font-bold">Purpose</th>
               <th className="px-5 py-3.5 font-bold">Method</th>
@@ -38,9 +38,9 @@ export default async function StudentPaymentsPage() {
                 <td className="px-5 py-3 font-bold text-ink">{krw(p.amount)}</td>
                 <td className="px-5 py-3">
                   <span className={`text-xs font-bold rounded-full px-3 py-1 ${
-                    ["PAID", "VERIFIED"].includes(p.status) ? "bg-teal/15 text-teal"
-                    : p.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-ink"
-                    : p.status === "REFUNDED" ? "bg-sky-soft text-navy"
+                    ["PAID", "VERIFIED"].includes(p.status) ? "bg-green/15 text-green"
+                    : p.status === "PENDING_VERIFICATION" ? "bg-amber/15 text-amber-ink"
+                    : p.status === "REFUNDED" ? "bg-green-soft text-green"
                     : "bg-red-50 text-red-600"
                   }`}>
                     {p.status.replace(/_/g, " ")}
@@ -48,7 +48,7 @@ export default async function StudentPaymentsPage() {
                 </td>
                 <td className="px-5 py-3">
                   {["PAID", "VERIFIED"].includes(p.status) ? (
-                    <a href={`/api/receipts/${p.id}`} className="text-sky font-bold hover:underline">PDF</a>
+                    <a href={`/api/receipts/${p.id}`} className="text-green-mid font-bold hover:underline">PDF</a>
                   ) : (
                     "—"
                   )}

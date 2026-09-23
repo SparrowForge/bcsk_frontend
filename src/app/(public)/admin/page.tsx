@@ -13,7 +13,7 @@ export default async function AdminLoginPage() {
   const { t } = await getDict();
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-navy/5">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-green/5">
       <LoginCard
         title={t.auth.adminLogin}
         idLabel={t.auth.adminId}

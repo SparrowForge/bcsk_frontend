@@ -4,8 +4,8 @@ import Link from "next/link";
 export default function Forbidden() {
   return (
     <div className="max-w-lg">
-      <p className="text-xs font-extrabold uppercase tracking-wide text-sunrise-ink">403</p>
-      <h1 className="mt-2 font-display text-2xl font-semibold text-navy">
+      <p className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink">403</p>
+      <h1 className="mt-2 font-display text-2xl font-semibold text-green">
         Your role doesn&apos;t have access to this
       </h1>
       <p className="mt-3 text-sm text-ink-soft leading-relaxed">
@@ -14,7 +14,7 @@ export default function Forbidden() {
       </p>
       <Link
         href="/admin/dashboard"
-        className="mt-6 inline-block bg-navy hover:bg-navy-deep text-white text-sm font-bold rounded-lg px-5 py-2.5 transition-colors"
+        className="mt-6 inline-block bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-5 py-2.5 transition-colors"
       >
         Back to dashboard
       </Link>

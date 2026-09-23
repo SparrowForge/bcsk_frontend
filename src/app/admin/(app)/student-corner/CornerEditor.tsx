@@ -4,7 +4,7 @@ import { useActionState, useState, useTransition } from "react";
 import { saveCornerPost, deleteCornerPost, type CornerState } from "./actions";
 
 type Post = { id: number; title: string; body: string; studentName: string; kind: string; published: boolean };
-const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none";
+const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function CornerEditor({ posts }: { posts: Post[] }) {
   const [editing, setEditing] = useState<Post | "new" | null>(null);
@@ -16,7 +16,7 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
     <div>
       <button
         onClick={() => setEditing(editing === "new" ? null : "new")}
-        className="mb-5 bg-sunrise hover:bg-sunrise-deep text-navy text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
+        className="mb-5 bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors"
       >
         {editing === "new" ? "Close" : "+ New post"}
       </button>
@@ -49,14 +49,14 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
           </label>
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-xs font-bold text-ink">
-              <input type="checkbox" name="published" defaultChecked={current?.published ?? true} className="w-4 h-4 accent-teal" />
+              <input type="checkbox" name="published" defaultChecked={current?.published ?? true} className="w-4 h-4 accent-green" />
               Published
             </label>
-            <button disabled={pending} className="ml-auto bg-navy hover:bg-navy-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
+            <button disabled={pending} className="ml-auto bg-green hover:bg-green-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
               {pending ? "Saving…" : "Save"}
             </button>
           </div>
-          {state?.ok && <p className="text-sm font-bold text-teal">Saved ✓</p>}
+          {state?.ok && <p className="text-sm font-bold text-green">Saved ✓</p>}
           {state?.error && <p className="text-sm font-semibold text-red-600">{state.error}</p>}
         </form>
       )}
@@ -64,12 +64,12 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {posts.map((p) => (
           <div key={p.id} className="px-5 py-3.5 flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-extrabold uppercase text-sunrise-ink w-20">{p.kind}</span>
+            <span className="text-[10px] font-extrabold uppercase text-crimson-ink w-20">{p.kind}</span>
             <div className="min-w-48 flex-1">
               <p className="font-bold text-ink text-sm">{p.title}</p>
               <p className="text-[11px] text-ink-soft">{p.studentName}{!p.published && " · draft"}</p>
             </div>
-            <button onClick={() => setEditing(p)} className="text-xs font-bold text-sky hover:underline">Edit</button>
+            <button onClick={() => setEditing(p)} className="text-xs font-bold text-green-mid hover:underline">Edit</button>
             <button
               onClick={() => { if (confirm(`Delete "${p.title}"?`)) startDelete(() => deleteCornerPost(p.id)); }}
               className="text-xs font-bold text-red-600 hover:underline"

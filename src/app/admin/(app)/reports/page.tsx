@@ -11,7 +11,7 @@ export default async function ReportsPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Reports & Documents</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Reports & Documents</h1>
 
       <ResultEntryForm
         students={students.map((s) => ({ userId: s.id, label: `${s.name} (${s.studentProfile?.studentId})` }))}
@@ -20,7 +20,7 @@ export default async function ReportsPage() {
       <div className="mt-6 scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-4 py-3.5 font-bold">Student</th>
               <th className="px-4 py-3.5 font-bold">Class</th>
               <th className="px-4 py-3.5 font-bold">Results on file</th>
@@ -38,13 +38,13 @@ export default async function ReportsPage() {
                 <td className="px-4 py-3 text-ink-soft">{s._count.examResults}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-2">
-                    <a href={`/api/admin/documents/${s.id}/certificate`} className="text-[11px] font-bold bg-cream hover:bg-cream-deep text-navy rounded-lg px-3 py-1.5 transition-colors">
+                    <a href={`/api/admin/documents/${s.id}/certificate`} className="text-[11px] font-bold bg-mist hover:bg-mist-deep text-green rounded-lg px-3 py-1.5 transition-colors">
                       📜 Certificate
                     </a>
-                    <a href={`/api/admin/documents/${s.id}/id-card`} className="text-[11px] font-bold bg-cream hover:bg-cream-deep text-navy rounded-lg px-3 py-1.5 transition-colors">
+                    <a href={`/api/admin/documents/${s.id}/id-card`} className="text-[11px] font-bold bg-mist hover:bg-mist-deep text-green rounded-lg px-3 py-1.5 transition-colors">
                       🪪 ID Card
                     </a>
-                    <a href={`/api/admin/documents/${s.id}/result-sheet`} className="text-[11px] font-bold bg-cream hover:bg-cream-deep text-navy rounded-lg px-3 py-1.5 transition-colors">
+                    <a href={`/api/admin/documents/${s.id}/result-sheet`} className="text-[11px] font-bold bg-mist hover:bg-mist-deep text-green rounded-lg px-3 py-1.5 transition-colors">
                       📈 Result Sheet
                     </a>
                   </div>

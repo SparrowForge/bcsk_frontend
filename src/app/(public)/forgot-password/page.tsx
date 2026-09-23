@@ -7,9 +7,9 @@ export default function ForgotPasswordPage() {
   const [state, action, pending] = useActionState(forgotPassword, null);
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-cream/60">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-mist/60">
       <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
-        <h1 className="font-display text-2xl font-semibold text-navy text-center">Forgot password</h1>
+        <h1 className="font-display text-2xl font-semibold text-green text-center">Forgot password</h1>
         {state?.ok ? (
           <p className="mt-6 text-sm text-ink-soft text-center">
             If that account has an email on file, a reset link is on its way. The link is valid for one hour.
@@ -21,13 +21,13 @@ export default function ForgotPasswordPage() {
               <input
                 name="loginId"
                 required
-                className="mt-1.5 w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-sky focus:outline-none"
+                className="mt-1.5 w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
               />
             </label>
             <button
               type="submit"
               disabled={pending}
-              className="w-full bg-navy hover:bg-navy-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
+              className="w-full bg-green hover:bg-green-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3 text-sm transition-colors"
             >
               {pending ? "…" : "Send reset link"}
             </button>

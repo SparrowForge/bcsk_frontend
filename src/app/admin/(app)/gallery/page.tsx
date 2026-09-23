@@ -9,7 +9,7 @@ export default async function AdminGalleryPage() {
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Media Gallery</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Media Gallery</h1>
       <GalleryManager
         albums={albums.map((a) => ({
           id: a.id,

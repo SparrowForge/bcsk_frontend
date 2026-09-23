@@ -10,7 +10,7 @@ export default async function TeacherTasksPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Task List</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Task List</h1>
       <div className="space-y-2.5">
         {tasks.length === 0 && (
           <p className="bg-white rounded-2xl border border-line p-6 text-sm text-ink-soft">

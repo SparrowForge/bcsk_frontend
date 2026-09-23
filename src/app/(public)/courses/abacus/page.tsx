@@ -55,9 +55,9 @@ export default async function AbacusPage() {
     <>
       {/* hero + subnav (FR-ABC-01) */}
       <section className="mx-auto max-w-7xl px-4 pt-6">
-        <div className="relative bg-cream rounded-3xl px-6 sm:px-12 py-14 overflow-hidden">
+        <div className="relative bg-mist rounded-3xl px-6 sm:px-12 py-14 overflow-hidden">
           <div className="absolute right-10 top-8 hidden lg:flex gap-2" aria-hidden>
-            {["bg-sunrise", "bg-sky", "bg-teal", "bg-navy"].map((c, i) => (
+            {["bg-crimson", "bg-green-mid", "bg-green", "bg-green-deep"].map((c, i) => (
               <div key={i} className="flex flex-col gap-2">
                 {Array.from({ length: 4 - (i % 2) }).map((_, j) => (
                   <span key={j} className={`w-6 h-6 rounded-full ${c}`} />
@@ -65,14 +65,14 @@ export default async function AbacusPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs font-extrabold tracking-[0.2em] uppercase text-sunrise-ink">BCSK Abacus Programme</p>
+          <p className="text-xs font-extrabold tracking-[0.2em] uppercase text-crimson-ink">BCSK Abacus Programme</p>
           <h1 className="relative mt-3 font-display text-4xl sm:text-5xl font-semibold text-ink max-w-xl leading-tight">
             Where Math Becomes an Adventure
           </h1>
           <p className="relative mt-4 text-ink-soft text-sm max-w-xl leading-relaxed">{course?.description}</p>
           <Link
             href="/apply/special?course=abacus"
-            className="relative inline-block mt-7 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="relative inline-block mt-7 bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
           >
             Join the Abacus programme
           </Link>
@@ -82,7 +82,7 @@ export default async function AbacusPage() {
             <a
               key={href}
               href={href}
-              className="whitespace-nowrap text-xs font-bold bg-white border border-line hover:border-sky text-navy rounded-full px-4 py-2 transition-colors"
+              className="whitespace-nowrap text-xs font-bold bg-white border border-line hover:border-green-mid text-green rounded-full px-4 py-2 transition-colors"
             >
               {label}
             </a>
@@ -96,7 +96,7 @@ export default async function AbacusPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {ABOUT_SECTIONS.map((s) => (
             <div key={s.title} className="bg-white border border-line rounded-2xl p-6">
-              <h3 className="font-display text-lg font-semibold text-navy">{s.title}</h3>
+              <h3 className="font-display text-lg font-semibold text-green">{s.title}</h3>
               <p className="mt-2 text-sm text-ink-soft leading-relaxed">{s.body}</p>
             </div>
           ))}
@@ -109,17 +109,17 @@ export default async function AbacusPage() {
         <div className="max-w-3xl space-y-3">
           {course?.levels.map((l, i) => (
             <details key={l.id} className="bg-white border border-line rounded-2xl group">
-              <summary className="cursor-pointer px-6 py-4 font-bold text-navy flex items-center gap-3">
-                {/* Each fill brings its own label colour: marigold takes navy, the three dark fills take white. */}
+              <summary className="cursor-pointer px-6 py-4 font-bold text-green flex items-center gap-3">
+                {/* Each fill is dark enough to take a white label — no pairing here drops below AA. */}
                 <span
                   className={`w-8 h-8 rounded-full text-sm flex items-center justify-center ${
-                    ["bg-sunrise text-navy", "bg-sky text-white", "bg-teal text-white", "bg-navy text-white"][i % 4]
+                    ["bg-crimson text-white", "bg-green-mid text-white", "bg-green text-white", "bg-green-deep text-white"][i % 4]
                   }`}
                 >
                   {i}
                 </span>
                 {l.name}
-                <span className="ml-auto text-sky group-open:rotate-180 transition-transform" aria-hidden>▾</span>
+                <span className="ml-auto text-green-mid group-open:rotate-180 transition-transform" aria-hidden>▾</span>
               </summary>
               <p className="px-6 pb-5 text-sm text-ink-soft leading-relaxed">{l.syllabus}</p>
             </details>
@@ -137,7 +137,7 @@ export default async function AbacusPage() {
         <div className="scroll-fade overflow-x-auto rounded-2xl border border-line max-w-3xl">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-cream text-navy text-left">
+              <tr className="bg-mist text-green text-left">
                 <th className="px-5 py-3.5 font-bold">Level</th>
                 <th className="px-5 py-3.5 font-bold">Student Book</th>
                 <th className="px-5 py-3.5 font-bold">Work Book</th>
@@ -150,7 +150,7 @@ export default async function AbacusPage() {
                   {[l.studentBookUrl, l.workBookUrl].map((url, j) => (
                     <td key={j} className="px-5 py-3.5">
                       {url && enrolled ? (
-                        <a href={`/api/files/${url}`} className="text-sky font-bold hover:underline">Download PDF</a>
+                        <a href={`/api/files/${url}`} className="text-green-mid font-bold hover:underline">Download PDF</a>
                       ) : url ? (
                         <span className="text-ink-soft">Enrolled students only</span>
                       ) : (
@@ -171,18 +171,18 @@ export default async function AbacusPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {course?.sessions.map((s) => (
             <div key={s.id} className="bg-white border border-line rounded-2xl p-5">
-              <p className="text-xs font-extrabold uppercase tracking-wide text-sky">{s.level?.name}</p>
-              <h3 className="mt-1 font-bold text-navy">{s.title.replace(/^Abacus /, "")}</h3>
+              <p className="text-xs font-extrabold uppercase tracking-wide text-green-mid">{s.level?.name}</p>
+              <h3 className="mt-1 font-bold text-green">{s.title.replace(/^Abacus /, "")}</h3>
               <p className="mt-1.5 text-xs text-ink-soft">
                 {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""}
                 {s.teacher ? <><br />{s.teacher.user.name}</> : null}
               </p>
               {enrolled && s.zoomLink ? (
-                <a href={s.zoomLink} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 bg-teal hover:bg-teal/85 text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors">
+                <a href={s.zoomLink} target="_blank" rel="noopener noreferrer" className="inline-block mt-3 bg-green hover:bg-green/85 text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors">
                   Join class
                 </a>
               ) : (
-                <Link href="/classroom" className="inline-block mt-3 text-xs font-bold text-sky hover:underline">
+                <Link href="/classroom" className="inline-block mt-3 text-xs font-bold text-green-mid hover:underline">
                   Enrolled students →
                 </Link>
               )}
@@ -213,12 +213,12 @@ export default async function AbacusPage() {
 
       {/* CTA (FR-ABC-09) */}
       <section className="mx-auto max-w-7xl px-4 mt-16">
-        <div className="bg-navy rounded-3xl px-6 sm:px-12 py-12 text-center">
+        <div className="bg-green rounded-3xl px-6 sm:px-12 py-12 text-center">
           <h2 className="font-display text-3xl font-semibold text-white">Ready for the adventure?</h2>
           <p className="mt-2 text-white/70 text-sm">Eight levels from first beads to full mental arithmetic.</p>
           <Link
             href="/apply/special?course=abacus"
-            className="inline-block mt-6 bg-sunrise hover:bg-sunrise-deep text-navy font-bold rounded-lg px-8 py-3 text-sm transition-colors"
+            className="inline-block mt-6 bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-8 py-3 text-sm transition-colors"
           >
             Apply for Abacus
           </Link>

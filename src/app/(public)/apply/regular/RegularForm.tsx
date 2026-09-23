@@ -12,7 +12,7 @@ export function RegularForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
 
   return (
     <form action={action} className="space-y-5">
-      <h2 className="font-display text-lg font-semibold text-navy">Student information</h2>
+      <h2 className="font-display text-lg font-semibold text-green">Student information</h2>
       <SelectField
         label="Applying for grade"
         name="grade"
@@ -47,7 +47,7 @@ export function RegularForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
       </div>
       <PhotoField />
 
-      <h2 className="font-display text-lg font-semibold text-navy pt-2">Guardian information</h2>
+      <h2 className="font-display text-lg font-semibold text-green pt-2">Guardian information</h2>
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Father's name" name="fatherName" required />
         <Field label="Mother's name" name="motherName" required />
@@ -62,7 +62,7 @@ export function RegularForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
       </div>
       <Field label="Email (admission confirmation is sent here)" name="email" type="email" required autoComplete="email" />
 
-      <h2 className="font-display text-lg font-semibold text-navy pt-2">Addresses</h2>
+      <h2 className="font-display text-lg font-semibold text-green pt-2">Addresses</h2>
       <Field label="Address in Korea" name="addressKorea" required />
       <Field label="Address in Bangladesh" name="addressBangladesh" required />
       <Field label="Emergency contact (name + phone)" name="emergencyContact" required />
@@ -72,7 +72,7 @@ export function RegularForm({ recaptchaSiteKey }: { recaptchaSiteKey: string }) 
       <Recaptcha siteKey={recaptchaSiteKey} />
       <button
         disabled={pending}
-        className="w-full bg-sunrise hover:bg-sunrise-deep disabled:opacity-60 text-navy font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
+        className="w-full bg-crimson hover:bg-crimson-deep disabled:opacity-60 text-white font-bold rounded-lg px-6 py-3.5 text-sm transition-colors"
       >
         {pending ? "Submitting…" : "Continue to payment →"}
       </button>

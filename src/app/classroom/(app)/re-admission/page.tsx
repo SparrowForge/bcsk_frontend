@@ -13,7 +13,7 @@ export default async function ReAdmissionPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-2">Re-Admission</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-2">Re-Admission</h1>
       <p className="text-sm text-ink-soft mb-6">
         Continue in <b>{classLevelLabel(classLevel)}</b> for the next semester. As a
         continuing student, the admission fee is waived — you pay the semester fee only.
@@ -23,7 +23,7 @@ export default async function ReAdmissionPage() {
         <div className="bg-white border border-line rounded-2xl p-6">
           <p className="text-sm">
             <span className={`inline-block text-xs font-bold rounded-full px-3 py-1 mr-2 ${
-              existing.status === "PENDING_VERIFICATION" ? "bg-sunrise/15 text-sunrise-ink" : "bg-teal/15 text-teal"
+              existing.status === "PENDING_VERIFICATION" ? "bg-amber/15 text-amber-ink" : "bg-green/15 text-green"
             }`}>
               {existing.status.replace(/_/g, " ")}
             </span>
@@ -34,7 +34,7 @@ export default async function ReAdmissionPage() {
               : "your enrollment for the new semester is confirmed."}
           </p>
           {["PAID", "VERIFIED"].includes(existing.status) && (
-            <a href={`/api/receipts/${existing.id}`} className="inline-block mt-3 text-sky text-sm font-bold hover:underline">
+            <a href={`/api/receipts/${existing.id}`} className="inline-block mt-3 text-green-mid text-sm font-bold hover:underline">
               Download receipt (PDF)
             </a>
           )}

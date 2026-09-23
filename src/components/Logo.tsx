@@ -26,10 +26,10 @@ export function LogoMark({ size = 40, priority = false }: { size?: number; prior
 }
 
 export function Logo({ variant = "dark", href = "/" }: { variant?: "dark" | "light"; href?: string }) {
-  const ink = variant === "dark" ? "text-navy" : "text-white";
+  const ink = variant === "dark" ? "text-green" : "text-white";
   // The deck sets both lines in the same dark ink, the Bangla name as prominent as the
   // English one rather than as a muted strapline.
-  const sub = variant === "dark" ? "text-navy" : "text-sky-soft";
+  const sub = variant === "dark" ? "text-green" : "text-green-soft";
   return (
     // The size steps three times, and each step is a width problem rather than a taste one:
     // the nav sets the header's height and cannot shrink, so the name is what gives way. At

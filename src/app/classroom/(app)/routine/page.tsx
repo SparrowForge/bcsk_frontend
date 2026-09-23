@@ -16,7 +16,7 @@ export default async function RoutinePage() {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl font-semibold text-navy">Class Routine</h1>
+        <h1 className="font-display text-2xl font-semibold text-green">Class Routine</h1>
         <span className="text-xs font-bold text-ink-soft bg-white border border-line rounded-full px-3 py-1.5">
           Semester {SEMESTER_CURRENT}
         </span>
@@ -24,7 +24,7 @@ export default async function RoutinePage() {
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-5 py-3.5 font-bold">Day</th>
               <th className="px-5 py-3.5 font-bold">Time</th>
               <th className="px-5 py-3.5 font-bold">Class</th>

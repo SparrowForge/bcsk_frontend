@@ -19,7 +19,7 @@ export function UserRowActions({ userId, active }: { userId: number; active: boo
             setError(result.error ?? null);
           })
         }
-        className="border border-line hover:border-sky text-ink-soft hover:text-navy text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors"
+        className="border border-line hover:border-green-mid text-ink-soft hover:text-green text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors"
       >
         Reset password
       </button>
@@ -27,13 +27,13 @@ export function UserRowActions({ userId, active }: { userId: number; active: boo
         disabled={pending}
         onClick={() => start(async () => setError((await setUserActive(userId, !active)).error ?? null))}
         className={`text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors ${
-          active ? "border border-red-200 text-red-600 hover:bg-red-50" : "bg-teal text-white hover:bg-teal/85"
+          active ? "border border-red-200 text-red-600 hover:bg-red-50" : "bg-green text-white hover:bg-green/85"
         }`}
       >
         {active ? "Deactivate" : "Reactivate"}
       </button>
       {tempPw && (
-        <span className="text-[11px] font-bold text-navy bg-sky-soft rounded px-2 py-1">
+        <span className="text-[11px] font-bold text-green bg-green-soft rounded px-2 py-1">
           New: <code>{tempPw}</code>
         </span>
       )}

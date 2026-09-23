@@ -24,9 +24,9 @@ export default async function ChangePasswordPage({
   if (!session.mustChangePassword && voluntary !== "1") redirect(homeFor(session.role));
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-navy/5">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-green/5">
       <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
-        <h1 className="font-display text-2xl font-semibold text-navy text-center">
+        <h1 className="font-display text-2xl font-semibold text-green text-center">
           {session.mustChangePassword ? "Set your password" : "Change your password"}
         </h1>
         {session.mustChangePassword && (

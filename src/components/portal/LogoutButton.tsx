@@ -6,7 +6,7 @@ export function LogoutButton({ dest }: { dest: string }) {
   return (
     <button
       onClick={() => logout(dest)}
-      className="text-xs font-bold text-white bg-navy hover:bg-navy-deep rounded-lg px-3 py-1.5 transition-colors"
+      className="text-xs font-bold text-white bg-green hover:bg-green-deep rounded-lg px-3 py-1.5 transition-colors"
     >
       Log out
     </button>

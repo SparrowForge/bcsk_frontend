@@ -12,11 +12,11 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
 
   return (
     <div className="max-w-4xl">
-      <h1 className="font-display text-2xl font-semibold text-navy mb-6">Audit Log</h1>
+      <h1 className="font-display text-2xl font-semibold text-green mb-6">Audit Log</h1>
       <div className="scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream text-navy text-left">
+            <tr className="bg-mist text-green text-left">
               <th className="px-4 py-3.5 font-bold">When</th>
               <th className="px-4 py-3.5 font-bold">Who</th>
               <th className="px-4 py-3.5 font-bold">Action</th>
@@ -34,7 +34,7 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
                   })}
                 </td>
                 <td className="px-4 py-2.5 font-bold text-ink">{l.user?.name ?? "system"}</td>
-                <td className="px-4 py-2.5"><span className="text-[11px] font-bold bg-cream rounded-full px-2.5 py-1">{l.action}</span></td>
+                <td className="px-4 py-2.5"><span className="text-[11px] font-bold bg-mist rounded-full px-2.5 py-1">{l.action}</span></td>
                 <td className="px-4 py-2.5">{l.entity}{l.entityId ? ` #${l.entityId}` : ""}</td>
                 <td className="px-4 py-2.5 text-ink-soft">{l.detail ?? "—"}</td>
               </tr>
@@ -45,13 +45,13 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
       {nextCursor && (
         <Link
           href={`/admin/audit?cursor=${encodeURIComponent(nextCursor)}`}
-          className="mt-4 inline-block text-xs font-bold text-sky hover:underline"
+          className="mt-4 inline-block text-xs font-bold text-green-mid hover:underline"
         >
           Older entries →
         </Link>
       )}
       {cursor && (
-        <Link href="/admin/audit" className="mt-4 ml-4 inline-block text-xs font-bold text-ink-soft hover:text-navy">
+        <Link href="/admin/audit" className="mt-4 ml-4 inline-block text-xs font-bold text-ink-soft hover:text-green">
           ← Back to newest
         </Link>
       )}
