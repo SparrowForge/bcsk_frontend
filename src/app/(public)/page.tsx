@@ -7,6 +7,7 @@ import { CountUp } from "@/components/home/CountUp";
 import { SchoolStatusBar } from "@/components/home/SchoolStatusBar";
 import { OfficeBoard } from "@/components/home/OfficeBoard";
 import { ClassroomBoard } from "@/components/home/ClassroomBoard";
+import { TeacherPanel } from "@/components/home/TeacherPanel";
 import { SchoolOverview } from "@/components/home/SchoolOverview";
 import { OpinionsGrid } from "@/components/home/OpinionsGrid";
 import { LatestNews } from "@/components/home/LatestNews";
@@ -18,13 +19,15 @@ import { StudentsLounge } from "@/components/home/StudentsLounge";
  *   LP-1  hero + the four headline figures
  *   LP-2  school hours, current status, and the office board — who is at their desk
  *   LP-3  the classroom board — which rooms are running right now
- *   LP-4  school overview: why BCSK, mission, the teacher strip, management, tuition
+ *   LP-4  school overview: why BCSK, mission, management, tuition
  *   LP-5  six recorded opinions about the school
  *   LP-6  the student shortcuts and the seminar gallery
  *
- * Plus one band the deck does not draw: latest news, between LP-5 and LP-6. The deck drops
- * it, but the school publishes news and the homepage is where families look for it — so it
- * wears the same band bar as the sections it sits between rather than reading as a bolt-on.
+ * Plus two bands the deck does not draw: the teacher panel between LP-3 and LP-4, and latest
+ * news between LP-5 and LP-6. The deck drops both, but the school publishes news and the
+ * homepage is where families look for it, and the staff are what a parent asks about first —
+ * so each wears the same band bar as the sections it sits between rather than reading as a
+ * bolt-on.
  *
  * Every read is caught individually: a homepage is the one page that must never 500, and a
  * CMS page an admin has not written yet is a missing panel, not an outage.

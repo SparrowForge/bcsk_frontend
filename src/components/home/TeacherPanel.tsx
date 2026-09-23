@@ -122,7 +122,11 @@ export function TeacherPanel({ teachers, t }: { teachers: PublicTeacher[]; t: Di
     <section className="mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.teacherPanel}</SectionBar>
 
+      {/* The reveal goes on the strip as a whole, never on the cards. A card sitting outside
+          the viewport *horizontally* is not intersecting it, so a per-card `data-reveal`
+          would leave the ones waiting off to the right at opacity 0 and slide them in blank. */}
       <div
+        {...reveal("up", 1, 90)}
         className="mt-5"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
