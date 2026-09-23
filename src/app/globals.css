@@ -42,8 +42,8 @@
   --crimson-ink: #8e1424; /* red *as text*, on white or on a tint */
 
   /* --- Band tints: cool names a whole band, warm names a panel inside one --- */
-  --green-green-band: #dcede5;
-  --crimson-green-band: #fbe9eb;
+  --green-band: #dcede5;
+  --crimson-band: #fbe9eb;
 
   /* --- Neutrals: the 30% that keeps the page readable --- */
   --paper: #ffffff;
@@ -67,12 +67,12 @@
   --color-green-mid: var(--green-mid);
   --color-green-bright: var(--green-bright);
   --color-green-soft: var(--green-soft);
-  --color-green-green-band: var(--green-green-band);
+  --color-green-band: var(--green-band);
   --color-crimson: var(--crimson);
   --color-crimson-bright: var(--crimson-bright);
   --color-crimson-deep: var(--crimson-deep);
   --color-crimson-ink: var(--crimson-ink);
-  --color-crimson-green-band: var(--crimson-green-band);
+  --color-crimson-band: var(--crimson-band);
   --color-mist: var(--mist);
   --color-mist-deep: var(--mist-deep);
   --color-amber: var(--amber);
@@ -92,6 +92,11 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  /* The full-bleed band shades are sized in `vw`, which counts the scrollbar — so they hang a
+     few pixels past each edge. `clip` swallows that overhang; `hidden` would do it too but
+     makes the body a scroll container, which breaks the sticky header and every `scroll-mt`
+     anchor on the site. */
+  overflow-x: clip;
 }
 
 h1,
@@ -268,6 +273,60 @@ h3,
 .dot-grid {
   background-image: radial-gradient(var(--line) 2px, transparent 2px);
   background-size: 16px 16px;
+}
+
+/* ---------- the school's own mark, used as a background shade ----------
+ *
+ * A single oversized copy of the logo's ring-and-book, bled off the edge of a band and held
+ * at a few percent. It is the page's one piece of "school stationery": the dot grid opens the
+ * hero, this carries the bands below it.
+ *
+ * The mark is a **mask**, not a picture. The colour is painted underneath and the SVG only
+ * cuts the shape out of it, so the shade tracks `--green` like everything else instead of
+ * hard-coding the palette into an image where a later change would miss it.
+ *
+ * `isolation: isolate` is load-bearing. It gives the band its own stacking context so the
+ * `z-index: -1` layer stays *inside* it — behind the band's own content but still above the
+ * page. Without it the shade slips behind an ancestor's white background and disappears.
+ */
+.logo-shade {
+  position: relative;
+  isolation: isolate;
+}
+/* The surface. `calc(50% - 50vw)` pulls the layer out of the centred band to the window's
+   own edges, so the tint runs wall to wall while the content stays in its column. A watermark
+   needs something to sit on: on the bare white page the mark had nothing to read against and
+   the white panels covered what was left of it. */
+.logo-shade::before {
+  content: "";
+  position: absolute;
+  inset: -24px calc(50% - 50vw);
+  z-index: -2;
+  pointer-events: none;
+  background-color: var(--green-soft);
+}
+/* The mark itself, over that surface. */
+.logo-shade::after {
+  content: "";
+  position: absolute;
+  inset: -24px calc(50% - 50vw);
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--green);
+  opacity: 0.12;
+  -webkit-mask-image: url("/images/bcsk-mark.svg");
+  mask-image: url("/images/bcsk-mark.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 520px auto;
+  mask-size: 520px auto;
+  -webkit-mask-position: right -80px center;
+  mask-position: right -80px center;
+}
+/* Same shade from the other side, so consecutive bands do not stack up as a column. */
+.logo-shade-left::after {
+  -webkit-mask-position: left -80px center;
+  mask-position: left -80px center;
 }
 
 /* visible focus for keyboard users */

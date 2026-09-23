@@ -46,7 +46,7 @@ export function OpinionsGrid({
   const tintFor = (i: number) => `${tints[i % 3]} ${lgTints[(i + Math.floor(i / 3)) % 3]}`;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 mt-12">
+    <section className="logo-shade mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.opinions}</SectionBar>
 
       <ul className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 justify-items-center">

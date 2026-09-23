@@ -1,0 +1,19 @@
+<!--
+  The BCSK watermark: the seal ring and the open book from the school's logo, reduced to two
+  flat shapes. It is used as a CSS `mask`, never as a picture, so only the alpha matters —
+  the colour it shows is whatever the `.logo-shade` rule paints behind it, which is how the
+  shade follows the palette token instead of hard-coding green a second time.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="#000">
+  <!-- The ring, drawn as two same-direction arcs so `evenodd` punches the middle out. -->
+  <path
+    fill-rule="evenodd"
+    d="M0,200 A200,200 0 1,0 400,200 A200,200 0 1,0 0,200 Z
+       M26,200 A174,174 0 1,0 374,200 A174,174 0 1,0 26,200 Z"
+  />
+  <!-- The open book: a V-band with the pages curving up and away on both sides. -->
+  <path
+    d="M200,262 C166,218 110,198 44,203 L44,138 C110,133 166,153 200,196
+       C234,153 290,133 356,138 L356,203 C290,198 234,218 200,262 Z"
+  />
+</svg>

@@ -119,7 +119,7 @@ export function TeacherPanel({ teachers, t }: { teachers: PublicTeacher[]; t: Di
   if (teachers.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 mt-12">
+    <section className="logo-shade logo-shade-left mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.teacherPanel}</SectionBar>
 
       {/* The reveal goes on the strip as a whole, never on the cards. A card sitting outside

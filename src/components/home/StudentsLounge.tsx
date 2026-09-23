@@ -33,7 +33,7 @@ export function StudentsLounge({ t, albums }: { t: Dictionary; albums: GalleryAl
   const photos = albums.flatMap((a) => a.items.map((i) => ({ ...i, album: a.title }))).slice(0, 12);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 mt-12">
+    <section className="logo-shade logo-shade-left mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.studentsLounge}</SectionBar>
 
       <ul className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
