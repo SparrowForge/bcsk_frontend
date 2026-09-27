@@ -4,14 +4,29 @@
  * Deliberately a drawing and not a photograph or a live thumbnail: the card claims to be a
  * class in progress, and no real child's face belongs on the public homepage. The six tiles
  * read as a video-call grid at card size, which is the whole job.
+ *
+ * `frame` and `screen` take the card's own hue, so the laptop belongs to its card instead of
+ * every card carrying the same green one. The defaults are the brand greens.
  */
-export function ClassScreen({ live, liveLabel }: { live: boolean; liveLabel: string }) {
+export function ClassScreen({
+  live,
+  liveLabel,
+  frame = "#0b5540",
+  screen = "#12795c",
+}: {
+  live: boolean;
+  liveLabel: string;
+  /** The lid and base — the darker shade of the pair. */
+  frame?: string;
+  /** The display the call tiles sit on. */
+  screen?: string;
+}) {
   return (
     <div className="relative px-1.5 pt-1.5">
       <svg viewBox="0 0 100 74" className="w-full" aria-hidden>
         {/* lid */}
-        <rect x="6" y="0" width="88" height="58" rx="3" fill="#0b5540" />
-        <rect x="9" y="3" width="82" height="52" rx="1.5" fill="#12795c" />
+        <rect x="6" y="0" width="88" height="58" rx="3" fill={frame} />
+        <rect x="9" y="3" width="82" height="52" rx="1.5" fill={screen} />
         {[0, 1, 2, 3, 4, 5].map((i) => {
           const x = 11 + (i % 3) * 27;
           const y = 5 + Math.floor(i / 3) * 25;
@@ -24,7 +39,7 @@ export function ClassScreen({ live, liveLabel }: { live: boolean; liveLabel: str
           );
         })}
         {/* base */}
-        <rect x="0" y="59" width="100" height="6" rx="2.5" fill="#0b5540" />
+        <rect x="0" y="59" width="100" height="6" rx="2.5" fill={frame} />
         <rect x="42" y="59" width="16" height="2.4" rx="1.2" fill="#ffffff" opacity="0.35" />
       </svg>
 

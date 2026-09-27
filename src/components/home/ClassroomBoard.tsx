@@ -83,17 +83,19 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
  * One colour per card, cycled: a board of ten identical green cards reads as a table, and a
  * distinct tint is what lets a parent find "their" class again at a glance. Each pairs a pale
  * card with a solid badge of the same hue; every badge holds white text at AA (4.5:1+). The
- * list is written out in full because Tailwind only generates class names it finds literally.
+ * laptop takes the hue too — `frame` is the -800 shade, `screen` the -600 — written as hex
+ * because they are SVG fills, not classes. The class names are written out in full because
+ * Tailwind only generates the ones it finds literally.
  */
 const TONES = [
-  { card: "bg-emerald-50 border-emerald-200/70", badge: "bg-green", title: "text-green" },
-  { card: "bg-rose-50 border-rose-200/70", badge: "bg-red-600", title: "text-red-800" },
-  { card: "bg-teal-50 border-teal-200/70", badge: "bg-teal-700", title: "text-teal-800" },
-  { card: "bg-violet-50 border-violet-200/70", badge: "bg-violet-600", title: "text-violet-800" },
-  { card: "bg-amber-50 border-amber-200/80", badge: "bg-amber-700", title: "text-amber-800" },
-  { card: "bg-sky-50 border-sky-200/70", badge: "bg-sky-700", title: "text-sky-800" },
-  { card: "bg-pink-50 border-pink-200/70", badge: "bg-pink-700", title: "text-pink-800" },
-  { card: "bg-lime-50 border-lime-200/80", badge: "bg-lime-800", title: "text-lime-900" },
+  { card: "bg-emerald-50 border-emerald-200/70", badge: "bg-green", title: "text-green", frame: "#0b5540", screen: "#12795c" },
+  { card: "bg-rose-50 border-rose-200/70", badge: "bg-red-600", title: "text-red-800", frame: "#991b1b", screen: "#dc2626" },
+  { card: "bg-teal-50 border-teal-200/70", badge: "bg-teal-700", title: "text-teal-800", frame: "#115e59", screen: "#0d9488" },
+  { card: "bg-violet-50 border-violet-200/70", badge: "bg-violet-600", title: "text-violet-800", frame: "#5b21b6", screen: "#7c3aed" },
+  { card: "bg-amber-50 border-amber-200/80", badge: "bg-amber-700", title: "text-amber-800", frame: "#92400e", screen: "#d97706" },
+  { card: "bg-sky-50 border-sky-200/70", badge: "bg-sky-700", title: "text-sky-800", frame: "#075985", screen: "#0284c7" },
+  { card: "bg-pink-50 border-pink-200/70", badge: "bg-pink-700", title: "text-pink-800", frame: "#9d174d", screen: "#db2777" },
+  { card: "bg-lime-50 border-lime-200/80", badge: "bg-lime-800", title: "text-lime-900", frame: "#3f6212", screen: "#65a30d" },
 ];
 
 function ClassCard({
@@ -127,7 +129,7 @@ function ClassCard({
       </div>
 
       <div className="mt-2.5 -mx-1.5">
-        <ClassScreen live={row.live} liveLabel={t.common.live} />
+        <ClassScreen live={row.live} liveLabel={t.common.live} frame={tone.frame} screen={tone.screen} />
       </div>
 
       <dl className="mt-2 space-y-0.5 text-[11px] leading-tight text-ink-soft">
