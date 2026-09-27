@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
+import { CardSlider } from "./CardSlider";
 
 /**
- * LP-5 — six voices about the school.
+ * LP-5 — six voices about the school, as an auto-advancing strip like the Teacher Panel.
  *
  * The school has not recorded these yet and the deck draws them as empty players, so each
  * tile is an honest placeholder rather than a stock video. The roles that *do* have
@@ -28,60 +28,53 @@ export function OpinionsGrid({
     { label: t.home.roleCommunityLeader, slug: null },
   ];
 
-  // Three soft tints: enough to make a row of six read as a set of distinct cards rather
-  // than as one grey block, without inventing a colour per role.
-  //
-  // The colours run diagonally, and that takes two rotations rather than one: this grid is
-  // two columns below `lg` and three at `lg`, and a rotation that steps diagonally across
-  // three columns stacks the same tint twice in a column of two.
-  //
-  // Over two columns a plain `i % 3` already steps diagonally, because 2 and 3 share no
-  // factor. Over three columns it does not — it gives every column one fixed colour — so
-  // that grid adds a one-tile shift per row. Each tile therefore carries both: the base
-  // class for the two-column grid and an `lg:` class for the three-column one. The arrays
-  // hold the class names in full because Tailwind scans the source for literals; a name
-  // assembled from a prefix and a variable would never be generated.
-  const tints = ["bg-green-soft", "bg-green-soft", "bg-crimson-band"];
-  const lgTints = ["lg:bg-green-soft", "lg:bg-green-soft", "lg:bg-crimson-band"];
-  const tintFor = (i: number) => `${tints[i % 3]} ${lgTints[(i + Math.floor(i / 3)) % 3]}`;
+  // Three soft tints: enough to make a strip of six read as a set of distinct cards rather
+  // than as one grey block, without inventing a colour per role. A strip has one row, so a
+  // plain rotation never stacks two of the same tint next to each other.
+  const tints = ["bg-green-soft", "bg-crimson-band", "bg-green-band"];
 
   return (
     <section className="logo-shade mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.opinions}</SectionBar>
-
-      <ul className="mt-6 grid grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8 justify-items-center">
-        {roles.map((r, i) => {
+      <CardSlider
+        t={t}
+        label={t.home.opinions}
+        basis="basis-full min-[420px]:basis-1/2 md:basis-1/3 lg:basis-1/4"
+        items={roles.map((r, i) => {
           const href = r.slug && available.has(r.slug) ? `/bcsk/${r.slug}` : null;
-          return (
-            <li key={r.label} {...reveal("up", i, 80)} className="w-full max-w-[220px] text-center">
-              <p className="mb-2">
-                <span className="inline-block rounded bg-crimson px-5 py-1 text-[11px] font-extrabold text-white">
+          const card = (
+            <>
+              <p className="mb-4">
+                <span className="inline-block rounded-full bg-crimson px-5 py-1.5 text-[11.5px] font-extrabold text-white">
                   {r.label}
                 </span>
               </p>
-              {href ? (
-                // Only a tile that leads somewhere responds to the pointer — the placeholder
-                // ones stay inert, which is the honest signal that there is nothing to play.
-                <Link href={href} className="group block">
-                  <div className={`hover-lift rounded-2xl p-5 ${tintFor(i)}`}>
-                    <PlayerGlyph interactive />
-                  </div>
-                  <span className="mt-2 block text-[11px] font-bold text-green group-hover:underline underline-offset-4">
-                    {t.common.readFullMessage} →
-                  </span>
-                </Link>
-              ) : (
-                <>
-                  <div className={`rounded-2xl p-5 ${tintFor(i)}`}>
-                    <PlayerGlyph />
-                  </div>
-                  <span className="mt-2 block text-[11px] text-ink-soft">{t.home.opinionsSoon}</span>
-                </>
-              )}
-            </li>
+              <div className="mx-auto w-full max-w-[200px] rounded-2xl bg-white/70 p-5">
+                <PlayerGlyph interactive={!!href} />
+              </div>
+            </>
           );
+          const shell = `flex h-full flex-col items-center rounded-2xl border border-green-mid/10 px-5 pt-6 pb-5 text-center ${tints[i % 3]}`;
+          return {
+            key: r.label,
+            node: href ? (
+              // Only a card that leads somewhere responds to the pointer — the placeholder
+              // ones stay inert, which is the honest signal that there is nothing to play.
+              <Link href={href} className={`group hover-lift ${shell}`}>
+                {card}
+                <span className="mt-auto pt-4 text-[12px] font-bold text-green group-hover:underline underline-offset-4">
+                  {t.common.readFullMessage} →
+                </span>
+              </Link>
+            ) : (
+              <div className={shell}>
+                {card}
+                <span className="mt-auto pt-4 text-[12px] text-ink-soft">{t.home.opinionsSoon}</span>
+              </div>
+            ),
+          };
         })}
-      </ul>
+      />
     </section>
   );
 }

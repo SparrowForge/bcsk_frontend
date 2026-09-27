@@ -32,7 +32,7 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
           {board.classes.length === 0 ? (
             <p className="py-8 text-center text-sm text-ink-soft">{t.home.boardEmpty}</p>
           ) : (
-            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               {board.classes.map((c, i) => (
                 <ClassCard key={c.key} row={c} index={i} t={t} />
               ))}
@@ -79,37 +79,61 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
   );
 }
 
+/**
+ * One colour per card, cycled: a board of ten identical green cards reads as a table, and a
+ * distinct tint is what lets a parent find "their" class again at a glance. Each pairs a pale
+ * card with a solid badge of the same hue; every badge holds white text at AA (4.5:1+). The
+ * list is written out in full because Tailwind only generates class names it finds literally.
+ */
+const TONES = [
+  { card: "bg-emerald-50 border-emerald-200/70", badge: "bg-green", title: "text-green" },
+  { card: "bg-rose-50 border-rose-200/70", badge: "bg-red-600", title: "text-red-800" },
+  { card: "bg-teal-50 border-teal-200/70", badge: "bg-teal-700", title: "text-teal-800" },
+  { card: "bg-violet-50 border-violet-200/70", badge: "bg-violet-600", title: "text-violet-800" },
+  { card: "bg-amber-50 border-amber-200/80", badge: "bg-amber-700", title: "text-amber-800" },
+  { card: "bg-sky-50 border-sky-200/70", badge: "bg-sky-700", title: "text-sky-800" },
+  { card: "bg-pink-50 border-pink-200/70", badge: "bg-pink-700", title: "text-pink-800" },
+  { card: "bg-lime-50 border-lime-200/80", badge: "bg-lime-800", title: "text-lime-900" },
+];
+
 function ClassCard({
   row,
   index,
   t,
 }: {
   row: SchoolBoard["classes"][number];
-  /** Position in the row, so the classes deal in from the left rather than all at once. */
+  /** Position on the board: picks the colour, numbers the badge, and staggers the entrance. */
   index: number;
   t: Dictionary;
 }) {
   const label = row.classLevel ? classLevelLabel(row.classLevel) : row.label;
-  // The regular ladder wears the mid green so the six of them read as one block;
-  // a special course wears the deeper brand green, which is the same signal the boards use for
-  // "extra / open". Both hold white text at AA, which the old orange and maroon did not.
-  const headerTone = row.courseSlug ? "bg-green" : "bg-green-mid";
+  const tone = TONES[index % TONES.length];
 
   return (
     <li
       {...reveal("zoom", index, 60)}
-      className="hover-lift rounded-lg border border-green-mid/25 hover:border-green-mid/60 bg-white overflow-hidden flex flex-col"
+      className={`hover-lift rounded-2xl border ${tone.card} p-3 flex flex-col`}
     >
-      <p className={`${headerTone} px-2 py-1 text-center text-[11px] font-extrabold text-white truncate`} title={label}>
-        {label}
-      </p>
+      <div className="flex items-center gap-2">
+        <span
+          aria-hidden
+          className={`${tone.badge} grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[13px] font-extrabold text-white tabular-nums shadow-[0_8px_14px_-10px_rgba(0,0,0,0.6)]`}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <p className={`min-w-0 truncate text-[13px] font-extrabold ${tone.title}`} title={label}>
+          {label}
+        </p>
+      </div>
 
-      <ClassScreen live={row.live} liveLabel={t.common.live} />
+      <div className="mt-2.5 -mx-1.5">
+        <ClassScreen live={row.live} liveLabel={t.common.live} />
+      </div>
 
-      <dl className="px-2 py-2 text-[10.5px] leading-tight text-ink-soft">
+      <dl className="mt-2 space-y-0.5 text-[11px] leading-tight text-ink-soft">
         <div className="flex gap-1">
           <dt>{t.home.currentClass}:</dt>
-          <dd className="font-bold text-green truncate">{row.currentCourseName ?? "—"}</dd>
+          <dd className="font-bold text-ink truncate">{row.currentCourseName ?? "—"}</dd>
         </div>
         <div className="flex gap-1">
           <dt>{t.home.duration}:</dt>

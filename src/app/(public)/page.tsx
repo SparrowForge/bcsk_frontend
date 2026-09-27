@@ -12,6 +12,7 @@ import { SchoolOverview } from "@/components/home/SchoolOverview";
 import { OpinionsGrid } from "@/components/home/OpinionsGrid";
 import { LatestNews } from "@/components/home/LatestNews";
 import { StudentsLounge } from "@/components/home/StudentsLounge";
+import { ProgramCards } from "@/components/home/ProgramCards";
 
 /**
  * The homepage, as the school's design deck lays it out (LP-1 … LP-6):
@@ -27,7 +28,8 @@ import { StudentsLounge } from "@/components/home/StudentsLounge";
  * news between LP-5 and LP-6. The deck drops both, but the school publishes news and the
  * homepage is where families look for it, and the staff are what a parent asks about first —
  * so each wears the same band bar as the sections it sits between rather than reading as a
- * bolt-on.
+ * bolt-on. The program cards after the stats band are a third: what a child can enrol in is
+ * the next question after "how big is the school".
  *
  * Every read is caught individually: a homepage is the one page that must never 500, and a
  * CMS page an admin has not written yet is a missing panel, not an outage.
@@ -182,6 +184,9 @@ export default async function HomePage() {
           ))}
         </ul>
       </section>
+
+      {/* ---------------- PROGRAMS ---------------- */}
+      <ProgramCards t={t} />
 
       {/* ---------------- LP-2 / LP-3 · THE LIVE BOARDS ---------------- */}
       {board && (

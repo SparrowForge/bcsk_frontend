@@ -119,6 +119,14 @@ const en = {
     loungeResultSheet: "Result Sheet",
     loungeEnrollmentCert: "Enrollment Certificate",
     seminarGallery: "Offline Seminar: Gallery",
+    /* --- Program cards --- */
+    programs: "Our Programs",
+    programsIntro: "Regular classes and special courses that support every child's academic, language and moral growth.",
+    progRegularText: "Pre-Primary to Class 5 on the national curriculum — a strong foundation for academic success.",
+    progIeltsText: "Preparing young learners for a global future with confident English.",
+    progDeenText: "Qur'an recitation and Islamic studies that nurture faith, values and good character.",
+    progAbacusText: "Mental arithmetic that builds speed, focus and a love of numbers.",
+    learnMore: "Learn More",
   },
   footer: {
     address: "Address",
@@ -291,6 +299,14 @@ const bn: Dict = {
     loungeResultSheet: "ফলাফল শিট",
     loungeEnrollmentCert: "ভর্তি সনদ",
     seminarGallery: "অফলাইন সেমিনার: গ্যালারি",
+    /* --- Program cards --- */
+    programs: "আমাদের প্রোগ্রাম",
+    programsIntro: "নিয়মিত ক্লাস ও বিশেষ কোর্স — প্রতিটি শিশুর শিক্ষা, ভাষা ও নৈতিক বিকাশের জন্য।",
+    progRegularText: "জাতীয় পাঠ্যক্রমে প্রাক-প্রাথমিক থেকে পঞ্চম শ্রেণি — শিক্ষাজীবনের মজবুত ভিত্তি।",
+    progIeltsText: "আত্মবিশ্বাসী ইংরেজিতে ছোটদের বৈশ্বিক ভবিষ্যতের জন্য প্রস্তুত করা।",
+    progDeenText: "কুরআন তিলাওয়াত ও ইসলামি শিক্ষা — ঈমান, মূল্যবোধ ও সুন্দর চরিত্র গঠনে।",
+    progAbacusText: "মানসিক গণিতে গতি, মনোযোগ ও সংখ্যার প্রতি ভালোবাসা গড়ে তোলে।",
+    learnMore: "আরও জানুন",
   },
   footer: {
     address: "ঠিকানা",
@@ -461,6 +477,14 @@ const ko: Dict = {
     loungeResultSheet: "성적표",
     loungeEnrollmentCert: "재학 증명서",
     seminarGallery: "오프라인 세미나: 갤러리",
+    /* --- Program cards --- */
+    programs: "교육 프로그램",
+    programsIntro: "아이들의 학업, 언어, 인성 발달을 돕는 정규 수업과 특별 과정입니다.",
+    progRegularText: "국가 교육과정에 따른 유치부~5학년 — 탄탄한 학업의 기초를 다집니다.",
+    progIeltsText: "자신감 있는 영어로 아이들의 글로벌 미래를 준비합니다.",
+    progDeenText: "꾸란 낭송과 이슬람 교육으로 신앙, 가치관, 바른 인성을 기릅니다.",
+    progAbacusText: "암산으로 속도와 집중력, 숫자에 대한 흥미를 키웁니다.",
+    learnMore: "자세히 보기",
   },
   footer: {
     address: "주소",
