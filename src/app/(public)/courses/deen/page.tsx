@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { site } from "@/services";
 import { getLang } from "@/lib/i18n";
-import { SCHOOL } from "@/lib/constants";
+import { getContact } from "@/lib/contact";
 import { PrayerBoard } from "./PrayerBoard";
 import {
   COURSES,
@@ -156,7 +156,13 @@ function Arabic({ children }: { children: string }) {
 
 /** 3.8.1 Deen page (FR-DEEN-01..07), following the school's Deen design. */
 export default async function DeenPage() {
-  const [course, slugs, siteLang] = await Promise.all([site.course("deen"), site.enrolledCourseSlugs(), getLang()]);
+  const [course, slugs, siteLang, contact] = await Promise.all([
+    site.course("deen"),
+    site.enrolledCourseSlugs(),
+    getLang(),
+    // The same admin-editable details the footer prints, so the two can never disagree.
+    getContact(),
+  ]);
   const lang: Lang = siteLang === "bn" ? "bn" : "en";
   const t = (x: Text) => pick(x, lang);
   const enrolled = slugs.includes("deen") || slugs.includes("hifz");
@@ -176,10 +182,9 @@ export default async function DeenPage() {
   ] as const;
 
   const social = [
-    { label: "Facebook", href: SCHOOL.facebook, bg: "bg-[#1877f2]", path: "M14 8h3V4h-3c-2.8 0-4.5 1.9-4.5 4.7V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1Z" },
-    { label: "WhatsApp", href: `https://wa.me/${SCHOOL.whatsapp.replace(/\D/g, "")}`, bg: "bg-[#128c3e]", path: "M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Zm4.6 12.6c-.2.6-1.1 1.1-1.6 1.2-.4.1-1 .1-1.6-.1-3-1-4.9-3.9-5-4.1-.2-.2-1.2-1.6-1.2-3s.8-2.2 1-2.5c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.4 1.8 2.2 1.2 1 2.2 1.3 2.5 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z" },
-    { label: "YouTube", href: SCHOOL.youtube, bg: "bg-[#d91c1c]", path: "M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15V9l5.2 3L10 15Z" },
-    { label: "Email", href: `mailto:${SCHOOL.email}`, bg: "bg-crimson", path: "M3 6h18v12H3V6Zm2 2v.3l7 4.6 7-4.6V8H5Zm14 2.7-7 4.6-7-4.6V16h14v-5.3Z" },
+    { label: "Facebook", href: contact.facebookUrl, bg: "bg-[#1877f2]", path: "M14 8h3V4h-3c-2.8 0-4.5 1.9-4.5 4.7V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1Z" },
+    { label: "WhatsApp", href: `https://wa.me/${contact.whatsapp}`, bg: "bg-[#128c3e]", path: "M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Zm4.6 12.6c-.2.6-1.1 1.1-1.6 1.2-.4.1-1 .1-1.6-.1-3-1-4.9-3.9-5-4.1-.2-.2-1.2-1.6-1.2-3s.8-2.2 1-2.5c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6c-.2.2-.3.4-.1.7.2.3.8 1.4 1.8 2.2 1.2 1 2.2 1.3 2.5 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z" },
+    { label: "Email", href: `mailto:${contact.email}`, bg: "bg-crimson", path: "M3 6h18v12H3V6Zm2 2v.3l7 4.6 7-4.6V8H5Zm14 2.7-7 4.6-7-4.6V16h14v-5.3Z" },
   ];
 
   return (
