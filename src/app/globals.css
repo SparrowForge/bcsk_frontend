@@ -57,6 +57,13 @@
   --amber: #f5a524;
   --amber-ink: #8a5200; /* 6.4:1 — "pending" as text */
 
+  /* --- Abacus programme only (/courses/abacus). The school's Abacus design is a
+     green-and-orange kids' sub-brand; this orange is confined to that section and
+     always carries ink-coloured text (9.4:1), never white. Not a site-wide accent. --- */
+  --abacus: #f7931e;
+  --abacus-deep: #d97706; /* hover and pressed */
+  --abacus-soft: #fff1de; /* panel tint */
+
   --font-display: var(--font-fraunces), var(--font-bangla), Georgia, serif;
   --font-body: var(--font-nunito), var(--font-bangla), var(--font-korean), system-ui, sans-serif;
 }
@@ -77,6 +84,9 @@
   --color-mist-deep: var(--mist-deep);
   --color-amber: var(--amber);
   --color-amber-ink: var(--amber-ink);
+  --color-abacus: var(--abacus);
+  --color-abacus-deep: var(--abacus-deep);
+  --color-abacus-soft: var(--abacus-soft);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
@@ -104,6 +114,11 @@ h2,
 h3,
 .font-display {
   font-family: var(--font-display);
+}
+/* Qur'an and Hadith text on the Deen page. No webfont is loaded for it: every OS ships a
+   Naskh face, and these are the best of them, in order. */
+.font-arabic {
+  font-family: "Amiri", "Scheherazade New", "Noto Naskh Arabic", "Traditional Arabic", "Geeza Pro", "Arabic Typesetting", serif;
 }
 
 /* Bangla and Korean text get their proper faces */
@@ -587,5 +602,60 @@ textarea:focus-visible {
   .nudge:hover svg,
   .nudge:hover .nudge-mark {
     transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Abacus programme — the soroban bead and the Fun Abacus answer tokens.
+   ------------------------------------------------------------------ */
+.soroban-bead {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 40px;
+  height: 24px;
+  /* bicone: the diamond-edged soroban bead seen side-on */
+  clip-path: polygon(0 50%, 24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%);
+  background: linear-gradient(180deg, #ff7a45 0%, #e2261b 50%, #8f1111 100%);
+  cursor: pointer;
+  transition: transform 140ms ease-out, filter 120ms;
+}
+.soroban-bead:hover {
+  filter: brightness(1.15);
+}
+.soroban-bead:focus-visible {
+  outline: none;
+  filter: brightness(1.25) drop-shadow(0 0 3px #f7931e);
+  background: linear-gradient(180deg, #ffb07a 0%, #f7931e 50%, #b45309 100%);
+}
+
+.game-token {
+  transition: transform 150ms ease-out;
+}
+.game-token:hover {
+  transform: scale(1.08);
+}
+.game-token[data-state="wrong"] {
+  animation: token-shake 320ms;
+}
+.game-token[data-state="right"] {
+  animation: token-pop 420ms;
+}
+@keyframes token-shake {
+  0%, 100% { translate: 0; }
+  25% { translate: -6px; }
+  75% { translate: 6px; }
+}
+@keyframes token-pop {
+  50% { scale: 1.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soroban-bead,
+  .game-token {
+    transition: none;
+  }
+  .game-token[data-state] {
+    animation: none;
   }
 }

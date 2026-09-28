@@ -47,7 +47,7 @@ export function TeacherPanel({ teachers, t }: { teachers: PublicTeacher[]; t: Di
  */
 function TeacherCard({ teacher, index, t }: { teacher: PublicTeacher; index: number; t: Dictionary }) {
   return (
-    <article className="hover-lift flex h-full flex-col items-center rounded-2xl border border-green-mid/10 bg-green-soft/70 px-5 pt-7 pb-6 text-center">
+    <article className="hover-lift flex h-full flex-col items-center rounded-2xl border border-green-mid/15 bg-white px-5 pt-7 pb-6 text-center">
       {teacher.photoUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

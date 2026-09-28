@@ -31,7 +31,7 @@ export function OpinionsGrid({
   // Three soft tints: enough to make a strip of six read as a set of distinct cards rather
   // than as one grey block, without inventing a colour per role. A strip has one row, so a
   // plain rotation never stacks two of the same tint next to each other.
-  const tints = ["bg-green-soft", "bg-crimson-band", "bg-green-band"];
+  const tints = ["bg-white", "bg-crimson-band", "bg-green-band"];
 
   return (
     <section className="logo-shade mx-auto max-w-7xl px-4 mt-12">

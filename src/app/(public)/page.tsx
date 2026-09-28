@@ -190,7 +190,7 @@ export default async function HomePage() {
 
       {/* ---------------- LP-2 / LP-3 · THE LIVE BOARDS ---------------- */}
       {board && (
-        <section className="mx-auto max-w-7xl px-4 mt-12">
+        <section className="logo-shade mx-auto max-w-7xl px-4 mt-12">
           <SchoolStatusBar
             t={t}
             open={board.open}

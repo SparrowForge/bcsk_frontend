@@ -20,7 +20,7 @@ export function ProgramCards({ t }: { t: Dictionary }) {
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-4 mt-12">
+    <section className="logo-shade logo-shade-left mx-auto max-w-7xl px-4 mt-12">
       <SectionBar>{t.home.programs}</SectionBar>
       <p {...reveal()} className="mt-4 text-center text-ink-soft text-[14px] max-w-2xl mx-auto">
         {t.home.programsIntro}
@@ -31,7 +31,7 @@ export function ProgramCards({ t }: { t: Dictionary }) {
           <li key={p.href} {...reveal("up", i, 90)}>
             <Link
               href={p.href}
-              className="group hover-lift flex h-full flex-col items-center rounded-2xl border border-green-mid/10 bg-green-soft/70 px-6 pt-8 pb-6 text-center hover:border-green-mid/30"
+              className="group hover-lift flex h-full flex-col items-center rounded-2xl border border-green-mid/15 bg-white px-6 pt-8 pb-6 text-center hover:border-green-mid/30"
             >
               <span
                 aria-hidden
