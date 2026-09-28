@@ -316,6 +316,9 @@ export type ApplicationForm = {
   adminNote: string | null;
   correctionNote: string | null;
   createdStudentUserId: number | null;
+  courseLevelId?: number | null;
+  /** Staff detail only: the level or track chosen on a special-course application. */
+  courseLevel?: { id: number; name: string } | null;
   createdAt: ISODate;
   payments?: Payment[];
 };

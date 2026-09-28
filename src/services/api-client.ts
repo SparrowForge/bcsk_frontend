@@ -1,5 +1,5 @@
 import "server-only";
-import { cookies } from "next/headers";
+import { cookies, headers as requestHeadersOf } from "next/headers";
 
 /**
  * The one place the frontend talks to the backend.
@@ -18,6 +18,30 @@ const BASE_URL =
   process.env.BACKEND_API_URL?.trim() ||
   process.env.NEXT_PUBLIC_API_BASE_URL?.trim() ||
   "http://localhost:4000/api/v1";
+
+/**
+ * The visitor's IP, for the backend's rate limits.
+ *
+ * Every call leaves from this server, so without this the backend saw one address for all
+ * visitors and every applicant on the site shared a five-applications-an-hour allowance. The
+ * backend trusts `x-bcsk-client-ip` only alongside `x-bcsk-proxy-key` matching its
+ * `TRUSTED_PROXY_KEY` — otherwise anyone calling the API directly could pick their own "IP".
+ *
+ * `BACKEND_PROXY_KEY` is server-only (never `NEXT_PUBLIC_`) and optional: unset, nothing is
+ * sent and the backend behaves exactly as before. Only uncached requests carry it — reading
+ * request headers inside a cached public read would force every page to render dynamically.
+ */
+async function clientIpHeaders(): Promise<Record<string, string>> {
+  const key = process.env.BACKEND_PROXY_KEY?.trim();
+  if (!key) return {};
+  try {
+    const h = await requestHeadersOf();
+    const ip = (h.get("x-forwarded-for")?.split(",")[0] ?? h.get("x-real-ip") ?? "").trim();
+    return ip ? { "x-bcsk-proxy-key": key, "x-bcsk-client-ip": ip } : {};
+  } catch {
+    return {}; // outside a request (build, background revalidation)
+  }
+}
 
 export type ApiErrorCode =
   | "VALIDATION_FAILED" | "UNAUTHENTICATED" | "FORBIDDEN" | "NOT_FOUND"
@@ -78,6 +102,7 @@ async function envelope<T>(path: string, options: RequestOptions = {}): Promise<
 
   const requestHeaders: Record<string, string> = { ...headers };
   if (body !== undefined) requestHeaders["content-type"] = "application/json";
+  if (revalidate === false) Object.assign(requestHeaders, await clientIpHeaders());
 
   if (auth) {
     // Forward the browser's httpOnly cookie so the backend sees the same session the web
@@ -130,7 +155,7 @@ async function upload(file: File, folder: string): Promise<{ path: string }> {
   form.append("file", file);
   form.append("folder", folder);
 
-  const headers: Record<string, string> = {};
+  const headers: Record<string, string> = { ...(await clientIpHeaders()) };
   const jar = await cookies();
   const session = jar.get("bcsk_session")?.value;
   if (session) headers["cookie"] = `bcsk_session=${session}`;

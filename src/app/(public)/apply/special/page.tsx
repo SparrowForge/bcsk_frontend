@@ -16,7 +16,7 @@ export default async function SpecialApplyPage({ searchParams }: { searchParams:
       <div className="max-w-2xl bg-white border border-line rounded-3xl p-6 sm:p-8">
         <SpecialForm
           recaptchaSiteKey={siteKey}
-          courses={courses.map((c) => ({ value: c.slug, label: c.name }))}
+          courses={courses.map((c) => ({ value: c.slug, label: c.name, levels: c.levels ?? [] }))}
           preselect={course}
         />
       </div>

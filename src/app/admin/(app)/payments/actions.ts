@@ -14,17 +14,19 @@ import { admin, toActionError } from "@/services";
  * action returning quietly and leaving the operator guessing.
  */
 
-export type PaymentActionState = { ok?: boolean; error?: string };
+export type PaymentActionState = { ok?: boolean; error?: string; notice?: string };
 
 export async function verifyPayment(paymentId: number): Promise<PaymentActionState> {
   await requirePermission("payments:verify");
+  let notice: string | null | undefined;
   try {
-    await admin.verifyPayment(paymentId);
+    ({ notice } = await admin.verifyPayment(paymentId));
   } catch (e) {
     return toActionError(e);
   }
   revalidatePath("/admin/payments");
-  return { ok: true };
+  // The payment is recorded, but a rejected or on-hold application does not become a student.
+  return notice ? { ok: true, notice } : { ok: true };
 }
 
 export async function rejectPayment(paymentId: number, formData: FormData): Promise<PaymentActionState> {

@@ -7,9 +7,20 @@ export function PaymentRowActions({ paymentId, status }: { paymentId: number; st
   const [pending, start] = useTransition();
   const [mode, setMode] = useState<"none" | "reject" | "refund">("none");
   const [error, setError] = useState<string | null>(null);
+  // Survives the row turning VERIFIED, which swaps this component to its refund branch.
+  const [notice, setNotice] = useState<string | null>(null);
 
-  const run = (fn: () => Promise<{ error?: string }>) =>
-    start(async () => setError((await fn()).error ?? null));
+  const run = (fn: () => Promise<{ error?: string; notice?: string }>) =>
+    start(async () => {
+      const r = await fn();
+      setError(r.error ?? null);
+      setNotice(r.notice ?? null);
+    });
+  const noticeLine = notice && (
+    <p className="min-w-[13rem] max-w-[16rem] rounded-lg bg-amber/10 border border-amber/40 px-2.5 py-2 text-[11px] leading-snug font-semibold text-amber-ink">
+      {notice}
+    </p>
+  );
 
   if (status === "PENDING_VERIFICATION") {
     return (
@@ -35,6 +46,7 @@ export function PaymentRowActions({ paymentId, status }: { paymentId: number; st
           </button>
         )}
         {error && <p className="text-[10px] font-semibold text-red-600">{error}</p>}
+        {noticeLine}
       </div>
     );
   }
@@ -55,6 +67,7 @@ export function PaymentRowActions({ paymentId, status }: { paymentId: number; st
           </button>
         )}
         {error && <p className="text-[10px] font-semibold text-red-600">{error}</p>}
+        {noticeLine}
       </div>
     );
   }

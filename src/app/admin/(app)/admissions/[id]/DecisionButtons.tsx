@@ -1,9 +1,19 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useTransition } from "react";
 import { approveApplication, rejectApplication, requestCorrections, type DecisionResult } from "./actions";
 
-export function DecisionButtons({ applicationId, status }: { applicationId: number; status: string }) {
+export function DecisionButtons({
+  applicationId,
+  status,
+  hasAccount,
+}: {
+  applicationId: number;
+  status: string;
+  /** Whether activation has actually created the student account — not implied by APPROVED. */
+  hasAccount: boolean;
+}) {
   const [pending, start] = useTransition();
   const [mode, setMode] = useState<"none" | "reject" | "corrections">("none");
   // The API can refuse a decision (already decided, missing payment record). Show it
@@ -13,8 +23,24 @@ export function DecisionButtons({ applicationId, status }: { applicationId: numb
   const run = (fn: () => Promise<DecisionResult>) =>
     start(async () => setError((await fn()).error ?? null));
 
-  if (["APPROVED", "REJECTED"].includes(status)) {
-    return <p className="text-sm text-ink-soft">Decision recorded. {status === "APPROVED" ? "Student account is active." : ""}</p>;
+  if (status === "APPROVED" && hasAccount) {
+    return <p className="text-sm text-ink-soft">Decision recorded. Student account is active.</p>;
+  }
+  if (status === "APPROVED") {
+    // Approving before the payment is verified records the decision only. This used to say
+    // "Student account is active" here, so the office believed a login had been sent.
+    return (
+      <div className="bg-amber/10 border border-amber/40 rounded-2xl p-5 text-sm text-ink">
+        <p className="font-bold text-amber-ink">Approved — no student account yet.</p>
+        <p className="mt-1 text-ink-soft">
+          The account is created, and the login emailed, when this application&apos;s payment is verified.{" "}
+          <Link href="/admin/payments" className="font-bold text-green-mid hover:underline">Go to Payments →</Link>
+        </p>
+      </div>
+    );
+  }
+  if (status === "REJECTED") {
+    return <p className="text-sm text-ink-soft">Decision recorded: rejected.</p>;
   }
 
   return (

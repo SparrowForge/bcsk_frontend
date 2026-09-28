@@ -75,6 +75,7 @@ export async function submitSpecial(_prev: ApplyState, formData: FormData): Prom
       ...fields(formData),
       photoPath,
       courseName: String(formData.get("courseName") ?? ""),
+      courseLevelId: Number(formData.get("courseLevelId")) || undefined,
       highestEducation: String(formData.get("highestEducation") ?? "").trim() || undefined,
       // SEC-3: persisted on the record, and the only thing the fee calculation reads.
       isBcskStudent: formData.get("isBcskStudent") === "on",

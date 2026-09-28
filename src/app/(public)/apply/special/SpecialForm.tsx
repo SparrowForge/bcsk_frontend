@@ -2,7 +2,7 @@
 
 import { Recaptcha } from "@/components/forms/Recaptcha";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { submitSpecial, type ApplyState } from "../actions";
 import { Field, PhotoField, ConsentField, inputCls } from "@/components/forms/fields";
 
@@ -12,23 +12,45 @@ export function SpecialForm({
   preselect,
   recaptchaSiteKey,
 }: {
-  courses: { value: string; label: string }[];
+  courses: { value: string; label: string; levels: { id: number; name: string }[] }[];
   preselect?: string;
   recaptchaSiteKey: string;
 }) {
   const [state, action, pending] = useActionState<ApplyState, FormData>(submitSpecial, null);
+  // The level decides which classes the student joins on activation; it used to be the
+  // course's first class for everyone.
+  const [course, setCourse] = useState(preselect ?? "");
+  const levels = courses.find((c) => c.value === course)?.levels ?? [];
 
   return (
     <form action={action} className="space-y-5">
       <label className="block">
         <span className="text-xs font-bold text-ink">Course <span className="text-crimson-ink">*</span></span>
-        <select name="courseName" required defaultValue={preselect ?? ""} className={`mt-1.5 ${inputCls}`}>
+        <select
+          name="courseName"
+          required
+          value={course}
+          onChange={(e) => setCourse(e.target.value)}
+          className={`mt-1.5 ${inputCls}`}
+        >
           <option value="" disabled>Choose a course…</option>
           {courses.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>
           ))}
         </select>
       </label>
+      {levels.length > 0 && (
+        <label className="block">
+          <span className="text-xs font-bold text-ink">Level / track <span className="text-crimson-ink">*</span></span>
+          <select key={course} name="courseLevelId" required defaultValue="" className={`mt-1.5 ${inputCls}`}>
+            <option value="" disabled>Choose a level…</option>
+            {levels.map((l) => (
+              <option key={l.id} value={l.id}>{l.name}</option>
+            ))}
+          </select>
+          <span className="mt-1 block text-[11px] text-ink-soft">Not sure? Choose the first level — the teacher can move your child after the first class.</span>
+        </label>
+      )}
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Applicant's full name" name="applicantName" required autoComplete="name" />
         <Field label="Date of birth" name="dob" type="date" required />

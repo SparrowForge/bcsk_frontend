@@ -51,7 +51,9 @@ export const site = {
       `/public/search?q=${encodeURIComponent(q)}&lang=${lang}`,
       0,
     ),
-  specialCourses: () => api.public<T.Course[]>("/public/special-courses", 300),
+  /** With each course's levels/tracks, for the application form's level choice. */
+  specialCourses: () =>
+    api.public<(T.Course & { levels: { id: number; name: string }[] })[]>("/public/special-courses", 300),
   /**
    * Homepage office + classroom boards. Short cache: it reflects state a teacher toggled
    * seconds ago, so a long one would show a class as live after it had ended.
@@ -307,7 +309,9 @@ export const admin = {
   settings: () => api.get<T.Setting[]>("/admin/settings"),
   saveSettings: (values: Record<string, string>) => api.post<{ updated: number }>("/admin/settings", values),
 
-  verifyPayment: (id: number) => api.post<unknown>(`/admin/payments/${id}/verify`),
+  /** `notice` is set when the money was recorded but no student account was created. */
+  verifyPayment: (id: number) =>
+    api.post<{ paymentId: number; status: string; activated?: boolean; notice?: string | null }>(`/admin/payments/${id}/verify`),
   rejectPayment: (id: number, reason: string) => api.post<unknown>(`/admin/payments/${id}/reject`, { reason }),
   refundPayment: (id: number, reason: string) => api.post<unknown>(`/admin/payments/${id}/refund`, { reason }),
 };

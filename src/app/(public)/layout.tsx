@@ -7,7 +7,9 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen flex flex-col">
       <TopBar />
       <Header />
-      <main className="flex-1">{children}</main>
+      {/* data-auto-reveal: every public page animates its blocks in on scroll, both ways,
+          without hand-tagging — see the bootstrap in `lib/motion.ts`. */}
+      <main className="flex-1" data-auto-reveal>{children}</main>
       <Footer />
     </div>
   );

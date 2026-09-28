@@ -22,6 +22,9 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
   const rows: Array<[string, string | null]> = [
     ["Type", app.type],
     ["Grade / Course", app.grade ? classLevelLabel(app.grade) : app.courseName],
+    ...(app.type === "SPECIAL"
+      ? [["Level / track", app.courseLevel?.name ?? "Not chosen (applied before levels were asked)"] as [string, string]]
+      : []),
     ["Date of birth", app.dob ? formatDate(app.dob) : null],
     ["Gender", app.gender],
     ["Religion", app.religion],
@@ -97,7 +100,7 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
       )}
 
       <div className="mt-8">
-        <DecisionButtons applicationId={app.id} status={app.status} />
+        <DecisionButtons applicationId={app.id} status={app.status} hasAccount={app.createdStudentUserId !== null} />
       </div>
     </div>
   );

@@ -468,6 +468,46 @@ textarea:focus-visible {
   animation-duration: 0.8s;
 }
 
+/* Scrolling back up, an element enters from the top of the screen, so it drops in from above
+   rather than rising from below: the entrance follows the reader's direction. The bootstrap
+   sets `data-reveal-from` at the moment of reveal. */
+@keyframes bcsk-reveal-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-motion] [data-reveal="up"][data-reveal-from="above"][data-revealed] {
+  animation-name: bcsk-reveal-down;
+}
+
+/* Page entrance for every public page without hand-placed motion. Pure CSS on purpose: it
+   plays on first paint and again whenever a client-side navigation swaps the page in, and it
+   changes no DOM before React hydrates. The scroll reveal takes over below the fold. The
+   `:has()` guard keeps the homepage's own choreography untouched; a browser without `:has()`
+   simply skips the entrance. */
+[data-motion] [data-auto-reveal]:not(:has([data-reveal-hand])) > :not([data-reveal]) {
+  animation: bcsk-reveal-up 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+[data-motion] [data-auto-reveal]:not(:has([data-reveal-hand])) > :not([data-reveal]):nth-child(2) {
+  animation-delay: 90ms;
+}
+[data-motion] [data-auto-reveal]:not(:has([data-reveal-hand])) > :not([data-reveal]):nth-child(n + 3) {
+  animation-delay: 180ms;
+}
+
+/* Paper has no scroll: an element waiting off screen would print as a blank gap. */
+@media print {
+  [data-motion] [data-reveal] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+}
+
 /* ---------- hover / press micro-interactions ---------- */
 
 .hover-lift {
@@ -575,6 +615,7 @@ textarea:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  [data-motion] [data-auto-reveal] > *,
   [data-motion] [data-reveal],
   [data-motion] [data-reveal][data-revealed] {
     opacity: 1;
