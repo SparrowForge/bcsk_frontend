@@ -12,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = topicBySlug((await params).topic);
-  return { title: topic?.title ?? "All About Abacus" };
+  return topic ? { title: topic.title, description: topic.summary } : { title: "All About Abacus" };
 }
 
 function Block({ block }: { block: AboutBlock }) {

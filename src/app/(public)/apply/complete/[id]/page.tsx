@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import { PageShell } from "@/components/site/PageShell";
 import { admissions, ApiError } from "@/services";
 import { krw } from "@/lib/format";
+import type { Metadata } from "next";
+
+// An applicant's receipt: reachable only by its link, and never a search result.
+export const metadata: Metadata = { title: "Application received", robots: { index: false, follow: false } };
 
 /** Post-payment status page (FR-ADM-07/08). */
 export default async function ApplicationCompletePage({

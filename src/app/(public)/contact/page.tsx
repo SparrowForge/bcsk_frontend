@@ -4,6 +4,11 @@ import { PageShell } from "@/components/site/PageShell";
 import { SCHOOL } from "@/lib/constants";
 import { getContact, telHref } from "@/lib/contact";
 import { ContactForm } from "./ContactForm";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("contact", "Contact Bangladesh Community School, Korea by phone, WhatsApp or email, or send the office a message.");
+}
 
 /** FR-CONT-01: address, map, phone/WhatsApp, email, social links, and a support-ticket contact form. */
 /** The topics the form offers; anything else in the URL falls back to a general inquiry. */

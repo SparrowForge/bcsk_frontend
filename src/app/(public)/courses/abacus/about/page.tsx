@@ -2,7 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { ABOUT_TOPICS } from "../content";
 
-export const metadata: Metadata = { title: "All About Abacus" };
+export const metadata: Metadata = {
+  title: "All About Abacus",
+  description: "Everything a parent or student needs to know about the abacus: what it is, its history, its parts and how mental arithmetic works.",
+};
 
 /** FR-ABC-02: the seven "All About Abacus" topics. */
 export default function AbacusAboutPage() {

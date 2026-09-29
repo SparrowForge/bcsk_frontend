@@ -1,6 +1,11 @@
 import { site } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("studentCorner", "Writing, poetry, artwork and achievements from BCSK students, curated by their teachers.");
+}
 
 /** Each pill carries its own label colour: every fill here is dark enough to take white. */
 const KIND_COLORS: Record<string, string> = {

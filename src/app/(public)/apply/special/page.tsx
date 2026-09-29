@@ -3,6 +3,15 @@ import { site } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { SpecialForm } from "./SpecialForm";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return {
+    title: `${t.nav.specialCourse} — Application`,
+    description: "Online application for a BCSK special course: IELTS for Kids, Abacus, Qur'an & Deen, Hifz, Debate Club, Arabic or Bangla Language.",
+  };
+}
 
 export default async function SpecialApplyPage({ searchParams }: { searchParams: Promise<{ course?: string }> }) {
   const siteKey = recaptchaSiteKey();

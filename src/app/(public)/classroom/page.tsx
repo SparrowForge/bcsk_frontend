@@ -4,6 +4,12 @@ import { getDict } from "@/lib/i18n";
 import { isDemoMode } from "@/lib/env";
 import { LoginCard } from "@/components/portal/LoginCard";
 import { loginStudent } from "@/lib/actions/auth-actions";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return { title: t.auth.studentLogin, description: "Sign in to the BCSK Classroom, the student portal." };
+}
 
 /** FR-STU-01: Classroom login (Student ID + Password) with forgot-password and request-ID paths. */
 export default async function ClassroomLoginPage() {

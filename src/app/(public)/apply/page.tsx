@@ -2,6 +2,11 @@ import Link from "next/link";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { BookIcon } from "@/components/home/ProgramCards";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("applyNow", "Apply to BCSK online: the Regular Course from Pre-Primary to Class 5, or a special course such as IELTS for Kids, Abacus or Qur'an & Deen.");
+}
 
 /** FR-ADM-01: Apply Now — choose Regular Course or Special Course. */
 export default async function ApplyPage() {

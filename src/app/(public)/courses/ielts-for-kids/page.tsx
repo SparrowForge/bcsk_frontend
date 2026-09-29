@@ -4,6 +4,11 @@ import { getSession } from "@/lib/auth";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 import { krw } from "@/lib/format";
 import { PracticeQuiz } from "./PracticeQuiz";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("ielts", "IELTS foundations for children: Listening, Speaking, Reading and Writing, taught by native English speakers across nine levels.");
+}
 
 const SKILLS = [
   { name: "Listening", icon: "🎧", text: "Native-speaker dialogues, songs, and stories tuned to each level." },
@@ -34,7 +39,9 @@ export default async function IeltsPage() {
             {course?.heroText ?? "Give your child a global voice"}
           </h1>
           <p className="relative mt-4 text-white/85 text-sm max-w-xl leading-relaxed">
-            {course?.description} Taught by native English speakers across nine progressive levels.
+            {/* The admin-edited description already covers the teachers and levels; appending a
+                fixed sentence here printed it twice once the description said the same. */}
+            {course?.description || "Taught by native English speakers across nine progressive levels."}
           </p>
           <Link
             href="/apply/special?course=ielts-for-kids"

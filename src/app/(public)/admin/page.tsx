@@ -5,6 +5,12 @@ import { ADMIN_ROLES } from "@/lib/constants";
 import { isDemoMode } from "@/lib/env";
 import { LoginCard } from "@/components/portal/LoginCard";
 import { loginAdmin } from "@/lib/actions/auth-actions";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return { title: t.auth.adminLogin, description: "Sign in to the BCSK administration portal." };
+}
 
 /** FR-ADMIN-01: Admin login with RBAC. */
 export default async function AdminLoginPage() {

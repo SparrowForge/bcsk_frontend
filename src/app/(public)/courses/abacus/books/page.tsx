@@ -2,7 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { site } from "@/services";
 
-export const metadata: Metadata = { title: "Books" };
+export const metadata: Metadata = {
+  title: "Books",
+  description: "BCSK’s own Abacus books: a Student Book for the lessons and a Work Book for practice, at every level.",
+};
 
 function BookCover({ level, kind }: { level: string; kind: "Student Book" | "Work Book" }) {
   return (

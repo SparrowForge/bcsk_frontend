@@ -5,7 +5,10 @@ import type { ClassVideo, ClassSession } from "@/services/types";
 import { getSession } from "@/lib/auth";
 import { formatDate } from "@/lib/dates";
 
-export const metadata: Metadata = { title: "Online Class" };
+export const metadata: Metadata = {
+  title: "Online Class",
+  description: "Weekly live Abacus classes and class recordings for enrolled BCSK students.",
+};
 
 function videoHref(url: string) {
   return url.startsWith("http") ? url : `/api/files/${url}`;

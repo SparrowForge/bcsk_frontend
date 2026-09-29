@@ -4,6 +4,12 @@ import { getDict } from "@/lib/i18n";
 import { isDemoMode } from "@/lib/env";
 import { LoginCard } from "@/components/portal/LoginCard";
 import { loginTeacher } from "@/lib/actions/auth-actions";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  return { title: t.auth.teacherLogin, description: "Sign in to the BCSK Office, the teacher portal." };
+}
 
 /** FR-TCH-01: Office login (Teacher ID + Password). */
 export default async function OfficeLoginPage() {

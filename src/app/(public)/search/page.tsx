@@ -2,6 +2,13 @@ import Link from "next/link";
 import { site } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getDict();
+  // Result pages are thin, near-duplicate listings; the pages they point to are what should rank.
+  return { title: t.common.search, robots: { index: false, follow: false } };
+}
 
 const PAGE_ROUTES: Record<string, string> = {
   "about-us": "/bcsk/about-us",

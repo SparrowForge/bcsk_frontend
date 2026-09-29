@@ -2,6 +2,11 @@ import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { getContact } from "@/lib/contact";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("regionalReps", "BCSK's regional representatives across South Korea, and how to volunteer as the representative for your city.");
+}
 
 /** FR-ABOUT-03: regional representatives listing. */
 export default async function RegionalRepsPage() {

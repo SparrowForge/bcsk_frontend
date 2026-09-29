@@ -4,6 +4,20 @@ import { getDict } from "@/lib/i18n";
 import { formatDate, isoAttr } from "@/lib/dates";
 import { PageShell } from "@/components/site/PageShell";
 import { SideCard } from "@/components/site/SideCard";
+import { metaDescription } from "@/lib/meta-description";
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const newsId = Number((await params).id);
+  if (!Number.isInteger(newsId) || newsId <= 0) return {};
+  try {
+    // Same cached read as the page below; a missing item is left to the page's `notFound()`.
+    const item = await cms.newsItem(newsId);
+    return { title: item.title, description: metaDescription(item.html) };
+  } catch {
+    return {};
+  }
+}
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

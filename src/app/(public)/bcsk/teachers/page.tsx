@@ -1,6 +1,11 @@
 import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("teachers", "Meet the teachers and staff of Bangladesh Community School, Korea.");
+}
 
 /** FR-ABOUT-02: staff list with photo, name, designation, bio — editable via Admin Panel. */
 export default async function TeachersPage() {

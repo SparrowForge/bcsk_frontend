@@ -17,7 +17,11 @@ import {
   type Text,
 } from "./content";
 
-export const metadata: Metadata = { title: "Deen — Qur'an & Islamic Studies" };
+export const metadata: Metadata = {
+  title: "Deen — Qur'an & Islamic Studies",
+  description:
+    "Qur'an recitation with Tajweed and Islamic studies at BCSK, with daily prayer times for Seoul, an Ibadah corner and a kids zone.",
+};
 
 const L = {
   eyebrow: { bn: "দ্বীন · কুরআন ও ইসলামিক শিক্ষা", en: "Deen · Qur'an & Islamic Studies" },

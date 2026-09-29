@@ -3,6 +3,11 @@ import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { dayOfMonth, monthShort } from "@/lib/dates";
 import { PageShell } from "@/components/site/PageShell";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("seminarUpdate", "Seminars for BCSK students and guardians.");
+}
 
 /** FR-NEWS-01: seminar updates. */
 export default async function SeminarsPage() {

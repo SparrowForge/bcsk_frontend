@@ -2,6 +2,9 @@ import { site } from "@/services";
 import { formatDate } from "@/lib/dates";
 import { PageShell } from "@/components/site/PageShell";
 import { getContact } from "@/lib/contact";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = { title: "Document Verification", robots: { index: false, follow: false } };
 
 /** FR-STU-09: QR verification endpoint for issued certificates and ID cards. */
 export default async function VerifyPage({ params }: { params: Promise<{ serial: string }> }) {

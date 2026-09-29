@@ -2,6 +2,11 @@ import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { GalleryGrid } from "./GalleryGrid";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("gallery", "Photos from BCSK events and school life.");
+}
 
 /** FR-NEWS-02: categorized albums with lightbox viewing. */
 export default async function GalleryPage() {

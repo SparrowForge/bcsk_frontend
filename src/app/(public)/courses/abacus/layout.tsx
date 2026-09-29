@@ -5,6 +5,8 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: { default: "Abacus Programme", template: "%s | BCSK Abacus" },
+  description:
+    "Eight levels of soroban training at BCSK, from a child's first beads to fast mental arithmetic, taught online with a virtual abacus and maths games.",
 };
 
 /**

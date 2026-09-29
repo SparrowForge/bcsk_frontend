@@ -1,6 +1,11 @@
 import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("governingBody", "The Governing Body that oversees Bangladesh Community School, Korea, and its members.");
+}
 
 /** FR-ABOUT-03: governing body member listing. */
 export default async function GoverningBodyPage() {

@@ -2,7 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { site } from "@/services";
 
-export const metadata: Metadata = { title: "Syllabus" };
+export const metadata: Metadata = {
+  title: "Syllabus",
+  description: "The BCSK Abacus syllabus, level by level. Each level takes about one semester and ends with an assessment.",
+};
 
 /** FR-ABC-03: Level 0 to Level 7, each opening to its syllabus. */
 export default async function AbacusSyllabusPage() {

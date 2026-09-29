@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { getSession } from "@/lib/auth";
 import { FunAbacus } from "../FunAbacus";
 
-export const metadata: Metadata = { title: "Fun Abacus" };
+export const metadata: Metadata = {
+  title: "Fun Abacus",
+  description: "Mental-maths games for every Abacus level: pick a game and add the numbers on your mental abacus.",
+};
 
 /** FR-ABC-07/08: Fun Abacus games; students' scores go to their progress report. */
 export default async function AbacusFunPage() {

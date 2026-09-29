@@ -4,6 +4,10 @@ import { admissions, payments, ApiError } from "@/services";
 import { krw } from "@/lib/format";
 import { SCHOOL } from "@/lib/constants";
 import { PaymentOptions } from "./PaymentOptions";
+import type { Metadata } from "next";
+
+// A capability-token payment step (SEC-7): never a search result.
+export const metadata: Metadata = { title: "Payment", robots: { index: false, follow: false } };
 
 /** FR-ADM-06: payment step — card via gateway or manual Hana Bank transfer with receipt upload. */
 export default async function PaymentPage({

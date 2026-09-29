@@ -3,6 +3,11 @@ import { cms } from "@/services";
 import { getDict } from "@/lib/i18n";
 import { formatDate, isoAttr } from "@/lib/dates";
 import { PageShell } from "@/components/site/PageShell";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("latestNews", "News and events from Bangladesh Community School, Korea.");
+}
 
 /** FR-NEWS-01: latest news listing. */
 export default async function NewsPage() {

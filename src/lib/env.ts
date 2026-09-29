@@ -49,6 +49,21 @@ export function isDemoMode(): boolean {
 }
 
 /**
+ * The site's public origin, for the sitemap, robots.txt and absolute metadata URLs.
+ *
+ * `NEXT_PUBLIC_BASE_URL` first; then Vercel's production domain, which Vercel sets on every
+ * build; then localhost, so a build with no environment at all still succeeds. Trailing
+ * slashes are trimmed so callers can append a path.
+ */
+export function siteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_BASE_URL?.trim();
+  if (explicit) return explicit.replace(/\/+$/, "");
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) return `https://${vercel}`;
+  return "http://localhost:3000";
+}
+
+/**
  * Read an optional positive integer. Blank, zero, negative, and non-numeric values
  * all fall back rather than silently becoming 0 or NaN.
  */

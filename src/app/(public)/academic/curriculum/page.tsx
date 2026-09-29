@@ -3,6 +3,11 @@ import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { CLASS_LEVELS } from "@/lib/constants";
 import { CurriculumFilter } from "./CurriculumFilter";
+import { navMetadata } from "@/lib/seo";
+
+export function generateMetadata() {
+  return navMetadata("curriculum", "BCSK follows Bangladesh's updated NCTB curriculum from Pre-Primary to Class 5, with Global English teaching and Islamic or Hindu Religious Studies.");
+}
 
 /** FR-ACAD-02: NCTB-aligned subject list per class as structured, filterable content. */
 export default async function CurriculumPage() {
