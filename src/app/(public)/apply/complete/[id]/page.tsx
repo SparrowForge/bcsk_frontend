@@ -50,18 +50,18 @@ export default async function ApplicationCompletePage({
           <p className="mt-3 text-sm text-ink-soft leading-relaxed">
             {paid && (
               <>
-                {app.applicantName}'s admission is confirmed. The <b>Classroom login details were emailed</b> to{" "}
+                {app.applicantName}&apos;s admission is confirmed. The <b>Classroom login details were emailed</b> to{" "}
                 {app.email}. Welcome to BCSK! 🎉
               </>
             )}
             {pending && (
               <>
                 Thank you! Our office is verifying your bank transfer (reference{" "}
-                <b>{payment?.virtualRef}</b>). You'll receive the admission confirmation and Classroom login by
+                <b>{payment?.virtualRef}</b>). You&apos;ll receive the admission confirmation and Classroom login by
                 email within 1–2 working days.
               </>
             )}
-            {!paid && !pending && <>Your application is saved but payment hasn't been completed yet.</>}
+            {!paid && !pending && <>Your application is saved but payment hasn&apos;t been completed yet.</>}
           </p>
 
           {payment && (

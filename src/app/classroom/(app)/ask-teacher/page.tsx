@@ -26,7 +26,7 @@ export default async function AskTeacherPage() {
       </div>
       <h2 className="font-display text-lg font-semibold text-ink mb-3">My Questions</h2>
       <div className="space-y-3">
-        {questions.length === 0 && <p className="text-sm text-ink-soft">You haven't asked anything yet.</p>}
+        {questions.length === 0 && <p className="text-sm text-ink-soft">You haven&apos;t asked anything yet.</p>}
         {questions.map((q) => (
           <div key={q.id} className="bg-white rounded-2xl border border-line p-5">
             <div className="flex items-center justify-between gap-3">

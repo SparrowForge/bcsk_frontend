@@ -90,8 +90,8 @@ export function ConsentField() {
       <input type="checkbox" name="parentalConsent" required className="mt-0.5" />
       <span className="text-xs text-ink leading-relaxed">
         <span className="font-bold">Parental consent (required).</span> As the parent/legal guardian, I consent to
-        BCSK collecting and processing this child's personal information for admission and school operations, in
-        accordance with South Korea's Personal Information Protection Act (PIPA) and the school's{" "}
+        BCSK collecting and processing this child&apos;s personal information for admission and school operations, in
+        accordance with South Korea&apos;s Personal Information Protection Act (PIPA) and the school&apos;s{" "}
         <a href="/privacy-policy" target="_blank" className="text-green-mid font-bold hover:underline">Privacy Policy</a>.
       </span>
     </label>

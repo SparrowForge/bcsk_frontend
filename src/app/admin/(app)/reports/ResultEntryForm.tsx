@@ -42,7 +42,7 @@ export function ResultEntryForm({ students }: { students: { userId: number; labe
           {pending ? "Saving…" : "Save result"}
         </button>
         {state?.error && <p className="w-full text-xs font-semibold text-red-600">{state.error}</p>}
-        {state?.ok && <p className="w-full text-xs font-semibold text-green">Result saved ✓ (appears on the student's Results page)</p>}
+        {state?.ok && <p className="w-full text-xs font-semibold text-green">Result saved ✓ (appears on the student&apos;s Results page)</p>}
       </form>
     </details>
   );

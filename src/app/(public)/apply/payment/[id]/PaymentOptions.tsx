@@ -111,7 +111,7 @@ export function PaymentOptions({
       {method === "CARD" && cardEnabled ? (
         <div className="bg-white border border-line rounded-2xl p-6">
           <p className="text-sm text-ink-soft leading-relaxed">
-            Pay {krw(amount)} securely by card. You'll be redirected to our certified payment gateway
+            Pay {krw(amount)} securely by card. You&apos;ll be redirected to our certified payment gateway
             (Toss Payments) — BCSK never sees or stores your card details.
           </p>
           {cardError && <p className="mt-3 text-sm font-semibold text-red-600">{cardError}</p>}
@@ -134,7 +134,7 @@ export function PaymentOptions({
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Bank</dt><dd className="font-bold text-ink">{bank.name}</dd></div>
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account name</dt><dd>{bank.accountName}</dd></div>
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account number</dt><dd className="font-bold text-green">{bank.accountNumber}</dd></div>
-            <div className="flex justify-between"><dt className="font-bold text-ink-soft">Transfer memo</dt><dd>Applicant's name</dd></div>
+            <div className="flex justify-between"><dt className="font-bold text-ink-soft">Transfer memo</dt><dd>Applicant&apos;s name</dd></div>
           </dl>
           <form action={bankAction} className="mt-5 space-y-4">
             <input type="hidden" name="applicationId" value={applicationId} />

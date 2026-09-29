@@ -31,17 +31,17 @@ export default async function ApplyPage() {
           </span>
           <h2 className="mt-4 font-display text-2xl font-semibold text-green">{t.nav.specialCourse}</h2>
           <p className="mt-2 text-sm text-ink-soft leading-relaxed">
-            IELTS for Kids, Abacus, Qur'an & Deen, Hifz, Debate Club, or Bangla Language — open to BCSK and
+            IELTS for Kids, Abacus, Qur&apos;an & Deen, Hifz, Debate Club, or Bangla Language — open to BCSK and
             non-BCSK students.
           </p>
           <span className="inline-block mt-4 text-crimson-ink font-bold text-sm">Start application →</span>
         </Link>
       </div>
       <p className="mt-8 text-sm text-ink-soft max-w-2xl">
-        After the form you'll continue to payment — card or Hana Bank transfer. Review the{" "}
+        After the form you&apos;ll continue to payment — card or Hana Bank transfer. Review the{" "}
         <Link href="/admission/tuition-fee" className="text-green-mid font-bold hover:underline">tuition fee table</Link> and{" "}
         <Link href="/admission/process" className="text-green-mid font-bold hover:underline">admission process</Link> first if
-        you haven't.
+        you haven&apos;t.
       </p>
     </PageShell>
   );
