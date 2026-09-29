@@ -38,7 +38,7 @@ export default function PublicError({ error, retry }: { error: Error & { digest?
           <button
             type="button"
             onClick={() => retry()}
-            className="press bg-green hover:bg-green-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors"
+            className="press bg-green hover:bg-green-deep text-white font-bold rounded-lg border-2 border-transparent px-6 py-2.5 text-sm transition-colors"
           >
             {t.errors.retry}
           </button>

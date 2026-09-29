@@ -14,10 +14,12 @@ export function MainNav({
   items,
   contactLabel,
   applyLabel,
+  staffLinks,
 }: {
   items: NavItem[];
   contactLabel: string;
   applyLabel: string;
+  staffLinks: { label: string; href: string }[];
 }) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -93,28 +95,17 @@ export function MainNav({
         </Link>
       </nav>
 
-      {/* mobile trigger — with Apply beside it below `sm`, where the top bar drops its own
-          Apply button for room. Without this a phone had no route to the application form
-          short of the homepage hero or the side card at the foot of an interior page. */}
-      <div className="lg:hidden flex items-center gap-1.5 shrink-0">
-        <Link
-          href="/apply"
-          onClick={() => setOpen(false)}
-          className="sm:hidden press bg-crimson hover:bg-crimson-deep text-white text-[13px] font-bold rounded-lg px-3 py-2 whitespace-nowrap"
-        >
-          {applyLabel}
-        </Link>
-        <button
-          className="p-2 -mr-2"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-label="Menu"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
-            {open ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-          </svg>
-        </button>
-      </div>
+      {/* mobile trigger */}
+      <button
+        className="lg:hidden p-2 -mr-2"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-label="Menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+          {open ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+        </svg>
+      </button>
 
       {/* mobile menu */}
       {open && (
@@ -183,6 +174,14 @@ export function MainNav({
               >
                 {contactLabel}
               </Link>
+            </div>
+            {/* The staff logins the phone top bar gives up to make room for Apply. */}
+            <div className="sm:hidden flex justify-center gap-5 pt-2 pb-1 text-sm font-semibold">
+              {staffLinks.map((l) => (
+                <Link key={l.href} href={l.href} onClick={() => setOpen(false)} className="text-ink-soft hover:text-green-mid py-1">
+                  {l.label}
+                </Link>
+              ))}
             </div>
           </nav>
         </div>

@@ -45,7 +45,7 @@ export default async function NotFound() {
             <div className="relative mt-7 flex flex-wrap justify-center gap-3">
               <Link
                 href="/"
-                className="press bg-green hover:bg-green-deep text-white font-bold rounded-lg px-6 py-2.5 text-sm transition-colors"
+                className="press bg-green hover:bg-green-deep text-white font-bold rounded-lg border-2 border-transparent px-6 py-2.5 text-sm transition-colors"
               >
                 {t.errors.backHome}
               </Link>

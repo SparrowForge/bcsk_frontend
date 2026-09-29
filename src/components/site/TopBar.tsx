@@ -37,17 +37,20 @@ export async function TopBar() {
           <Link href="/classroom" className="hover:text-green-soft font-semibold">
             {t.nav.classroom}
           </Link>
+          {/* Below `sm` there is not room for all three portals *and* Apply: at 360px the
+              language picker was pushed off the edge. The two staff logins give way — they
+              move into the mobile menu — so a family on a phone always has Apply in view. */}
           <span className="hidden sm:inline text-white/30" aria-hidden>·</span>
-          <Link href="/office" className="hover:text-green-soft font-semibold">
+          <Link href="/office" className="hidden sm:inline hover:text-green-soft font-semibold">
             {t.nav.office}
           </Link>
           <span className="hidden sm:inline text-white/30" aria-hidden>·</span>
-          <Link href="/admin" className="hover:text-green-soft font-semibold">
+          <Link href="/admin" className="hidden sm:inline hover:text-green-soft font-semibold">
             {t.nav.admin}
           </Link>
           <Link
             href="/apply"
-            className="hidden sm:inline-block bg-crimson hover:bg-crimson-deep text-white font-bold rounded-md px-3 py-1 transition-colors"
+            className="inline-block whitespace-nowrap bg-crimson hover:bg-crimson-deep text-white font-bold rounded-md px-2 sm:px-3 py-1 transition-colors"
           >
             {t.nav.applyNow}
           </Link>
