@@ -68,7 +68,7 @@ export async function Header() {
     <header className="bg-white/95 backdrop-blur sticky top-0 z-50 border-b border-line/70">
       <div className="relative mx-auto max-w-7xl px-4 h-[72px] flex items-center justify-between gap-4">
         <Logo />
-        <MainNav items={items} contactLabel={t.nav.contact} />
+        <MainNav items={items} contactLabel={t.nav.contact} applyLabel={t.nav.applyNow} />
       </div>
     </header>
   );

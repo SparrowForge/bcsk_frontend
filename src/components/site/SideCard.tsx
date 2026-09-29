@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getContact } from "@/lib/contact";
+import { getContact, telHref } from "@/lib/contact";
 
 /** Contact + apply sidebar card used across interior pages. */
 export async function SideCard({ applyLabel = "Apply Now", contactLabel = "Contact Us" }: { applyLabel?: string; contactLabel?: string }) {
@@ -8,8 +8,13 @@ export async function SideCard({ applyLabel = "Apply Now", contactLabel = "Conta
     <aside className="bg-mist rounded-2xl p-6 sticky top-24">
       <h2 className="font-display text-lg font-semibold text-green">{contactLabel}</h2>
       <ul className="mt-3 space-y-2 text-sm text-ink-soft">
-        <li>{c.phone}</li>
-        <li>{c.phone2}</li>
+        {[c.phone, c.phone2].filter(Boolean).map((p) => (
+          <li key={p}>
+            <a className="hover:text-green-mid hover:underline" href={telHref(p)}>
+              {p}
+            </a>
+          </li>
+        ))}
         <li>
           <a className="text-green-mid hover:underline" href={`mailto:${c.email}`}>
             {c.email}

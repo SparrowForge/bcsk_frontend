@@ -69,7 +69,7 @@ const iconProps = {
   strokeLinejoin: "round" as const,
 };
 
-function BookIcon() {
+export function BookIcon() {
   return (
     <svg {...iconProps}>
       <path d="M12 6.5C10.3 5.2 7.8 4.6 4 4.8v12.9c3.8-.2 6.3.4 8 1.8 1.7-1.4 4.2-2 8-1.8V4.8c-3.8-.2-6.3.4-8 1.7Z" />

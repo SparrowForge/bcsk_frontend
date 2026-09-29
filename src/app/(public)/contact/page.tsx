@@ -2,7 +2,7 @@ import { recaptchaSiteKey } from "@/lib/recaptcha";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
 import { SCHOOL } from "@/lib/constants";
-import { getContact } from "@/lib/contact";
+import { getContact, telHref } from "@/lib/contact";
 import { ContactForm } from "./ContactForm";
 
 /** FR-CONT-01: address, map, phone/WhatsApp, email, social links, and a support-ticket contact form. */
@@ -44,7 +44,14 @@ export default async function ContactPage({
               <div>
                 <p className="font-bold text-ink">Phone / WhatsApp</p>
                 <p className="text-ink-soft mt-0.5">
-                  {c.phone} · {c.phone2}
+                  {[c.phone, c.phone2].filter(Boolean).map((p, i) => (
+                    <span key={p}>
+                      {i > 0 && " · "}
+                      <a className="text-green-mid hover:underline" href={telHref(p)}>
+                        {p}
+                      </a>
+                    </span>
+                  ))}
                   {c.hours && <span className="text-ink-soft"> ({c.hours})</span>}
                   <br />
                   WhatsApp:{" "}

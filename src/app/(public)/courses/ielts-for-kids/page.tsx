@@ -94,16 +94,16 @@ export default async function IeltsPage() {
         {/* pricing (FR-IELTS-03) */}
         <div>
           <h2 className="font-display text-3xl font-semibold text-ink mb-6">Course Fee</h2>
-          <div className="bg-mist rounded-3xl p-8">
+          <div className="bg-mist rounded-3xl p-5 sm:p-8">
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white rounded-2xl p-6 text-center">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 text-center min-w-0">
                 <p className="text-xs font-extrabold uppercase tracking-wide text-green">BCSK Student</p>
-                <p className="mt-2 font-display text-3xl font-semibold text-green">{fee?.bcskPrice ? krw(fee.bcskPrice) : "—"}</p>
+                <p className="mt-2 font-display text-xl sm:text-3xl font-semibold text-green tabular-nums">{fee?.bcskPrice ? krw(fee.bcskPrice) : "—"}</p>
                 <p className="text-xs text-ink-soft mt-1">per level / semester</p>
               </div>
-              <div className="bg-white rounded-2xl p-6 text-center">
+              <div className="bg-white rounded-2xl p-4 sm:p-6 text-center min-w-0">
                 <p className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink">Non-BCSK Student</p>
-                <p className="mt-2 font-display text-3xl font-semibold text-green">{fee?.nonBcskPrice ? krw(fee.nonBcskPrice) : "—"}</p>
+                <p className="mt-2 font-display text-xl sm:text-3xl font-semibold text-green tabular-nums">{fee?.nonBcskPrice ? krw(fee.nonBcskPrice) : "—"}</p>
                 <p className="text-xs text-ink-soft mt-1">per level / semester</p>
               </div>
             </div>

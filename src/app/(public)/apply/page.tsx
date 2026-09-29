@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getDict } from "@/lib/i18n";
 import { PageShell } from "@/components/site/PageShell";
+import { BookIcon } from "@/components/home/ProgramCards";
 
 /** FR-ADM-01: Apply Now — choose Regular Course or Special Course. */
 export default async function ApplyPage() {
@@ -9,7 +10,9 @@ export default async function ApplyPage() {
     <PageShell title={t.nav.applyNow} eyebrow={t.nav.admission}>
       <div className="grid sm:grid-cols-2 gap-6 max-w-3xl">
         <Link href="/apply/regular" className="group bg-mist hover:bg-mist-deep rounded-3xl p-8 transition-colors">
-          <span className="inline-block w-12 h-12 rounded-full bg-green text-white flex items-center justify-center text-xl" aria-hidden>🏫</span>
+          <span className="grid w-14 h-14 place-items-center rounded-full bg-green text-white" aria-hidden>
+            <BookIcon />
+          </span>
           <h2 className="mt-4 font-display text-2xl font-semibold text-green">{t.nav.regularCourse}</h2>
           <p className="mt-2 text-sm text-ink-soft leading-relaxed">
             Pre-Primary to Class 5 — the full NCTB curriculum: Bangla, English, Mathematics, Science, BGS, and
@@ -18,7 +21,9 @@ export default async function ApplyPage() {
           <span className="inline-block mt-4 text-crimson-ink font-bold text-sm">Start application →</span>
         </Link>
         <Link href="/apply/special" className="group bg-green-soft hover:bg-green-soft/70 rounded-3xl p-8 transition-colors">
-          <span className="inline-block w-12 h-12 rounded-full bg-green-mid text-white flex items-center justify-center text-xl" aria-hidden>🌟</span>
+          <span className="grid w-14 h-14 place-items-center rounded-full bg-green-mid text-white" aria-hidden>
+            <StarIcon />
+          </span>
           <h2 className="mt-4 font-display text-2xl font-semibold text-green">{t.nav.specialCourse}</h2>
           <p className="mt-2 text-sm text-ink-soft leading-relaxed">
             IELTS for Kids, Abacus, Qur'an & Deen, Hifz, Debate Club, or Bangla Language — open to BCSK and
@@ -34,5 +39,14 @@ export default async function ApplyPage() {
         you haven't.
       </p>
     </PageShell>
+  );
+}
+
+/* Drawn to match the homepage program icons: 24-unit box, 1.6 stroke, rounded joins. */
+function StarIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 3.5 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9L12 3.5Z" />
+    </svg>
   );
 }

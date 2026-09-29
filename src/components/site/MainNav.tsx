@@ -10,7 +10,15 @@ export type NavItem = {
   children?: { label: string; href: string }[];
 };
 
-export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabel: string }) {
+export function MainNav({
+  items,
+  contactLabel,
+  applyLabel,
+}: {
+  items: NavItem[];
+  contactLabel: string;
+  applyLabel: string;
+}) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const pathname = usePathname();
@@ -85,17 +93,28 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
         </Link>
       </nav>
 
-      {/* mobile trigger */}
-      <button
-        className="lg:hidden p-2 -mr-2"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-label="Menu"
-      >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
-          {open ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-        </svg>
-      </button>
+      {/* mobile trigger — with Apply beside it below `sm`, where the top bar drops its own
+          Apply button for room. Without this a phone had no route to the application form
+          short of the homepage hero or the side card at the foot of an interior page. */}
+      <div className="lg:hidden flex items-center gap-1.5 shrink-0">
+        <Link
+          href="/apply"
+          onClick={() => setOpen(false)}
+          className="sm:hidden press bg-crimson hover:bg-crimson-deep text-white text-[13px] font-bold rounded-lg px-3 py-2 whitespace-nowrap"
+        >
+          {applyLabel}
+        </Link>
+        <button
+          className="p-2 -mr-2"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-label="Menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+            {open ? <path d="M18 6 6 18M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+          </svg>
+        </button>
+      </div>
 
       {/* mobile menu */}
       {open && (
@@ -149,13 +168,22 @@ export function MainNav({ items, contactLabel }: { items: NavItem[]; contactLabe
                 </Link>
               )
             )}
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="block mt-3 mb-2 bg-green text-white text-center text-sm font-bold rounded-lg px-4 py-2.5"
-            >
-              {contactLabel}
-            </Link>
+            <div className="mt-3 mb-2 grid grid-cols-2 gap-2">
+              <Link
+                href="/apply"
+                onClick={() => setOpen(false)}
+                className="block bg-crimson hover:bg-crimson-deep text-white text-center text-sm font-bold rounded-lg px-4 py-2.5"
+              >
+                {applyLabel}
+              </Link>
+              <Link
+                href="/contact"
+                onClick={() => setOpen(false)}
+                className="block bg-green hover:bg-green-deep text-white text-center text-sm font-bold rounded-lg px-4 py-2.5"
+              >
+                {contactLabel}
+              </Link>
+            </div>
           </nav>
         </div>
       )}

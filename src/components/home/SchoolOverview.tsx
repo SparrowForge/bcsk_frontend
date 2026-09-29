@@ -116,7 +116,12 @@ function Panel({
             all take the panel's own size, or a stray `#` renders at browser-default h1. */}
         <div
           className={`prose-bcsk text-[13px] text-ink leading-relaxed [&_h1]:!text-[14px] [&_h2]:!text-[14px] [&_h3]:!text-[13px] [&_:is(h1,h2,h3)]:!mt-3.5 [&_:is(h1,h2,h3):first-child]:!mt-0 [&_p]:my-1 [&_ul]:my-1 [&_li]:my-0.5 ${
-            columns ? "lg:columns-2 lg:gap-10" : ""
+            // A heading must travel with the text under it: without `break-after: avoid` the
+            // column break fell straight after "Education System", leaving it alone at the foot
+            // of the left column and its text at the head of the right one.
+            columns
+              ? "lg:columns-2 lg:gap-10 lg:[&_:is(h1,h2,h3)]:break-after-avoid lg:[&_:is(p,li)]:break-inside-avoid"
+              : ""
           }`}
           dangerouslySetInnerHTML={{ __html: html }}
         />

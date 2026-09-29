@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LogoMark } from "@/components/Logo";
 import { SCHOOL } from "@/lib/constants";
 import { getDict } from "@/lib/i18n";
-import { getContact } from "@/lib/contact";
+import { getContact, telHref } from "@/lib/contact";
 
 /**
  * The site footer, as the school's design deck draws it (LP-6): one band — badge and name
@@ -54,7 +54,14 @@ export async function Footer() {
                 <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.6a2 2 0 0 1 1.7 2Z" />
               </Icon>
               <span>
-                {phones.join(", ")}
+                {phones.map((p, i) => (
+                  <span key={p}>
+                    {i > 0 && ", "}
+                    <a href={telHref(p)} className="hover:text-white hover:underline underline-offset-2">
+                      {p}
+                    </a>
+                  </span>
+                ))}
                 {hours && <span className="text-white/60"> ({hours})</span>}
               </span>
             </li>
@@ -64,17 +71,17 @@ export async function Footer() {
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="m2 7 10 6L22 7" />
             </Icon>
-            <a href={`mailto:${email}`} className="hover:text-crimson">
+            <a href={`mailto:${email}`} className="hover:text-white hover:underline underline-offset-2">
               {email}
             </a>
           </li>
           <li className="flex gap-2.5 items-center">
-            <span className="shrink-0 text-crimson" aria-hidden>
+            <span className="shrink-0 text-green-soft" aria-hidden>
               <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z" />
               </svg>
             </span>
-            <a href={c.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-crimson">
+            <a href={c.facebookUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white hover:underline underline-offset-2">
               {fbHandle}
             </a>
           </li>
@@ -103,13 +110,13 @@ export async function Footer() {
           <div className="flex gap-1.5">
             <Link
               href="/contact"
-              className="rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1 transition-colors"
+              className="rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5 transition-colors"
             >
               {t.home.adminSupport}
             </Link>
             <Link
               href="/contact?topic=IT"
-              className="rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1 transition-colors"
+              className="rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5 transition-colors"
             >
               {t.home.itSupport}
             </Link>
@@ -124,10 +131,10 @@ export async function Footer() {
           </p>
           <div className="flex gap-4">
             {/* NFR-LEGAL-02: policy links on every page */}
-            <Link href="/privacy-policy" className="hover:text-crimson">
+            <Link href="/privacy-policy" className="hover:text-white hover:underline underline-offset-2">
               {t.footer.privacy}
             </Link>
-            <Link href="/refund-policy" className="hover:text-crimson">
+            <Link href="/refund-policy" className="hover:text-white hover:underline underline-offset-2">
               {t.footer.refund}
             </Link>
           </div>
@@ -137,8 +144,9 @@ export async function Footer() {
   );
 }
 
-/** The footer contact glyphs — one stroke weight, one size, red so they stay findable
- * against the green without pulling as hard as the buttons beside them. */
+/** The footer contact glyphs — one stroke weight, one size, in the pale brand tint. They were
+ * red, but red and this green are almost the same lightness (1.1:1): the hue differed and the
+ * shape all but vanished. Red stays on the buttons beside them, where it is a fill. */
 function Icon({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
     <svg
@@ -148,7 +156,7 @@ function Icon({ children, className = "" }: { children: React.ReactNode; classNa
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
-      className={`shrink-0 text-crimson ${className}`}
+      className={`shrink-0 text-green-soft ${className}`}
       aria-hidden
     >
       {children}

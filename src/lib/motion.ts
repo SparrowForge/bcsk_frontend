@@ -50,11 +50,19 @@ export const MOTION_BOOTSTRAP = `
     // Which way the reader is scrolling, so an element met on the way back up drops in from
     // above instead of rising from below: the entrance follows the reader's direction.
     var lastY = window.scrollY, goingUp = false;
+    // An element only counts as gone once it is this far past the edge. The entrances travel
+    // 22px, and the measurement includes that transform: a small heading barely inside the top
+    // edge, revealed while scrolling up, started its drop-in 22px higher, read as having left,
+    // was hidden again, and could settle there with no event left to bring it back.
+    var GONE = 32;
+    function offScreen(r, vh) {
+      return r.bottom <= -GONE || r.top >= vh + GONE;
+    }
     function apply(el, mayHide) {
       var r = el.getBoundingClientRect();
       var vh = window.innerHeight || d.documentElement.clientHeight;
       if (r.bottom <= 0 || r.top >= vh) {
-        if (mayHide) el.removeAttribute('data-revealed');
+        if (mayHide && offScreen(r, vh)) el.removeAttribute('data-revealed');
         return;
       }
       var shown = Math.min(r.bottom, vh) - Math.max(r.top, 0);
@@ -139,7 +147,9 @@ export const MOTION_BOOTSTRAP = `
       var vh = window.innerHeight || d.documentElement.clientHeight;
       entries.forEach(function (e) {
         var el = e.target, r = el.getBoundingClientRect();
-        if (r.bottom <= 0 || r.top >= vh) {
+        // Same margin: the page entrance also moves blocks, and one must never be tagged
+        // (hidden) because its entrance animation had it a few pixels past the edge.
+        if (offScreen(r, vh)) {
           lurk.unobserve(el);
           el.setAttribute('data-reveal', 'up');
           track(el);
@@ -174,7 +184,30 @@ export const MOTION_BOOTSTRAP = `
       clearTimeout(at);
       at = setTimeout(autoScan, 200);
     }
-    function autoStart() { setTimeout(autoScan, 400); }
+    // Tagging must wait for hydration: React compares every server-rendered node with its own
+    // render, and a data-reveal it did not send is a mismatch. A fixed delay after load was not
+    // enough on the heavier pages (the Abacus tool). React attaches a __reactFiber$ key to each
+    // node as it hydrates it, and it hydrates in document order, so once the last node inside
+    // every auto-reveal root carries one, the page is React's. Give up waiting after 10s.
+    function hydrated() {
+      var roots = d.querySelectorAll('[data-auto-reveal]');
+      for (var i = 0; i < roots.length; i++) {
+        var el = roots[i];
+        while (el.lastElementChild) el = el.lastElementChild;
+        var keys = Object.keys(el), ok = false;
+        for (var k = 0; k < keys.length; k++) if (keys[k].indexOf('__reactFiber$') === 0) { ok = true; break; }
+        if (!ok) return false;
+      }
+      return true;
+    }
+    function autoStart() {
+      var waited = 0;
+      (function poll() {
+        if (hydrated() || waited >= 10000) { setTimeout(autoScan, 150); return; }
+        waited += 150;
+        setTimeout(poll, 150);
+      })();
+    }
     if (d.readyState === 'complete') autoStart();
     else addEventListener('load', autoStart);
 

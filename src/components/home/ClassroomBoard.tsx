@@ -63,13 +63,13 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
         <span className="flex gap-1.5">
           <Link
             href="/contact"
-            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5"
           >
             {t.home.adminSupport}
           </Link>
           <Link
             href="/contact?topic=IT"
-            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-[9px] font-bold px-2 py-1"
+            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5"
           >
             {t.home.itSupport}
           </Link>

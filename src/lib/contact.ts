@@ -29,6 +29,11 @@ export type Contact = {
   addressKo: string;
 };
 
+/** A `tel:` link for a number as it is displayed: "+82 10 9599 8901" → "tel:+821095998901". */
+export function telHref(display: string): string {
+  return `tel:${display.replace(/[^\d+]/g, "")}`;
+}
+
 export async function getContact(): Promise<Contact> {
   const s = await getSettings([
     "school_phone",

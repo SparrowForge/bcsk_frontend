@@ -9,8 +9,8 @@ export async function TopBar() {
   const c = await getContact();
   return (
     <div className="bg-green text-white text-xs">
-      <div className="mx-auto max-w-7xl px-4 h-9 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-4 min-w-0">
+      <div className="mx-auto max-w-7xl px-4 h-9 flex items-center justify-between gap-2 sm:gap-3">
+        <div className="flex items-center gap-4 min-w-0 shrink-0 sm:shrink">
           <a
             href={`https://wa.me/${c.whatsapp}`}
             target="_blank"
@@ -33,15 +33,15 @@ export async function TopBar() {
             {c.email}
           </a>
         </div>
-        <div className="flex items-center gap-3 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <Link href="/classroom" className="hover:text-green-soft font-semibold">
             {t.nav.classroom}
           </Link>
-          <span className="text-white/30">·</span>
+          <span className="hidden sm:inline text-white/30" aria-hidden>·</span>
           <Link href="/office" className="hover:text-green-soft font-semibold">
             {t.nav.office}
           </Link>
-          <span className="text-white/30">·</span>
+          <span className="hidden sm:inline text-white/30" aria-hidden>·</span>
           <Link href="/admin" className="hover:text-green-soft font-semibold">
             {t.nav.admin}
           </Link>

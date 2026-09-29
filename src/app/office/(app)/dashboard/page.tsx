@@ -50,7 +50,7 @@ export default async function TeacherDashboard() {
                   )}
                 </div>
                 <p className="mt-1.5 text-xs text-ink-soft">
-                  {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""} · {s._count.enrollments} students
+                  {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""} · {s._count.enrollments} {s._count.enrollments === 1 ? "student" : "students"}
                 </p>
                 <span className="inline-block mt-3 text-crimson-ink text-xs font-bold uppercase tracking-wide">
                   Manage class →
