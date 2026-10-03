@@ -119,11 +119,12 @@ export function PrayerBoard({ lang }: { lang: Lang }) {
   }
 
   return (
-    <div className="grid lg:grid-cols-[1fr_1.4fr] gap-6">
-      <div className="bg-white border border-line rounded-3xl p-6 sm:p-8 flex flex-col">
+    <div className="space-y-6">
+      {/* panel 1 — date and live time */}
+      <div className="bg-white border border-line rounded-3xl p-6 flex flex-col">
         <h3 className="font-display text-xl font-semibold text-green border-l-4 border-crimson-bright pl-3">📅 {L.today[lang]}</h3>
-        <div className="flex-1 flex flex-col items-center justify-center text-center py-6">
-          <p className="font-display text-2xl font-semibold text-green min-h-8">
+        <div className="flex-1 flex flex-col items-center justify-center text-center pt-5 pb-1">
+          <p className="font-display text-xl font-semibold text-green min-h-8">
             {now ? new Intl.DateTimeFormat(locale, { timeZone: ZONE, weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(now) : " "}
           </p>
           <p className="mt-1 text-sm text-ink-soft min-h-5">
@@ -138,7 +139,8 @@ export function PrayerBoard({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <div className="bg-white border border-line rounded-3xl p-6 sm:p-8">
+      {/* panel 2 — prayer times */}
+      <div className="bg-white border border-line rounded-3xl p-6">
         <h3 className="font-display text-xl font-semibold text-green border-l-4 border-crimson-bright pl-3">🕌 {L.schedule[lang]}</h3>
         <ul className="mt-4 divide-y divide-dashed divide-line">
           {(["fajr", "sunrise", "dhuhr", "asr", "maghrib", "isha"] as PrayerName[]).map((p) => {
