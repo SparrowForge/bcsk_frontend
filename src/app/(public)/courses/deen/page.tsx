@@ -222,8 +222,8 @@ export default async function DeenPage() {
       </section>
 
       {/* courses (left) + sidebar (right), as on the school's Deen design */}
-      <div className="mx-auto max-w-7xl px-4 mt-14 grid lg:grid-cols-[minmax(0,1fr)_360px] gap-8 items-start">
-      <section id="courses" className="scroll-mt-24 min-w-0">
+      <div className="mx-auto max-w-7xl px-4 mt-14 grid lg:grid-cols-[minmax(0,1fr)_360px] lg:grid-rows-[auto_1fr] gap-8 items-start">
+      <section id="courses" className="order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:row-span-2 scroll-mt-24 min-w-0">
         <SectionTitle icon="📚">{t(L.courses)}</SectionTitle>
         <div className="grid md:grid-cols-2 gap-6">
           {COURSES.map((c) => (
@@ -262,14 +262,13 @@ export default async function DeenPage() {
         </div>
       </section>
 
-      <aside className="space-y-6 min-w-0" aria-label="Date, prayer times and Ibadah corner">
-      {/* two panels: date & time, then prayer times */}
-      <section id="prayer" className="scroll-mt-24">
+      {/* two panels: date & time, then prayer times — above the courses on mobile */}
+      <section id="prayer" className="order-1 lg:order-none lg:col-start-2 lg:row-start-1 scroll-mt-24 min-w-0">
         <PrayerBoard lang={lang} />
       </section>
 
       {/* ibadah corner */}
-      <section id="ibadah" className="scroll-mt-24">
+      <section id="ibadah" className="order-3 lg:order-none lg:col-start-2 lg:row-start-2 scroll-mt-24 min-w-0">
         <div className="bg-white border border-line rounded-3xl p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-display text-2xl font-semibold text-green border-l-4 border-crimson-bright pl-3">✨ {t(L.ibadah)}</h2>
@@ -319,7 +318,6 @@ export default async function DeenPage() {
           </div>
         </div>
       </section>
-      </aside>
       </div>
 
       {/* community */}
