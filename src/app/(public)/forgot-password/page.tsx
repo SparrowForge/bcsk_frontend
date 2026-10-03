@@ -17,13 +17,14 @@ export default function ForgotPasswordPage() {
         ) : (
           <form action={action} className="mt-6 space-y-4">
             <label className="block">
-              <span className="text-xs font-bold text-ink">Your ID (Student / Teacher / Admin)</span>
+              <span className="text-xs font-bold text-ink">Your ID or email address</span>
               <input
-                name="loginId"
+                name="identifier"
                 required
                 className="mt-1.5 w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
               />
             </label>
+            {state?.error && <p className="text-sm text-red-600 font-semibold">{state.error}</p>}
             <button
               type="submit"
               disabled={pending}

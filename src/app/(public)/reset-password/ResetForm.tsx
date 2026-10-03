@@ -6,9 +6,7 @@ import { resetPassword } from "@/lib/actions/auth-actions";
 
 export function ResetForm({ token }: { token: string }) {
   const [state, action, pending] = useActionState(resetPassword, null);
-  // Password reset is not yet exposed by the API, so the action always reports
-  // unavailable rather than pretending to succeed (tracked in Phase D).
-  const done = false;
+  const done = state?.ok === true;
 
   return (
     <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
@@ -24,12 +22,12 @@ export function ResetForm({ token }: { token: string }) {
         <form action={action} className="mt-6 space-y-4">
           <input type="hidden" name="token" value={token} />
           <label className="block">
-            <span className="text-xs font-bold text-ink">New password (min. 8 characters)</span>
+            <span className="text-xs font-bold text-ink">New password (min. 10 characters)</span>
             <input
               name="password"
               type="password"
               required
-              minLength={8}
+              minLength={10}
               autoComplete="new-password"
               className="mt-1.5 w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none"
             />

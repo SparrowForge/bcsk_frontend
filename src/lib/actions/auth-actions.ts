@@ -96,17 +96,28 @@ export async function changePassword(
   redirect(homeFor(session.role));
 }
 
-/** Password reset is not yet exposed by the API — tracked as part of Phase D. */
-export async function forgotPassword(
-  _p: { ok?: boolean; error?: string } | null,
-  _formData: FormData,
-) {
+type ResetState = { ok?: boolean; error?: string } | null;
+
+export async function forgotPassword(_p: ResetState, formData: FormData): Promise<ResetState> {
+  const identifier = String(formData.get("identifier") ?? "").trim();
+  if (!identifier) return { error: "Enter your ID or email address." };
+  try {
+    await api.post("/auth/forgot-password", { identifier }, { auth: false });
+  } catch (e) {
+    return toActionError(e);
+  }
   return { ok: true };
 }
 
-export async function resetPassword(
-  _p: { ok?: boolean; error?: string } | null,
-  _formData: FormData,
-) {
-  return { error: "Password reset is temporarily unavailable. Please contact the school office." };
+export async function resetPassword(_p: ResetState, formData: FormData): Promise<ResetState> {
+  const token = String(formData.get("token") ?? "");
+  const password = String(formData.get("password") ?? "");
+  if (!token) return { error: "This reset link is incomplete. Request a new one." };
+  if (password.length < 10) return { error: "Your new password must be at least 10 characters." };
+  try {
+    await api.post("/auth/reset-password", { token, password }, { auth: false });
+  } catch (e) {
+    return toActionError(e);
+  }
+  return { ok: true };
 }
