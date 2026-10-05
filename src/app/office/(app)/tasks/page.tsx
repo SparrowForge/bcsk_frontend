@@ -1,11 +1,11 @@
 import { formatDate } from "@/lib/dates";
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { office } from "@/services";
 import { TaskToggle } from "./TaskToggle";
 
 /** FR-TCH-07: administrative task list assigned by Admin. */
 export default async function TeacherTasksPage() {
-  const session = await requireTeacher();
+  const session = await requireMenu("office.tasks");
   const tasks = await office.tasks();
 
   return (

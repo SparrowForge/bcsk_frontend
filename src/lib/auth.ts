@@ -25,6 +25,21 @@ export type Session = {
   mustChangePassword: boolean;
   /** Served by the backend so the menu and the API can never disagree (SEC-4 / SEC-5). */
   permissions: string[];
+  /**
+   * The menus this account may open, from the `Menu` table: active, in its own panel, with the
+   * switches it holds on each. The sidebar is built from this list and every page and action of
+   * the student and teacher panels is checked against it (`requireMenu`).
+   */
+  menus: AccessibleMenu[];
+};
+
+export type MenuFlag = "access" | "insert" | "update" | "delete";
+export type AccessibleMenu = {
+  key: string;
+  module: string;
+  label: string;
+  href: string;
+  flags: Record<MenuFlag, boolean>;
 };
 
 export const CHANGE_PASSWORD_PATH = "/change-password";
@@ -94,6 +109,26 @@ export async function requireSuperAdmin(): Promise<Session> {
 export async function requirePermission(permission: string): Promise<Session> {
   const session = await requireAdmin();
   if (!session.permissions.includes(permission)) forbidden();
+  return session;
+}
+
+/**
+ * A page or action of a menu. Role first (a student is never sent into the teacher panel), then
+ * the menu switch the call needs: Access to open a page, Insert / Update / Delete for the
+ * matching action. Renders the 403 boundary when the account lacks it. This is defence in depth;
+ * the API enforces the same switch independently (`@RequireMenu`).
+ *
+ * The panel is read from the key: `classroom.*` is the student panel, `office.*` the teacher
+ * panel, anything else the admin panel (whose menus grant the capabilities `requirePermission`
+ * checks, so an admin page keeps using that).
+ */
+export async function requireMenu(key: string, flag: MenuFlag = "access"): Promise<Session> {
+  const session = key.startsWith("classroom.")
+    ? await requireStudent()
+    : key.startsWith("office.")
+      ? await requireTeacher()
+      : await requireAdmin();
+  if (!session.menus.find((m) => m.key === key)?.flags[flag]) forbidden();
   return session;
 }
 

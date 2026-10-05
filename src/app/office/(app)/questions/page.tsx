@@ -1,11 +1,11 @@
 import { formatDate } from "@/lib/dates";
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { office } from "@/services";
 import { AnswerForm } from "./AnswerForm";
 
 /** FR-STU-07 (teacher side) / FR-TCH-05: answer student questions. */
 export default async function QuestionsPage() {
-  const session = await requireTeacher();
+  const session = await requireMenu("office.questions");
   const questions = await office.questions();
 
   return (

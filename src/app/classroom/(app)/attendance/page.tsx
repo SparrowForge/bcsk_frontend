@@ -1,10 +1,10 @@
 import { formatDate } from "@/lib/dates";
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 
 /** FR-STU-05: attendance report. */
 export default async function AttendancePage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.attendance");
   const records = await classroom.attendance();
   const present = records.filter((r) => r.status === "PRESENT").length;
   const late = records.filter((r) => r.status === "LATE").length;

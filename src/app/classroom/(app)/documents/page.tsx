@@ -1,8 +1,8 @@
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 
 /** FR-STU-05/09: document downloads hub. */
 export default async function DocumentsPage() {
-  await requireStudent();
+  await requireMenu("classroom.documents");
   const docs = [
     {
       href: "/api/documents/certificate",

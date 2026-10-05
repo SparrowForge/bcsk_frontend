@@ -343,9 +343,13 @@ export const admin = {
 /* ------------------------------ menu permissions ------------------------------ */
 export const userPermissions = {
   menus: () => api.get<T.PermissionMenu[]>("/user-permissions/menus"),
+  entries: () => api.get<T.MenuEntry[]>("/menus"),
+  createMenu: (input: Record<string, unknown>) => api.post<unknown>("/menus", input),
+  updateMenu: (id: number, input: Record<string, unknown>) => api.patch<unknown>(`/menus/${id}`, input),
+  removeMenu: (id: number) => api.delete<{ ok: boolean }>(`/menus/${id}`),
   users: () => api.get<T.PermissionUser[]>("/user-permissions/users"),
   forUser: (id: number) => api.get<T.UserGrid>(`/user-permissions/users/${id}`),
-  forRole: (role: string) => api.get<{ role: string; grid: Record<string, T.MenuGrid> }>(`/user-permissions/roles/${role}`),
+  forRole: (role: string) => api.get<{ role: string; panel: T.Panel; grid: Record<string, T.MenuGrid> }>(`/user-permissions/roles/${role}`),
   save: (userIds: number[], grid: Record<string, T.MenuGrid>) =>
     api.put<{ updated: number }>("/user-permissions", { userIds, grid }),
   clear: (userIds: number[]) => api.post<{ cleared: number }>("/user-permissions/clear", { userIds }),

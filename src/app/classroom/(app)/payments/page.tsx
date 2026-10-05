@@ -1,12 +1,12 @@
 import { formatDate } from "@/lib/dates";
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { payments as paymentsApi } from "@/services";
 
 const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
 
 /** FR-STU-08: payment report and past receipts. */
 export default async function StudentPaymentsPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.payments");
   // BUG-1: the backend includes admission payments made before this student's account
   // existed — they are linked through the application, not through payerUserId.
   const payments = await paymentsApi.mine();

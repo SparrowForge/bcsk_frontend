@@ -1,11 +1,11 @@
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 import { AskForm } from "./AskForm";
 
 /** FR-STU-07: Ask Teacher — question routed to the relevant subject teacher. */
 export default async function AskTeacherPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.ask-teacher");
   const [teachers, questions] = await Promise.all([
     classroom.teachers(),
     classroom.questions(),

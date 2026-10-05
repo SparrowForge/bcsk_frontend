@@ -1,6 +1,6 @@
 "use server";
 
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { office, toActionError } from "@/services";
 
@@ -8,7 +8,7 @@ export type AnswerState = { ok?: boolean; error?: string } | null;
 
 /** The backend re-derives ownership: a teacher may only answer their own questions. */
 export async function answerQuestion(_prev: AnswerState, formData: FormData): Promise<AnswerState> {
-  await requireTeacher();
+  await requireMenu("office.questions", "insert");
   const questionId = Number(formData.get("questionId"));
   const answer = String(formData.get("answer") ?? "").trim();
   if (!answer) return { error: "Write an answer first." };

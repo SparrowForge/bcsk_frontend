@@ -1,11 +1,11 @@
 import { formatDate } from "@/lib/dates";
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 
 /** FR-STU-05: class videos for asynchronous review. */
 export default async function VideosPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.videos");
   const videos = await classroom.videos();
 
   return (

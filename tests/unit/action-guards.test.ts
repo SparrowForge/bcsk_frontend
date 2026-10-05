@@ -7,19 +7,22 @@ import { join, relative, sep } from "node:path";
  * the page or layout guard above it does not run when an action is invoked directly. This
  * walks every `actions.ts` in the student, teacher and admin panels and fails if an exported
  * async function does not start by calling a `require*` guard.
+ *
+ * Student and teacher actions check the menu switch they need (Insert / Update / Delete); the
+ * desk-status card on the always-open teacher dashboard is the one that only needs the role.
  */
 const ROOT = join(process.cwd(), "src", "app");
 const PANELS: Record<string, RegExp> = {
-  "classroom": /await requireStudent\(\)/,
-  "office": /await requireTeacher\(\)/,
+  classroom: /await requireMenu\("classroom\.[\w-]+", "(insert|update|delete)"\)/,
+  office: /await require(Menu\("office\.[\w-]+", "(insert|update|delete)"\)|Teacher\(\))/,
   // Admin actions use a capability guard; plain requireAdmin() is only for shared screens.
-  "admin": /await require(Permission|SuperAdmin|Admin)\(/,
+  admin: /await require(Permission|SuperAdmin|Admin)\(/,
 };
 
-function walk(dir: string): string[] {
+function walk(dir: string, file = "actions.ts"): string[] {
   return readdirSync(dir).flatMap((name) => {
     const p = join(dir, name);
-    return statSync(p).isDirectory() ? walk(p) : name === "actions.ts" ? [p] : [];
+    return statSync(p).isDirectory() ? walk(p, file) : name === file ? [p] : [];
   });
 }
 
@@ -40,6 +43,21 @@ describe("every panel Server Action checks its caller", () => {
       for (const [name, body] of exportedFunctions(readFileSync(file, "utf8"))) {
         it(`${rel} › ${name}`, () => expect(body).toMatch(guard));
       }
+    }
+  }
+});
+
+/** Every student and teacher page (but the always-open dashboard) must name its menu. */
+describe("every student and teacher page checks its menu", () => {
+  const cases: [string, RegExp][] = [
+    ["classroom", /await requireMenu\("classroom\.[\w-]+"\)/],
+    ["office", /await requireMenu\("office\.[\w-]+"\)/],
+  ];
+  for (const [panel, guard] of cases) {
+    for (const file of walk(join(ROOT, panel), "page.tsx")) {
+      const rel = relative(ROOT, file).split(sep).join("/");
+      if (rel.includes("/dashboard/")) continue;
+      it(rel, () => expect(readFileSync(file, "utf8")).toMatch(guard));
     }
   }
 });

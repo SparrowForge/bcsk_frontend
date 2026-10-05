@@ -1,10 +1,10 @@
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { office } from "@/services";
 import { SEMESTER_CURRENT, classLevelLabel } from "@/lib/constants";
 
 /** FR-TCH-06: guardians contact directory for the teacher's classes. */
 export default async function GuardiansPage() {
-  const session = await requireTeacher();
+  const session = await requireMenu("office.guardians");
   const sessions = await office.guardians();
 
   // unique students across the teacher's classes

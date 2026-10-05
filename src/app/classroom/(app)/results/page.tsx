@@ -1,10 +1,10 @@
 import { formatDate } from "@/lib/dates";
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 
 /** FR-STU-05 / FR-IELTS-05 / FR-ABC-08: result sheet, progress records, Hifz progress, game scores. */
 export default async function ResultsPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.results");
   const { exams: results, progress, hifz, games } = await classroom.results();
 
   const semesters = Array.from(new Set(results.map((r) => r.semester)));

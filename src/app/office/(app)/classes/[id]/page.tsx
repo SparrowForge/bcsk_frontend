@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { office, ApiError } from "@/services";
 import { LiveControls } from "./LiveControls";
 import { AttendanceSheet } from "./AttendanceSheet";
@@ -8,7 +8,7 @@ import { VideoPanel } from "./VideoPanel";
 
 /** FR-TCH-03/04: class management — live session, roster, attendance, assignments, videos. */
 export default async function ClassManagePage({ params }: { params: Promise<{ id: string }> }) {
-  const session = await requireTeacher();
+  const session = await requireMenu("office.classes");
   const { id } = await params;
   // Ownership is enforced by the backend — it returns 403 for someone else's class, so a
   // guessed id cannot leak a roster.

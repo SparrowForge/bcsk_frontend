@@ -1,4 +1,4 @@
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { classLevelLabel, SEMESTER_CURRENT } from "@/lib/constants";
 import { krw } from "@/lib/format";
@@ -7,7 +7,7 @@ import { ReAdmissionForm } from "./ReAdmissionForm";
 
 /** FR-ADM-10 / FR-STU-05: returning-student re-admission — semester fee only, admission fee waived. */
 export default async function ReAdmissionPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.re-admission");
   const { classLevel, semesterFee, existing, semester } = await classroom.reAdmissionInfo();
   const { email } = await getContact();
 

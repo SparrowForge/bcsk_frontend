@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import type { MenuFlag, MenuGrid, PermissionMenu, PermissionUser } from "@/services/types";
+import type { MenuFlag, MenuGrid, Panel, PermissionMenu, PermissionUser } from "@/services/types";
 import { loadRoleGrid, loadUserGrid, revertUsers, saveGrid } from "./actions";
 
 const FLAGS: { key: MenuFlag; label: string }[] = [
@@ -11,11 +11,17 @@ const FLAGS: { key: MenuFlag; label: string }[] = [
   { key: "delete", label: "Delete" },
 ];
 
-const ROLES = [
-  { value: "ADMIN_SUPPORT", label: "Admin Support" },
-  { value: "IT_SUPPORT", label: "IT Support" },
-  { value: "SUPER_ADMIN", label: "Super Admin (everything)" },
-];
+/** Roles whose defaults can be imported, by the panel they belong to. */
+const ROLES: Record<Panel, { value: string; label: string }[]> = {
+  ADMIN: [
+    { value: "ADMIN_SUPPORT", label: "Admin Support" },
+    { value: "IT_SUPPORT", label: "IT Support" },
+    { value: "SUPER_ADMIN", label: "Super Admin (everything)" },
+  ],
+  TEACHER: [{ value: "TEACHER", label: "Teacher" }],
+  STUDENT: [{ value: "STUDENT", label: "Student" }],
+};
+const PANEL_LABEL: Record<Panel, string> = { ADMIN: "Admin panel", TEACHER: "Teacher panel", STUDENT: "Student panel" };
 
 const blank = (): MenuGrid => ({ access: false, insert: false, update: false, delete: false });
 const emptyGrid = (menus: PermissionMenu[]) => Object.fromEntries(menus.map((m) => [m.key, blank()]));
@@ -28,20 +34,23 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
   const [assigned, setAssigned] = useState<PermissionUser[]>([]);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [pick, setPick] = useState("");
-  const [grid, setGrid] = useState<Record<string, MenuGrid>>(() => emptyGrid(menus));
+  // One panel at a time: a teacher and an admin do not share menus. The first user added fixes it.
+  const [panel, setPanel] = useState<Panel>("ADMIN");
+  const panelMenus = useMemo(() => menus.filter((m) => m.panel === panel), [menus, panel]);
+  const [grid, setGrid] = useState<Record<string, MenuGrid>>(() => emptyGrid(menus.filter((m) => m.panel === "ADMIN")));
   const [moduleFilter, setModuleFilter] = useState("");
   const [search, setSearch] = useState("");
   const [importRole, setImportRole] = useState("");
   const [notice, setNotice] = useState<Notice>(null);
   const [pending, start] = useTransition();
 
-  const modules = useMemo(() => [...new Set(menus.map((m) => m.module))], [menus]);
-  const visible = menus.filter(
+  const modules = useMemo(() => [...new Set(panelMenus.map((m) => m.module))], [panelMenus]);
+  const visible = panelMenus.filter(
     (m) =>
       (!moduleFilter || m.module === moduleFilter) &&
       (!search.trim() || `${m.label} ${m.module} ${m.note ?? ""}`.toLowerCase().includes(search.trim().toLowerCase())),
   );
-  const available = users.filter((u) => !assigned.some((a) => a.id === u.id));
+  const available = users.filter((u) => u.panel === panel && !assigned.some((a) => a.id === u.id));
   const chosenIds = assigned.filter((u) => selected.has(u.id)).map((u) => u.id);
   const allChecked = assigned.length > 0 && assigned.every((u) => selected.has(u.id));
 
@@ -53,6 +62,10 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
     if (!user) return;
     setNotice(null);
     const first = assigned.length === 0;
+    if (first && user.panel !== panel) {
+      setPanel(user.panel);
+      setModuleFilter("");
+    }
     setAssigned((a) => [...a, user]);
     setSelected((s) => new Set(s).add(user.id));
     setPick("");
@@ -61,10 +74,18 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
     if (first) {
       start(async () => {
         const r = await loadUserGrid(user.id);
-        if (r.ok) setGrid({ ...emptyGrid(menus), ...r.grid });
+        if (r.ok) setGrid({ ...emptyGrid(menus.filter((m) => m.panel === user.panel)), ...r.grid });
         else fail(r.error);
       });
     }
+  }
+
+  function changePanel(next: Panel) {
+    setPanel(next);
+    setModuleFilter("");
+    setImportRole("");
+    setPick("");
+    setGrid(emptyGrid(menus.filter((m) => m.panel === next)));
   }
 
   function toggleUser(id: number, on: boolean) {
@@ -87,7 +108,7 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
 
   /* ------------------------------------------------------------------- grid */
   function setCell(key: string, flag: MenuFlag, on: boolean) {
-    const menu = menus.find((m) => m.key === key)!;
+    const menu = panelMenus.find((m) => m.key === key)!;
     setGrid((g) => {
       const row = { ...(g[key] ?? blank()) };
       row[flag] = on;
@@ -103,7 +124,7 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
   }
 
   function setRow(key: string, on: boolean) {
-    const menu = menus.find((m) => m.key === key)!;
+    const menu = panelMenus.find((m) => m.key === key)!;
     setGrid((g) => ({
       ...g,
       [key]: {
@@ -132,7 +153,7 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
     start(async () => {
       const r = await loadRoleGrid(importRole);
       if (r.ok) {
-        setGrid({ ...emptyGrid(menus), ...r.grid });
+        setGrid({ ...emptyGrid(panelMenus), ...r.grid });
         setNotice({ tone: "ok", text: "Role defaults loaded. Adjust them, then press Update to save." });
       } else fail(r.error);
     });
@@ -141,7 +162,7 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
   function clearAll() {
     setAssigned([]);
     setSelected(new Set());
-    setGrid(emptyGrid(menus));
+    setGrid(emptyGrid(panelMenus));
     setImportRole("");
     setNotice(null);
   }
@@ -205,18 +226,22 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
             <label htmlFor="pick-user" className="mt-3 block text-xs font-bold text-green">User</label>
             <div className="mt-1.5 flex gap-2">
               <select id="pick-user" value={pick} onChange={(e) => setPick(e.target.value)} className={`${field} flex-1 min-w-0`}>
-                <option value="">Select user…</option>
+                <option value="">Select {PANEL_LABEL[panel].toLowerCase().replace(" panel", "")} user…</option>
                 {available.map((u) => (
-                  <option key={u.id} value={u.id}>{u.name} ({u.loginId})</option>
+                  <option key={u.id} value={u.id}>{u.name} ({u.loginId}){u.role !== "STUDENT" && u.role !== "TEACHER" ? ` · ${u.role.replace("_", " ").toLowerCase()}` : ""}</option>
                 ))}
               </select>
               <button onClick={addUser} disabled={!pick || pending} className="shrink-0 rounded-lg bg-green px-4 text-xs font-bold text-white hover:bg-green-deep disabled:opacity-50">
                 Add User
               </button>
             </div>
-            {users.length === 0 && <p className="mt-3 text-xs text-ink-soft">There are no office admin or IT support accounts yet.</p>}
+            {users.filter((u) => u.panel === panel).length === 0 && (
+              <p className="mt-3 text-xs text-ink-soft">There are no {PANEL_LABEL[panel].toLowerCase()} accounts yet.</p>
+            )}
             <p className="mt-3 text-[11px] text-ink-soft">
-              Office admin and IT support accounts only. Super admins always have full access.
+              {assigned.length > 0
+                ? `Showing ${PANEL_LABEL[panel].toLowerCase()} accounts: a grid applies to one panel at a time. Clear to switch.`
+                : "Pick a panel in the grid first, or just add a user. Super admins always have full access."}
             </p>
           </section>
 
@@ -286,6 +311,17 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
             <h2 className="text-sm font-bold text-ink">Module &amp; Menu Permission</h2>
             <div className="mt-3 flex flex-wrap items-end gap-3">
               <label className="text-xs font-bold text-green">
+                Panel
+                <select
+                  value={panel}
+                  onChange={(e) => changePanel(e.target.value as Panel)}
+                  disabled={assigned.length > 0}
+                  className={`${field} mt-1.5 block disabled:opacity-60`}
+                >
+                  {(Object.keys(PANEL_LABEL) as Panel[]).map((p) => <option key={p} value={p}>{PANEL_LABEL[p]}</option>)}
+                </select>
+              </label>
+              <label className="text-xs font-bold text-green">
                 Module
                 <select value={moduleFilter} onChange={(e) => setModuleFilter(e.target.value)} className={`${field} mt-1.5 block`}>
                   <option value="">All modules</option>
@@ -297,7 +333,7 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
                   Import Role
                   <select value={importRole} onChange={(e) => setImportRole(e.target.value)} className={`${field} mt-1.5 block`}>
                     <option value="">Select role…</option>
-                    {ROLES.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
+                    {ROLES[panel].map((r) => <option key={r.value} value={r.value}>{r.label}</option>)}
                   </select>
                 </label>
                 <button onClick={importFromRole} disabled={!importRole || pending} className="rounded-lg bg-green px-4 py-2.5 text-xs font-bold text-white hover:bg-green-deep disabled:opacity-50">
@@ -378,8 +414,8 @@ export function PermissionManager({ users, menus }: { users: PermissionUser[]; m
             </table>
           </div>
           <p className="border-t border-line px-5 py-3 text-[11px] text-ink-soft">
-            A dash means the menu has no separate permission for that action. Menus with a single &ldquo;manage&rdquo;
-            permission are all-or-nothing through Access.
+            A dash means the menu has no separate switch for that action. Dashboards are always open. Menus are managed
+            under <b>Menu Entry</b>.
           </p>
         </section>
       </div>

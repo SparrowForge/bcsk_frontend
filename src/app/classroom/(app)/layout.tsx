@@ -7,17 +7,11 @@ import { PortalNav } from "@/components/portal/PortalNav";
 export default async function ClassroomLayout({ children }: { children: React.ReactNode }) {
   const session = await requireStudent();
 
+  // The sidebar is the account's own menus (Menu table, minus any a super admin has switched off
+  // for them); the dashboard is always open.
   const links = [
     { href: "/classroom/dashboard", label: "Dashboard" },
-    { href: "/classroom/assignments", label: "Assignments" },
-    { href: "/classroom/videos", label: "Class Videos" },
-    { href: "/classroom/routine", label: "Routine" },
-    { href: "/classroom/results", label: "Results" },
-    { href: "/classroom/attendance", label: "Attendance" },
-    { href: "/classroom/documents", label: "Documents" },
-    { href: "/classroom/payments", label: "Payments" },
-    { href: "/classroom/ask-teacher", label: "Ask Teacher" },
-    { href: "/classroom/re-admission", label: "Re-Admission" },
+    ...session.menus.map((m) => ({ href: m.href, label: m.label })),
   ];
 
   return (

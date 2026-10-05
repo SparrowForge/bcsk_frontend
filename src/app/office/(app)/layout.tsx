@@ -7,12 +7,11 @@ import { PortalNav } from "@/components/portal/PortalNav";
 export default async function OfficeLayout({ children }: { children: React.ReactNode }) {
   const session = await requireTeacher();
 
+  // The sidebar is the account's own menus (Menu table, minus any a super admin has switched off
+  // for them); the dashboard is always open.
   const links = [
     { href: "/office/dashboard", label: "Dashboard" },
-    { href: "/office/classes", label: "My Classes" },
-    { href: "/office/questions", label: "Questions" },
-    { href: "/office/guardians", label: "Guardians" },
-    { href: "/office/tasks", label: "Task List" },
+    ...session.menus.map((m) => ({ href: m.href, label: m.label })),
   ];
 
   return (

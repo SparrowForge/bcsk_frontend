@@ -1,4 +1,4 @@
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 
@@ -6,7 +6,7 @@ const DAY_ORDER = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thur
 
 /** FR-STU-05: class routine. */
 export default async function RoutinePage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.routine");
   const sessions = (await classroom.routine()).sort(
     (a, b) =>
       DAY_ORDER.indexOf(a.dayOfWeek) - DAY_ORDER.indexOf(b.dayOfWeek) ||

@@ -1,12 +1,12 @@
 import { formatDate } from "@/lib/dates";
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 import { SubmitForm } from "./SubmitForm";
 
 /** FR-STU-05 / UC-3: assignments & homework — view, download, submit, see grades. */
 export default async function AssignmentsPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.assignments");
   // The backend scopes this to the caller, so no student id is passed or trusted.
   const assignments = await classroom.assignments();
 

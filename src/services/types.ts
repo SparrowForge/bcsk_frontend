@@ -568,14 +568,37 @@ export type LeadFunnel = {
 export type MenuFlag = "access" | "insert" | "update" | "delete";
 export type MenuGrid = Record<MenuFlag, boolean>;
 
+export type Panel = "ADMIN" | "TEACHER" | "STUDENT";
+
 export type PermissionMenu = {
   key: string;
+  panel: Panel;
   module: string;
   label: string;
   note: string | null;
-  /** Which of the four switches this menu actually has a capability behind. */
+  /** Which of the four switches this menu actually has behind it. */
   offers: Record<MenuFlag, boolean>;
 };
 
-export type PermissionUser = { id: number; loginId: string; name: string; role: Role; custom: boolean };
-export type UserGrid = { custom: boolean; role: Role; grid: Record<string, MenuGrid> };
+export type PermissionUser = { id: number; loginId: string; name: string; role: Role; panel: Panel; custom: boolean };
+export type UserGrid = { custom: boolean; role: Role; panel: Panel; grid: Record<string, MenuGrid> };
+
+/** A row of the Menu table, as the Menu entry screen sees it. */
+export type MenuEntry = {
+  id: number;
+  key: string;
+  panel: Panel;
+  module: string;
+  label: string;
+  href: string;
+  note: string | null;
+  actions: MenuFlag[];
+  displayOrder: number;
+  active: boolean;
+  /** The switches the menu offers (admin menus: from the capabilities they grant). */
+  offers: MenuFlag[];
+  /** Created by the system rather than on this screen: cannot be deleted. */
+  builtIn: boolean;
+  /** How many users have a saved permission row for it. */
+  assigned: number;
+};

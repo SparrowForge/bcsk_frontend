@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
-import { navForPermissions } from "@/lib/permissions";
 import { LogoMark } from "@/components/Logo";
 import { LogoutButton } from "@/components/portal/LogoutButton";
 import { AdminNav } from "./AdminNav";
@@ -8,9 +7,19 @@ import { AdminNav } from "./AdminNav";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdmin();
 
-  // SEC-5: the menu is derived from the permissions the API issued this user (their custom menu
-  // grid, or their role's defaults), so a visible link and an allowed action can never disagree.
-  const nav = navForPermissions(session.permissions);
+  // SEC-5: the sidebar is the account's own menus - rows of the Menu table it holds Access on,
+  // from its saved grid or its role's defaults - so a visible link and an allowed page never
+  // disagree. Dashboard is always open. The two permission screens are super-admin only.
+  const nav = [
+    { href: "/admin/dashboard", label: "Dashboard" },
+    ...session.menus.map((m) => ({ href: m.href, label: m.label })),
+    ...(session.permissions.includes("permissions:manage")
+      ? [
+          { href: "/admin/menus", label: "Menu Entry" },
+          { href: "/admin/user-permissions", label: "Menu Permissions" },
+        ]
+      : []),
+  ];
 
   return (
     <div className="min-h-screen bg-mist flex">

@@ -1,10 +1,10 @@
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { classroom } from "@/services";
 import { SEMESTER_CURRENT } from "@/lib/constants";
 
 /** FR-STU-05: syllabus for the student's enrolled courses. */
 export default async function StudentSyllabusPage() {
-  const session = await requireStudent();
+  const session = await requireMenu("classroom.syllabus");
   const entries = await classroom.syllabus();
 
   // The endpoint returns one flattened row per enrolment, so the page only renders.

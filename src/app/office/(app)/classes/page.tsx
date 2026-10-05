@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireTeacher } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { office } from "@/services";
 
 const WEEK = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -14,7 +14,7 @@ const students = (n: number) => `${n} ${n === 1 ? "student" : "students"}`;
  * is the full week, in day and time order, with totals.
  */
 export default async function MyClassesPage() {
-  await requireTeacher();
+  await requireMenu("office.classes");
   const classes = await office.classes();
 
   const byDay = WEEK.map((day) => ({

@@ -1,6 +1,6 @@
 "use server";
 
-import { requireStudent } from "@/lib/auth";
+import { requireMenu } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { classroom, files, toActionError } from "@/services";
 
@@ -13,7 +13,7 @@ export type ReAdmitState = { ok?: boolean; error?: string } | null;
  * (SEC-3), and a duplicate pending payment is rejected there rather than here.
  */
 export async function submitReAdmission(_prev: ReAdmitState, formData: FormData): Promise<ReAdmitState> {
-  await requireStudent();
+  await requireMenu("classroom.re-admission", "insert");
   const receipt = formData.get("receipt");
   if (!(receipt instanceof File) || receipt.size === 0) {
     return { error: "Upload your bank transfer receipt." };
