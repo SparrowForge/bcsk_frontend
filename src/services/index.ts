@@ -327,6 +327,51 @@ export const admin = {
   refundPayment: (id: number, reason: string) => api.post<unknown>(`/admin/payments/${id}/refund`, { reason }),
 };
 
+/* ----------------------------------- CRM ----------------------------------- */
+
+const query = (params: Record<string, string | number | undefined>) =>
+  new URLSearchParams(
+    Object.entries(params)
+      .filter(([, v]) => v !== undefined && v !== "")
+      .map(([k, v]) => [k, String(v)]),
+  ).toString();
+
+export const leads = {
+  list: (params: Record<string, string | number | undefined> = {}) => {
+    const qs = query(params);
+    return api.getPage<T.Lead>(`/leads${qs ? `?${qs}` : ""}`);
+  },
+  board: () => api.get<T.Lead[]>("/leads/board"),
+  one: (id: number) => api.get<T.Lead>(`/leads/${id}`),
+  create: (input: Record<string, unknown>) => api.post<T.Lead>("/leads", input),
+  update: (id: number, input: Record<string, unknown>) => api.patch<T.Lead>(`/leads/${id}`, input),
+  remove: (id: number) => api.delete<{ ok: boolean }>(`/leads/${id}`),
+  setStage: (id: number, input: Record<string, unknown>) => api.patch<T.Lead>(`/leads/${id}/stage`, input),
+  assign: (id: number, input: Record<string, unknown>) => api.patch<T.Lead>(`/leads/${id}/assign`, input),
+  bulkAssign: (leadIds: number[], assignedToUserId: number | null) =>
+    api.patch<{ updated: number }>("/leads/assign/bulk", { leadIds, assignedToUserId }),
+  convert: (id: number, input: Record<string, unknown>) =>
+    api.post<{ lead: T.Lead; applicationId: number }>(`/leads/${id}/convert`, input),
+  activities: (id: number) => api.get<T.LeadActivity[]>(`/leads/${id}/activities`),
+  logActivity: (id: number, input: Record<string, unknown>) => api.post<T.LeadActivity>(`/leads/${id}/activities`, input),
+  removeActivity: (activityId: number) => api.delete<{ ok: boolean }>(`/leads/activities/${activityId}`),
+  dueActivities: (mine = false) => api.get<T.DueLeadActivity[]>(`/leads/activities/due${mine ? "?mine=1" : ""}`),
+  dueFollowUps: (mine = false) => api.get<T.Lead[]>(`/leads/follow-ups/due${mine ? "?mine=1" : ""}`),
+  funnel: (params: Record<string, string | undefined> = {}) => {
+    const qs = query(params);
+    return api.get<T.LeadFunnel>(`/leads/stats/funnel${qs ? `?${qs}` : ""}`);
+  },
+  assignees: () => api.get<{ id: number; name: string; role: string }[]>("/leads/assignees"),
+  courses: () => api.get<T.LeadCourseOption[]>("/leads/courses"),
+  sources: () => api.get<T.LeadSource[]>("/leads/sources"),
+  createSource: (input: Record<string, unknown>) => api.post<T.LeadSource>("/leads/sources", input),
+  updateSource: (id: number, input: Record<string, unknown>) => api.patch<T.LeadSource>(`/leads/sources/${id}`, input),
+  removeSource: (id: number) => api.delete<{ ok: boolean; deactivated: boolean }>(`/leads/sources/${id}`),
+  /** Public web-to-lead. */
+  enquire: (input: Record<string, unknown>) => api.post<{ ok: boolean }>("/public/leads/enquiry", input, { auth: false }),
+  publicSources: () => api.public<{ id: number; name: string }[]>("/public/leads/sources", 300),
+};
+
 /** Settings as a plain map, which is how pages consume them. */
 export async function getSettings(keys: string[]): Promise<Record<string, string>> {
   const rows = await api.public<T.Setting[]>("/public/settings", 300).catch(() => [] as T.Setting[]);

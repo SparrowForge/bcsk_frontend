@@ -454,3 +454,85 @@ export type DashboardStats = {
   teachers: number;
   unanswered: number;
 };
+
+/* ----------------------------------- CRM ----------------------------------- */
+
+export type LeadStage = "NEW" | "CONTACTED" | "QUALIFIED" | "APPLIED" | "ADMITTED" | "ENROLLED" | "LOST";
+
+export type Lead = {
+  id: number;
+  leadNo: string;
+  name: string;
+  email: string | null;
+  phone: string | null;
+  alternatePhone: string | null;
+  gender: string | null;
+  city: string | null;
+  sourceId: number | null;
+  source: { id: number; name: string } | null;
+  campaign: string | null;
+  referredBy: string | null;
+  courseId: number | null;
+  course: { id: number; name: string; slug: string; type: string } | null;
+  stage: LeadStage;
+  lostReason: string | null;
+  lostNote: string | null;
+  score: number;
+  assignedToUserId: number | null;
+  assignedTo: { id: number; name: string; loginId: string } | null;
+  lastContactedAt: ISODate | null;
+  nextFollowUpAt: ISODate | null;
+  convertedApplicationId: number | null;
+  convertedApplication: { id: number; status: string } | null;
+  convertedAt: ISODate | null;
+  remarks: string | null;
+  createdAt: ISODate;
+  updatedAt: ISODate;
+};
+
+export type LeadActivity = {
+  id: number;
+  leadId: number;
+  type: string;
+  subject: string;
+  notes: string | null;
+  outcome: string | null;
+  scheduledAt: ISODate | null;
+  completedAt: ISODate | null;
+  isSystemGenerated: boolean;
+  performedBy: { id: number; name: string } | null;
+  createdAt: ISODate;
+};
+
+export type DueLeadActivity = Omit<LeadActivity, "performedBy"> & {
+  lead: { id: number; leadNo: string; name: string; phone: string | null };
+};
+
+export type LeadSource = {
+  id: number;
+  name: string;
+  code: string | null;
+  description: string | null;
+  isPublic: boolean;
+  active: boolean;
+  _count: { leads: number };
+};
+
+export type LeadCourseOption = {
+  id: number;
+  name: string;
+  slug: string;
+  type: string;
+  levels: { id: number; name: string; code: string | null }[];
+};
+
+export type LeadFunnel = {
+  byStage: { stage: LeadStage; count: number }[];
+  bySource: { sourceId: number | null; sourceName: string; count: number; enrolled: number }[];
+  lostReasons: { reason: string; count: number }[];
+  total: number;
+  enrolled: number;
+  lost: number;
+  open: number;
+  conversionRate: number;
+};
