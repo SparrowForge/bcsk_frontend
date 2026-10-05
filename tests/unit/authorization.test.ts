@@ -15,7 +15,7 @@ describe("SEC-4 — role permissions", () => {
     expect(permissionsFor("SUPER_ADMIN")).toHaveLength(PERMISSIONS.length);
   });
 
-  it.each(["payments:verify", "payments:refund", "admissions:decide", "fees:manage", "content:manage"] as const)(
+  it.each(["payments:verify", "payments:refund", "admissions:decide", "fees:manage", "cms:manage"] as const)(
     "denies IT_SUPPORT %s",
     (perm) => expect(roleHas("IT_SUPPORT", perm)).toBe(false)
   );

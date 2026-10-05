@@ -4,7 +4,7 @@ import { GoverningEditor } from "./GoverningEditor";
 
 /** FR-ADMIN-11: governing body / regional representatives module. */
 export default async function AdminGoverningPage() {
-  await requirePermission("content:manage");
+  await requirePermission("governing:manage");
   // `/admin/governing` sorts by displayOrder; grouping the two kinds together is a page concern.
   const members = (await admin.members()).sort(
     (a, b) => a.kind.localeCompare(b.kind) || a.displayOrder - b.displayOrder,

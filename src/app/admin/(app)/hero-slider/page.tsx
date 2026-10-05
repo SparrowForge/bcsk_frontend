@@ -4,7 +4,7 @@ import { HeroSliderManager } from "./HeroSliderManager";
 
 /** Homepage hero slider — admin-managed photos, capped at 5. */
 export default async function AdminHeroSliderPage() {
-  await requirePermission("content:manage");
+  await requirePermission("slider:manage");
   const images = await admin.heroImages();
 
   return (

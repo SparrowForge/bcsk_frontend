@@ -8,7 +8,7 @@ export type GovState = { ok?: boolean; error?: string } | null;
 
 /** FR-ADMIN-11: governing body and regional representatives share one record type. */
 export async function saveMember(_prev: GovState, formData: FormData): Promise<GovState> {
-  await requirePermission("content:manage");
+  await requirePermission("governing:manage");
   const id = Number(formData.get("id") ?? 0);
   const text = (k: string) => String(formData.get(k) ?? "").trim();
   if (!text("name") || !text("role")) return { error: "Name and role are required." };
@@ -36,7 +36,7 @@ export async function saveMember(_prev: GovState, formData: FormData): Promise<G
 }
 
 export async function deleteMember(id: number) {
-  await requirePermission("content:manage");
+  await requirePermission("governing:manage");
   await admin.deleteMember(id);
   revalidatePath("/bcsk/governing-body");
   revalidatePath("/bcsk/regional-representatives");

@@ -4,7 +4,7 @@ import { GalleryManager } from "./GalleryManager";
 
 /** FR-ADMIN-10: media/gallery module. */
 export default async function AdminGalleryPage() {
-  await requirePermission("content:manage");
+  await requirePermission("gallery:manage");
   const albums = (await admin.albums()).sort((a, b) => b.id - a.id);
 
   return (

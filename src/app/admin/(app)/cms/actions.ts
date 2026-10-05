@@ -15,7 +15,7 @@ export type CmsState = { ok?: boolean; error?: string } | null;
  * nothing. The check stays duplicated on the form for the error message.
  */
 export async function savePage(_prev: CmsState, formData: FormData): Promise<CmsState> {
-  await requirePermission("content:manage");
+  await requirePermission("cms:manage");
   const slug = String(formData.get("slug") ?? "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
   const lang = String(formData.get("lang") ?? "en");
   const title = String(formData.get("title") ?? "").trim();
@@ -33,7 +33,7 @@ export async function savePage(_prev: CmsState, formData: FormData): Promise<Cms
 }
 
 export async function deletePage(slug: string, lang: string) {
-  await requirePermission("content:manage");
+  await requirePermission("cms:manage");
   await admin.deletePage(slug, lang);
   revalidatePath("/", "layout");
   redirect("/admin/cms");

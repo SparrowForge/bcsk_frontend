@@ -4,7 +4,7 @@ import { CornerEditor } from "./CornerEditor";
 
 /** FR-NEWS-03 (admin side): curate student articles, poems, artwork, achievements. */
 export default async function AdminStudentCornerPage() {
-  await requirePermission("content:manage");
+  await requirePermission("corner:manage");
   const posts = await admin.cornerPosts();
 
   return (

@@ -15,7 +15,7 @@ export type GalleryState = { ok?: boolean; error?: string } | null;
  * the backend — repointing it would invalidate every existing row.
  */
 export async function createAlbum(_prev: GalleryState, formData: FormData): Promise<GalleryState> {
-  await requirePermission("content:manage");
+  await requirePermission("gallery:manage");
   const title = String(formData.get("title") ?? "").trim();
   if (!title) return { error: "Album title is required." };
   const category = String(formData.get("category") ?? "").trim() || null;
@@ -30,7 +30,7 @@ export async function createAlbum(_prev: GalleryState, formData: FormData): Prom
 }
 
 export async function addGalleryImage(_prev: GalleryState, formData: FormData): Promise<GalleryState> {
-  await requirePermission("content:manage");
+  await requirePermission("gallery:manage");
   const albumId = Number(formData.get("albumId"));
   const caption = String(formData.get("caption") ?? "").trim() || null;
   const file = formData.get("image");
@@ -49,14 +49,14 @@ export async function addGalleryImage(_prev: GalleryState, formData: FormData): 
 }
 
 export async function deleteGalleryItem(id: number) {
-  await requirePermission("content:manage");
+  await requirePermission("gallery:manage");
   await admin.deleteGalleryItem(id);
   revalidatePath("/admin/gallery");
   revalidatePath("/events/gallery");
 }
 
 export async function deleteAlbum(id: number) {
-  await requirePermission("content:manage");
+  await requirePermission("gallery:manage");
   await admin.deleteAlbum(id);
   revalidatePath("/admin/gallery");
   revalidatePath("/events/gallery");

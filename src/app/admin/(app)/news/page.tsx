@@ -5,7 +5,7 @@ import { NewsEditor } from "./NewsEditor";
 
 /** FR-NEWS-01 (admin side): manage news, seminars, and events. */
 export default async function AdminNewsPage() {
-  await requirePermission("content:manage");
+  await requirePermission("news:manage");
   const items = await admin.news();
 
   return (

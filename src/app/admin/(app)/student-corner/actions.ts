@@ -8,7 +8,7 @@ export type CornerState = { ok?: boolean; error?: string } | null;
 
 /** FR-NEWS-03 (admin side): curate student articles, poems, artwork and achievements. */
 export async function saveCornerPost(_prev: CornerState, formData: FormData): Promise<CornerState> {
-  await requirePermission("content:manage");
+  await requirePermission("corner:manage");
   const id = Number(formData.get("id") ?? 0);
   const title = String(formData.get("title") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
@@ -33,7 +33,7 @@ export async function saveCornerPost(_prev: CornerState, formData: FormData): Pr
 }
 
 export async function deleteCornerPost(id: number) {
-  await requirePermission("content:manage");
+  await requirePermission("corner:manage");
   await admin.deleteCornerPost(id);
   revalidatePath("/student-corner");
   revalidatePath("/admin/student-corner");

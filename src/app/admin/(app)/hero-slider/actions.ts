@@ -12,7 +12,7 @@ export type HeroSliderState = { ok?: boolean; error?: string } | null;
  * but capped at `AdminService.HERO_IMAGE_LIMIT` (5) server-side, not just by this form.
  */
 export async function addHeroImage(_prev: HeroSliderState, formData: FormData): Promise<HeroSliderState> {
-  await requirePermission("content:manage");
+  await requirePermission("slider:manage");
   const caption = String(formData.get("caption") ?? "").trim() || null;
   const file = formData.get("image");
   if (!(file instanceof File) || file.size === 0) return { error: "Choose an image." };
@@ -30,7 +30,7 @@ export async function addHeroImage(_prev: HeroSliderState, formData: FormData): 
 }
 
 export async function deleteHeroImage(id: number) {
-  await requirePermission("content:manage");
+  await requirePermission("slider:manage");
   await admin.deleteHeroImage(id);
   revalidatePath("/admin/hero-slider");
   revalidatePath("/");

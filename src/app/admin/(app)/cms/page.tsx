@@ -5,7 +5,7 @@ import { LANGS } from "@/lib/constants";
 
 /** FR-ADMIN-02: CMS module — all public content pages in all languages. */
 export default async function CmsListPage() {
-  await requirePermission("content:manage");
+  await requirePermission("cms:manage");
   const pages = await admin.pages();
 
   const bySlug = new Map<string, ContentPageRow[]>();
