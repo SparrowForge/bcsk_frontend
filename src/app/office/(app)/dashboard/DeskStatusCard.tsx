@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { setDeskStatus, type DeskFormState } from "./actions";
 import { formatDate } from "@/lib/dates";
 
@@ -23,6 +24,7 @@ export function DeskStatusCard({
   deskName: string | null;
 }) {
   const [state, action, pending] = useActionState<DeskFormState, FormData>(setDeskStatus, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const atDesk = status === "DESK";
   // An absolute clock time rather than a countdown: a relative "back in 12 min" rendered
   // once on the server goes stale the moment the page is cached, and reading the wall clock
@@ -44,7 +46,7 @@ export function DeskStatusCard({
         {!atDesk && backAt && <span className="text-ink-soft"> · back at {backAt}</span>}
       </p>
 
-      <form action={action} className="mt-4 space-y-3">
+      <form {...kept} className="mt-4 space-y-3">
         {atDesk ? (
           <>
             <input type="hidden" name="status" value="OFFLINE" />

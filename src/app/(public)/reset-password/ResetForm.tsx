@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { resetPassword } from "@/lib/actions/auth-actions";
 
 export function ResetForm({ token }: { token: string }) {
   const [state, action, pending] = useActionState(resetPassword, null);
+  const kept = useKeptForm(action, state);
   const done = state?.ok === true;
 
   return (
@@ -19,7 +21,7 @@ export function ResetForm({ token }: { token: string }) {
           </Link>
         </div>
       ) : (
-        <form action={action} className="mt-6 space-y-4">
+        <form {...kept} className="mt-6 space-y-4">
           <input type="hidden" name="token" value={token} />
           <label className="block">
             <span className="text-xs font-bold text-ink">New password (min. 10 characters)</span>

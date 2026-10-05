@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { addHeroImage, deleteHeroImage, type HeroSliderState } from "./actions";
 
 type Image = { id: number; url: string; caption: string | null };
@@ -9,6 +10,7 @@ const LIMIT = 5;
 
 export function HeroSliderManager({ images }: { images: Image[] }) {
   const [state, action, pending] = useActionState<HeroSliderState, FormData>(addHeroImage, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [, start] = useTransition();
   const full = images.length >= LIMIT;
 
@@ -51,7 +53,7 @@ export function HeroSliderManager({ images }: { images: Image[] }) {
             The slider is full. Remove an image above before adding another.
           </p>
         ) : (
-          <form action={action} className="flex flex-wrap gap-3 items-center border-t border-line pt-4">
+          <form {...kept} className="flex flex-wrap gap-3 items-center border-t border-line pt-4">
             <input
               type="file"
               name="image"

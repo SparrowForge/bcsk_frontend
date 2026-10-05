@@ -1,17 +1,19 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { addExamResult, type ResultState } from "./actions";
 
 const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-green-mid focus:outline-none";
 
 export function ResultEntryForm({ students }: { students: { userId: number; label: string }[] }) {
   const [state, action, pending] = useActionState<ResultState, FormData>(addExamResult, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
     <details className="bg-white rounded-2xl border border-line">
       <summary className="cursor-pointer px-5 py-3.5 font-bold text-green text-sm">+ Enter exam result</summary>
-      <form action={action} className="px-5 pb-5 flex flex-wrap gap-3 items-end">
+      <form {...kept} className="px-5 pb-5 flex flex-wrap gap-3 items-end">
         <label className="block text-xs font-bold text-ink">
           Student
           <select name="studentUserId" required className={`block mt-1 ${input}`}>

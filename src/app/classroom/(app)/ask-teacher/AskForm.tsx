@@ -1,15 +1,17 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { askQuestion, type AskState } from "./actions";
 
 const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function AskForm({ teachers }: { teachers: { userId: number; name: string; subject: string }[] }) {
   const [state, action, pending] = useActionState<AskState, FormData>(askQuestion, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action} className="space-y-4">
+    <form {...kept} className="space-y-4">
       <label className="block">
         <span className="text-xs font-bold text-ink">Teacher</span>
         <select name="teacherUserId" required className={`mt-1.5 ${input}`}>

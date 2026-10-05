@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition, useState } from "react";
+import { keepForm } from "@/components/forms/keep-form";
 import { updateFee } from "./actions";
 
 type Fee = {
@@ -62,7 +63,7 @@ function FormCells({ fee, pending, saved, error, onSave }: { fee: Fee; pending: 
         <input form={formId} name="active" type="checkbox" defaultChecked={fee.active} className="w-4 h-4 accent-green" />
       </td>
       <td className="px-4 py-2.5">
-        <form id={formId} action={onSave} className="flex items-center gap-2">
+        <form id={formId} onSubmit={keepForm(onSave)} className="flex items-center gap-2">
           <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-[11px] font-bold rounded-lg px-3 py-1.5 transition-colors">
             Save
           </button>

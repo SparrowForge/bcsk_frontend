@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { saveNews, deleteNews, type NewsState } from "./actions";
 
 type Item = { id: number; type: string; title: string; body: string; date: string; published: boolean };
@@ -9,6 +10,7 @@ const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:
 export function NewsEditor({ items }: { items: Item[] }) {
   const [editing, setEditing] = useState<Item | "new" | null>(null);
   const [state, action, pending] = useActionState<NewsState, FormData>(saveNews, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [, startDelete] = useTransition();
 
   const current = editing === "new" ? null : editing;
@@ -23,7 +25,7 @@ export function NewsEditor({ items }: { items: Item[] }) {
       </button>
 
       {editing !== null && (
-        <form key={current?.id ?? "new"} action={action} className="bg-white rounded-2xl border border-line p-6 space-y-4 mb-6">
+        <form key={current?.id ?? "new"} {...kept} className="bg-white rounded-2xl border border-line p-6 space-y-4 mb-6">
           <input type="hidden" name="id" value={current?.id ?? 0} />
           <div className="grid sm:grid-cols-3 gap-4">
             <label className="block text-xs font-bold text-ink">

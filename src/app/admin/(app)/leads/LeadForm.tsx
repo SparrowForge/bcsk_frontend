@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import type { Lead, LeadCourseOption } from "@/services/types";
 import { toLocalInput } from "@/lib/leads";
+import { keepForm } from "@/components/forms/keep-form";
 import { createLead, updateLead, type LeadState } from "./actions";
 
 const input =
@@ -21,7 +22,7 @@ export function LeadForm({ lead, sources, courses, assignees }: Props) {
   const [state, action, pending] = useActionState<LeadState, FormData>(lead ? updateLead : createLead, null);
 
   return (
-    <form action={action} className="space-y-4">
+    <form onSubmit={keepForm(action)} className="space-y-4">
       {lead && <input type="hidden" name="id" value={lead.id} />}
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block sm:col-span-2">

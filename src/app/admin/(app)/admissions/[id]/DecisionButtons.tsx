@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
+import { keepForm } from "@/components/forms/keep-form";
 import { approveApplication, rejectApplication, requestCorrections, type DecisionResult } from "./actions";
 
 export function DecisionButtons({
@@ -68,7 +69,7 @@ export function DecisionButtons({
         </button>
       </div>
       {mode === "corrections" && (
-        <form action={(fd) => run(() => requestCorrections(applicationId, fd))} className="mt-4 flex gap-2">
+        <form onSubmit={keepForm((fd) => run(() => requestCorrections(applicationId, fd)))} className="mt-4 flex gap-2">
           <input
             name="note"
             required
@@ -79,7 +80,7 @@ export function DecisionButtons({
         </form>
       )}
       {mode === "reject" && (
-        <form action={(fd) => run(() => rejectApplication(applicationId, fd))} className="mt-4 flex gap-2">
+        <form onSubmit={keepForm((fd) => run(() => rejectApplication(applicationId, fd)))} className="mt-4 flex gap-2">
           <input
             name="reason"
             placeholder="Reason (emailed to the guardian)"

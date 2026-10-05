@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { addClassVideo, type TeacherFormState } from "./actions";
 
 export function VideoPanel({
@@ -11,11 +12,12 @@ export function VideoPanel({
   videos: { id: number; title: string; url: string; date: string }[];
 }) {
   const [state, action, pending] = useActionState<TeacherFormState, FormData>(addClassVideo, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
       <h2 className="font-display text-lg font-semibold text-green mb-4">Class Videos</h2>
-      <form action={action} className="bg-mist rounded-xl p-4 flex flex-wrap gap-3 items-center mb-5">
+      <form {...kept} className="bg-mist rounded-xl p-4 flex flex-wrap gap-3 items-center mb-5">
         <input type="hidden" name="classSessionId" value={classSessionId} />
         <input
           name="title"

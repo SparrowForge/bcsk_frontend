@@ -1,12 +1,14 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { submitReAdmission, type ReAdmitState } from "./actions";
 
 const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
 
 export function ReAdmissionForm({ amount, classLabel, semester }: { amount: number; classLabel: string; semester: string }) {
   const [state, action, pending] = useActionState<ReAdmitState, FormData>(submitReAdmission, null);
+  const kept = useKeptForm(action, state);
 
   if (state?.ok) {
     return (
@@ -25,7 +27,7 @@ export function ReAdmissionForm({ amount, classLabel, semester }: { amount: numb
         <div className="flex justify-between"><dt className="font-bold text-ink-soft">Semester fee</dt><dd className="font-bold text-green">{krw(amount)}</dd></div>
         <div className="flex justify-between"><dt className="font-bold text-ink-soft">Bank</dt><dd>Hana Bank · 298-910032-72304</dd></div>
       </dl>
-      <form action={action} className="space-y-4">
+      <form {...kept} className="space-y-4">
         <label className="block">
           <span className="text-xs font-bold text-ink">Transfer receipt (photo or PDF) *</span>
           <input

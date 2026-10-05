@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import type { LoginState } from "@/lib/actions/auth-actions";
 
 const input =
@@ -31,11 +32,12 @@ export function LoginCard({
   demoHint?: string;
 }) {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(action, null);
+  const formKept = useKeptForm(formAction, state);
 
   return (
     <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
       <h1 className="font-display text-2xl font-semibold text-green text-center">{title}</h1>
-      <form action={formAction} className="mt-6 space-y-4">
+      <form {...formKept} className="mt-6 space-y-4">
         <label className="block">
           <span className="text-xs font-bold text-ink">{idLabel}</span>
           <input name="loginId" required autoComplete="username" className={`mt-1.5 ${input}`} />

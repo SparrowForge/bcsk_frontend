@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { createAlbum, addGalleryImage, deleteGalleryItem, deleteAlbum, type GalleryState } from "./actions";
 
 type Album = { id: number; title: string; category: string | null; items: { id: number; url: string; caption: string | null }[] };
@@ -8,11 +9,12 @@ const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-gree
 
 export function GalleryManager({ albums }: { albums: Album[] }) {
   const [albumState, albumAction, albumPending] = useActionState<GalleryState, FormData>(createAlbum, null);
+  const albumKept = useKeptForm(albumAction, albumState, { resetOnSuccess: true });
   const [, start] = useTransition();
 
   return (
     <div className="space-y-6">
-      <form action={albumAction} className="bg-white rounded-2xl border border-line p-5 flex flex-wrap gap-3 items-end">
+      <form {...albumKept} className="bg-white rounded-2xl border border-line p-5 flex flex-wrap gap-3 items-end">
         <label className="block text-xs font-bold text-ink">
           New album title
           <input name="title" required className={`block mt-1 ${input}`} />
@@ -38,6 +40,7 @@ export function GalleryManager({ albums }: { albums: Album[] }) {
 
 function AlbumCard({ album, onDeleteItem, onDeleteAlbum }: { album: Album; onDeleteItem: (id: number) => void; onDeleteAlbum: () => void }) {
   const [state, action, pending] = useActionState<GalleryState, FormData>(addGalleryImage, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
     <div className="bg-white rounded-2xl border border-line p-5">
@@ -62,7 +65,7 @@ function AlbumCard({ album, onDeleteItem, onDeleteAlbum }: { album: Album; onDel
           </figure>
         ))}
       </div>
-      <form action={action} className="flex flex-wrap gap-3 items-center border-t border-line pt-4">
+      <form {...kept} className="flex flex-wrap gap-3 items-center border-t border-line pt-4">
         <input type="hidden" name="albumId" value={album.id} />
         <input type="file" name="image" required accept="image/jpeg,image/png,image/webp" className="text-xs file:mr-2 file:rounded-lg file:border-0 file:bg-mist file:px-3 file:py-2 file:text-xs file:font-bold file:text-green" />
         <input name="caption" placeholder="Caption (optional)" className={`flex-1 min-w-40 ${input}`} />

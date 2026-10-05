@@ -1,10 +1,12 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { forgotPassword } from "@/lib/actions/auth-actions";
 
 export default function ForgotPasswordPage() {
   const [state, action, pending] = useActionState(forgotPassword, null);
+  const kept = useKeptForm(action, state);
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-mist/60">
@@ -15,7 +17,7 @@ export default function ForgotPasswordPage() {
             If that account has an email on file, a reset link is on its way. The link is valid for one hour.
           </p>
         ) : (
-          <form action={action} className="mt-6 space-y-4">
+          <form {...kept} className="mt-6 space-y-4">
             <label className="block">
               <span className="text-xs font-bold text-ink">Your ID or email address</span>
               <input

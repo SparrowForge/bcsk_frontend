@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Recaptcha } from "@/components/forms/Recaptcha";
+import { keepForm } from "@/components/forms/keep-form";
 import { submitEnquiry, type EnquiryState } from "./actions";
 
 const input =
@@ -30,7 +31,7 @@ export function EnquiryForm({
   }
 
   return (
-    <form action={action} className="space-y-4">
+    <form onSubmit={keepForm(action)} className="space-y-4">
       <label className="block">
         <span className="text-xs font-bold text-ink">Your name *</span>
         <input name="name" required minLength={2} className={`mt-1.5 ${input}`} />

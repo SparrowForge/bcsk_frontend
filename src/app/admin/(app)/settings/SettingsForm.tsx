@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { saveSettings, type SettingsState } from "./actions";
 
 export function SettingsForm({
@@ -11,9 +12,10 @@ export function SettingsForm({
   values: Record<string, string>;
 }) {
   const [state, action, pending] = useActionState<SettingsState, FormData>(saveSettings, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action} className="space-y-6">
+    <form {...kept} className="space-y-6">
       {groups.map((g) => (
         <fieldset key={g.title} className="bg-white rounded-2xl border border-line p-6">
           <legend className="sr-only">{g.title}</legend>

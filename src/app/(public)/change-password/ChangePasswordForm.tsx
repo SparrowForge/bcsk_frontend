@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { changePassword, type ChangePasswordState } from "@/lib/actions/auth-actions";
 
 const input =
@@ -11,9 +12,10 @@ export function ChangePasswordForm() {
     changePassword,
     null
   );
+  const formKept = useKeptForm(formAction, state);
 
   return (
-    <form action={formAction} className="mt-6 space-y-4">
+    <form {...formKept} className="mt-6 space-y-4">
       <label className="block">
         <span className="text-xs font-bold text-ink">Current password</span>
         <input

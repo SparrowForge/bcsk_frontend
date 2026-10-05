@@ -3,6 +3,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import { Recaptcha } from "@/components/forms/Recaptcha";
 import { Field, SelectField, PhotoField, ConsentField, inputCls } from "@/components/forms/fields";
+import { keepForm } from "@/components/forms/keep-form";
 import { krw } from "@/lib/format";
 import { submitApplication, previewFee, type ApplyState, type FeePreviewState, type RegistrationType } from "./actions";
 
@@ -91,7 +92,7 @@ export function ApplicationForm({
   }, []);
 
   return (
-    <form action={action} className="space-y-5">
+    <form onSubmit={keepForm(action)} className="space-y-5">
       <input type="hidden" name="type" value={type} />
 
       <fieldset>

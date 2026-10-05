@@ -1,13 +1,15 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { answerQuestion, type AnswerState } from "./actions";
 
 export function AnswerForm({ questionId, existing }: { questionId: number; existing: string | null }) {
   const [state, action, pending] = useActionState<AnswerState, FormData>(answerQuestion, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action} className="flex flex-wrap gap-3 items-start">
+    <form {...kept} className="flex flex-wrap gap-3 items-start">
       <input type="hidden" name="questionId" value={questionId} />
       <textarea
         name="answer"

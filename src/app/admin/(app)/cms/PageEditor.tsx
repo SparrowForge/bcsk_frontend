@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { savePage, deletePage, type CmsState } from "./actions";
 
 export function PageEditor({
@@ -24,6 +25,7 @@ export function PageEditor({
   isNew: boolean;
 }) {
   const [state, action, pending] = useActionState<CmsState, FormData>(savePage, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [deleting, startDelete] = useTransition();
 
   return (
@@ -34,7 +36,7 @@ export function PageEditor({
         {!isNew && <span className="ml-3 text-sm font-body font-bold text-crimson-ink">{langLabel}</span>}
       </h1>
 
-      <form action={action} className="space-y-4 bg-white rounded-2xl border border-line p-6">
+      <form {...kept} className="space-y-4 bg-white rounded-2xl border border-line p-6">
         <div className="grid sm:grid-cols-2 gap-4">
           <label className="block">
             <span className="text-xs font-bold text-ink">Slug (URL key)</span>

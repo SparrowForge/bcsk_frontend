@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import type { Lead } from "@/services/types";
 import { formatDateTime, isOverdue, stageLabel, stageTone } from "@/lib/leads";
 import { bulkAssignLeads, type LeadState } from "./actions";
@@ -17,9 +18,10 @@ export function LeadsTable({
   canManage: boolean;
 }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(bulkAssignLeads, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action}>
+    <form {...kept}>
       {canManage && (
         <div className="flex flex-wrap items-center gap-3 mb-3 text-sm">
           <span className="font-bold text-ink">With selected:</span>

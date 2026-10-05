@@ -1,10 +1,12 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { replyTicket, setTicketStatus, type TicketState } from "./actions";
 
 export function TicketActions({ ticketId, status }: { ticketId: number; status: string }) {
   const [state, action, pending] = useActionState<TicketState, FormData>(replyTicket, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [, start] = useTransition();
 
   if (status === "CLOSED") {
@@ -19,7 +21,7 @@ export function TicketActions({ ticketId, status }: { ticketId: number; status: 
   }
 
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       <input type="hidden" name="ticketId" value={ticketId} />
       <textarea
         name="reply"

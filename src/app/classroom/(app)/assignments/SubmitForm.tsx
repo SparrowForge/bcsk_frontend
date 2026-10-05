@@ -1,13 +1,15 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { submitAssignment, type SubmitState } from "./actions";
 
 export function SubmitForm({ assignmentId }: { assignmentId: number }) {
   const [state, action, pending] = useActionState<SubmitState, FormData>(submitAssignment, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       <input type="hidden" name="assignmentId" value={assignmentId} />
       <textarea
         name="text"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { updateCourse, updateLevel, addLevel, type CourseState } from "./actions";
 
 type Level = { id: number; name: string; syllabus: string; studentBookUrl: string | null; workBookUrl: string | null };
@@ -48,8 +49,9 @@ export function CourseEditor({ courses }: { courses: Course[] }) {
 
 function CourseForm({ course }: { course: Course }) {
   const [state, action, pending] = useActionState<CourseState, FormData>(updateCourse, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   return (
-    <form action={action} className="bg-mist rounded-xl p-4 space-y-3">
+    <form {...kept} className="bg-mist rounded-xl p-4 space-y-3">
       <input type="hidden" name="id" value={course.id} />
       <div className="flex flex-wrap gap-3 items-center">
         <input name="name" defaultValue={course.name} className={`${input} max-w-xs`} />
@@ -70,8 +72,9 @@ function CourseForm({ course }: { course: Course }) {
 
 function LevelForm({ level }: { level: Level }) {
   const [state, action, pending] = useActionState<CourseState, FormData>(updateLevel, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   return (
-    <form action={action} className="border border-line rounded-xl p-4 space-y-2.5">
+    <form {...kept} className="border border-line rounded-xl p-4 space-y-2.5">
       <input type="hidden" name="id" value={level.id} />
       <div className="flex flex-wrap items-center gap-3">
         <input name="name" defaultValue={level.name} className="rounded-lg border border-line px-3 py-2 text-sm font-bold w-40 focus:border-green-mid focus:outline-none" />

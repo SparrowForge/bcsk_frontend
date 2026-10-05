@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { postAssignment, gradeSubmission, type TeacherFormState } from "./actions";
 
 const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
@@ -27,6 +28,7 @@ export function AssignmentPanel({
   enrolledCount: number;
 }) {
   const [postState, postAction, posting] = useActionState<TeacherFormState, FormData>(postAssignment, null);
+  const postKept = useKeptForm(postAction, postState, { resetOnSuccess: true });
   const [showForm, setShowForm] = useState(false);
 
   return (
@@ -42,7 +44,7 @@ export function AssignmentPanel({
       </div>
 
       {showForm && (
-        <form action={postAction} className="bg-mist rounded-xl p-4 space-y-3 mb-6">
+        <form {...postKept} className="bg-mist rounded-xl p-4 space-y-3 mb-6">
           <input type="hidden" name="classSessionId" value={classSessionId} />
           <input name="title" required placeholder="Assignment title" className={input} />
           <textarea name="description" rows={2} placeholder="Instructions…" className={input} />
@@ -95,6 +97,7 @@ export function AssignmentPanel({
 
 function SubmissionRow({ sub }: { sub: Sub }) {
   const [state, action, pending] = useActionState<TeacherFormState, FormData>(gradeSubmission, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   return (
     <div className="py-3">
       <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -107,7 +110,7 @@ function SubmissionRow({ sub }: { sub: Sub }) {
         )}
       </div>
       {sub.text && <p className="mt-1.5 text-xs text-ink bg-mist rounded-lg p-3">{sub.text}</p>}
-      <form action={action} className="mt-2 flex flex-wrap items-center gap-2">
+      <form {...kept} className="mt-2 flex flex-wrap items-center gap-2">
         <input type="hidden" name="submissionId" value={sub.id} />
         <input
           name="grade"

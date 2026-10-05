@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { updateSession, type SchedState } from "./actions";
 
 const DAYS = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
@@ -24,6 +25,7 @@ export function SessionRow({
   teachers: { id: number; name: string }[];
 }) {
   const [state, action, pending] = useActionState<SchedState, FormData>(updateSession, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const formId = `sess-${session.id}`;
 
   return (
@@ -50,7 +52,7 @@ export function SessionRow({
         <input form={formId} name="zoomLink" defaultValue={session.zoomLink ?? ""} placeholder="Zoom link" className={`${cell} w-32`} />
       </td>
       <td className="px-4 py-2.5">
-        <form id={formId} action={action} className="flex items-center gap-2">
+        <form id={formId} {...kept} className="flex items-center gap-2">
           <input type="hidden" name="id" value={session.id} />
           <label className="flex items-center gap-1 text-[10px] font-bold text-ink-soft">
             <input type="checkbox" name="active" defaultChecked={session.active} className="w-3.5 h-3.5 accent-green" />

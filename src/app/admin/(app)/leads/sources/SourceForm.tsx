@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import type { LeadSource } from "@/services/types";
 import { deleteSource, saveSource, type LeadState } from "../actions";
 
@@ -10,11 +11,12 @@ const input =
 /** Create (no `source`) or edit one lead source. */
 export function SourceForm({ source, canManage }: { source?: LeadSource; canManage: boolean }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(saveSource, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [removing, startRemove] = useTransition();
 
   if (!canManage) return null;
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       {source && <input type="hidden" name="id" value={source.id} />}
       <div className="grid sm:grid-cols-3 gap-3">
         <input name="name" required minLength={2} defaultValue={source?.name} placeholder="Name *" aria-label="Name" className={input} />

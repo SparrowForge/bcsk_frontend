@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import type { Lead, LeadCourseOption } from "@/services/types";
 import { ACTIVITY_OUTCOMES, ACTIVITY_TYPES, LOST_REASONS, OPEN_STAGE_KEYS, stageLabel, toLocalInput } from "@/lib/leads";
 import {
@@ -20,6 +21,7 @@ function Msg({ state }: { state: LeadState }) {
 
 export function StagePanel({ lead }: { lead: Lead }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(changeStage, null);
+  const kept = useKeptForm(action, state);
   const [stage, setStage] = useState<string>(lead.stage === "ENROLLED" ? "" : lead.stage);
 
   if (lead.stage === "ENROLLED") {
@@ -27,7 +29,7 @@ export function StagePanel({ lead }: { lead: Lead }) {
   }
   const choices = [...OPEN_STAGE_KEYS, "LOST"];
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       <input type="hidden" name="id" value={lead.id} />
       <select name="stage" value={stage} onChange={(e) => setStage(e.target.value)} aria-label="Stage" className={input}>
         {choices.map((s) => (
@@ -54,8 +56,9 @@ export function StagePanel({ lead }: { lead: Lead }) {
 
 export function AssignPanel({ lead, assignees }: { lead: Lead; assignees: { id: number; name: string }[] }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(assignLead, null);
+  const kept = useKeptForm(action, state);
   return (
-    <form action={action} className="flex flex-wrap items-center gap-3">
+    <form {...kept} className="flex flex-wrap items-center gap-3">
       <input type="hidden" name="id" value={lead.id} />
       <select name="assignedToUserId" defaultValue={lead.assignedToUserId ?? ""} aria-label="Owner" className={`${input} flex-1 min-w-40`}>
         <option value="">Unassigned</option>
@@ -69,9 +72,10 @@ export function AssignPanel({ lead, assignees }: { lead: Lead; assignees: { id: 
 
 export function ActivityForm({ lead }: { lead: Lead }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(logLeadActivity, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   // React 19 resets an uncontrolled form once its action settles, so no manual clearing.
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       <input type="hidden" name="id" value={lead.id} />
       <div className="grid sm:grid-cols-2 gap-3">
         <select name="type" defaultValue="CALL" aria-label="Type" className={input}>
@@ -121,6 +125,7 @@ export function DeleteActivity({ leadId, activityId }: { leadId: number; activit
 
 export function ConvertPanel({ lead, courses }: { lead: Lead; courses: LeadCourseOption[] }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(convertLead, null);
+  const kept = useKeptForm(action, state);
   const isSpecial = lead.course?.type === "SPECIAL";
   const [type, setType] = useState<"REGULAR" | "SPECIAL">(isSpecial ? "SPECIAL" : "REGULAR");
 
@@ -128,7 +133,7 @@ export function ConvertPanel({ lead, courses }: { lead: Lead; courses: LeadCours
   const levels = type === "SPECIAL" ? (courses.find((c) => c.id === lead.courseId)?.levels ?? []) : (regular?.levels ?? []);
 
   return (
-    <form action={action} className="space-y-3">
+    <form {...kept} className="space-y-3">
       <input type="hidden" name="id" value={lead.id} />
       <p className="text-xs text-ink-soft">
         Creates an admission application prefilled from this lead. The family still completes consent and payment.
@@ -152,8 +157,9 @@ export function ConvertPanel({ lead, courses }: { lead: Lead; courses: LeadCours
 
 export function DeletePanel({ leadId }: { leadId: number }) {
   const [state, action, pending] = useActionState<LeadState, FormData>(deleteLead, null);
+  const kept = useKeptForm(action, state);
   return (
-    <form action={action} onSubmit={(e) => { if (!confirm("Delete this lead?")) e.preventDefault(); }} className="flex items-center gap-3">
+    <form {...kept} onSubmit={(e) => { if (confirm("Delete this lead?")) kept.onSubmit(e); else e.preventDefault(); }} className="flex items-center gap-3">
       <input type="hidden" name="id" value={leadId} />
       <button disabled={pending} className="text-xs font-bold text-red-600 hover:underline">Delete lead</button>
       <Msg state={state} />

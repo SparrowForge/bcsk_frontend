@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { createCardOrder, submitBankTransfer, type BankState } from "./actions";
 
 declare global {
@@ -44,6 +45,7 @@ export function PaymentOptions({
   const [cardError, setCardError] = useState<string | null>(null);
   const [cardBusy, setCardBusy] = useState(false);
   const [bankState, bankAction, bankPending] = useActionState<BankState, FormData>(submitBankTransfer, null);
+  const bankKept = useKeptForm(bankAction, bankState);
 
   async function payByCard() {
     setCardBusy(true);
@@ -136,7 +138,7 @@ export function PaymentOptions({
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Account number</dt><dd className="font-bold text-green">{bank.accountNumber}</dd></div>
             <div className="flex justify-between"><dt className="font-bold text-ink-soft">Transfer memo</dt><dd>Applicant&apos;s name</dd></div>
           </dl>
-          <form action={bankAction} className="mt-5 space-y-4">
+          <form {...bankKept} className="mt-5 space-y-4">
             <input type="hidden" name="applicationId" value={applicationId} />
             <input type="hidden" name="token" value={token} />
             <label className="block">

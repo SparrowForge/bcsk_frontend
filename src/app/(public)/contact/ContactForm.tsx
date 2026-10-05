@@ -1,6 +1,7 @@
 "use client";
 
 import { Recaptcha } from "@/components/forms/Recaptcha";
+import { keepForm } from "@/components/forms/keep-form";
 
 import { useActionState } from "react";
 import { submitContact, type ContactState } from "./actions";
@@ -33,7 +34,7 @@ export function ContactForm({
   }
 
   return (
-    <form action={action} className="space-y-4">
+    <form onSubmit={keepForm(action)} className="space-y-4">
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block">
           <span className="text-xs font-bold text-ink">Your name *</span>

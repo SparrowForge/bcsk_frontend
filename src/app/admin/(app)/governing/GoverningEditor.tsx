@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState, useTransition } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { saveMember, deleteMember, type GovState } from "./actions";
 
 type Member = {
@@ -20,6 +21,7 @@ const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:
 export function GoverningEditor({ members }: { members: Member[] }) {
   const [editing, setEditing] = useState<Member | "new" | null>(null);
   const [state, action, pending] = useActionState<GovState, FormData>(saveMember, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [, startDelete] = useTransition();
   const current = editing === "new" ? null : editing;
 
@@ -33,7 +35,7 @@ export function GoverningEditor({ members }: { members: Member[] }) {
       </button>
 
       {editing !== null && (
-        <form key={current?.id ?? "new"} action={action} className="bg-white rounded-2xl border border-line p-6 space-y-4 mb-6">
+        <form key={current?.id ?? "new"} {...kept} className="bg-white rounded-2xl border border-line p-6 space-y-4 mb-6">
           <input type="hidden" name="id" value={current?.id ?? 0} />
           <div className="grid sm:grid-cols-3 gap-4">
             <label className="block text-xs font-bold text-ink">

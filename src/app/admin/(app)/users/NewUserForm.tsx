@@ -1,18 +1,20 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import { createUser, type UserFormState } from "./actions";
 
 const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-green-mid focus:outline-none";
 
 export function NewUserForm() {
   const [state, action, pending] = useActionState<UserFormState, FormData>(createUser, null);
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [role, setRole] = useState("STUDENT");
 
   return (
     <details className="bg-white rounded-2xl border border-line">
       <summary className="cursor-pointer px-5 py-3.5 font-bold text-green text-sm">+ Create user account</summary>
-      <form action={action} className="px-5 pb-5 flex flex-wrap gap-3 items-end">
+      <form {...kept} className="px-5 pb-5 flex flex-wrap gap-3 items-end">
         <label className="block text-xs font-bold text-ink">
           Role
           <select name="role" value={role} onChange={(e) => setRole(e.target.value)} className={`block mt-1 ${input}`}>
