@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
-import { navFor } from "@/lib/permissions";
+import { navForPermissions } from "@/lib/permissions";
 import { LogoMark } from "@/components/Logo";
 import { LogoutButton } from "@/components/portal/LogoutButton";
 import { AdminNav } from "./AdminNav";
@@ -8,9 +8,9 @@ import { AdminNav } from "./AdminNav";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireAdmin();
 
-  // SEC-5: the menu is derived from the same permission map the server guards use
-  // (src/lib/permissions.ts), so a visible link and an allowed action can never disagree.
-  const nav = navFor(session.role);
+  // SEC-5: the menu is derived from the permissions the API issued this user (their custom menu
+  // grid, or their role's defaults), so a visible link and an allowed action can never disagree.
+  const nav = navForPermissions(session.permissions);
 
   return (
     <div className="min-h-screen bg-mist flex">

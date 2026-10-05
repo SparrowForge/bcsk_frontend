@@ -562,3 +562,20 @@ export type LeadFunnel = {
   open: number;
   conversionRate: number;
 };
+
+/* ------------------------------ menu permissions ------------------------------ */
+
+export type MenuFlag = "access" | "insert" | "update" | "delete";
+export type MenuGrid = Record<MenuFlag, boolean>;
+
+export type PermissionMenu = {
+  key: string;
+  module: string;
+  label: string;
+  note: string | null;
+  /** Which of the four switches this menu actually has a capability behind. */
+  offers: Record<MenuFlag, boolean>;
+};
+
+export type PermissionUser = { id: number; loginId: string; name: string; role: Role; custom: boolean };
+export type UserGrid = { custom: boolean; role: Role; grid: Record<string, MenuGrid> };

@@ -340,6 +340,17 @@ export const admin = {
 
 /* ----------------------------------- CRM ----------------------------------- */
 
+/* ------------------------------ menu permissions ------------------------------ */
+export const userPermissions = {
+  menus: () => api.get<T.PermissionMenu[]>("/user-permissions/menus"),
+  users: () => api.get<T.PermissionUser[]>("/user-permissions/users"),
+  forUser: (id: number) => api.get<T.UserGrid>(`/user-permissions/users/${id}`),
+  forRole: (role: string) => api.get<{ role: string; grid: Record<string, T.MenuGrid> }>(`/user-permissions/roles/${role}`),
+  save: (userIds: number[], grid: Record<string, T.MenuGrid>) =>
+    api.put<{ updated: number }>("/user-permissions", { userIds, grid }),
+  clear: (userIds: number[]) => api.post<{ cleared: number }>("/user-permissions/clear", { userIds }),
+};
+
 /* --------------------------------- coupons --------------------------------- */
 export const coupons = {
   list: () => api.get<T.Coupon[]>("/coupons"),

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { permissionsFor, roleHas, navFor, PERMISSIONS, ADMIN_NAV } from "@/lib/permissions";
+import { permissionsFor, roleHas, navFor, navForPermissions, PERMISSIONS, ADMIN_NAV } from "@/lib/permissions";
 import { requiredSecret, intFromEnv, isDemoMode } from "@/lib/env";
 import type { Role } from "@/lib/constants";
 
@@ -142,5 +142,19 @@ describe("SEC-2 — demo hints", () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("NEXT_PUBLIC_DEMO_MODE", "1");
     expect(isDemoMode()).toBe(false);
+  });
+});
+
+describe("per-user menu permissions — navigation follows the issued permissions", () => {
+  it("shows exactly the links a custom permission list allows", () => {
+    const hrefs = navForPermissions(["tickets:manage", "payments:read"]).map((n) => n.href);
+    expect(hrefs).toContain("/admin/tickets");
+    expect(hrefs).toContain("/admin/payments");
+    expect(hrefs).not.toContain("/admin/admissions");
+    expect(hrefs).toContain("/admin/dashboard");
+  });
+  it("offers the permission screen only to those holding permissions:manage", () => {
+    expect(navForPermissions(permissionsFor("ADMIN_SUPPORT")).map((n) => n.href)).not.toContain("/admin/user-permissions");
+    expect(navForPermissions(permissionsFor("SUPER_ADMIN")).map((n) => n.href)).toContain("/admin/user-permissions");
   });
 });
