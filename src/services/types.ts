@@ -316,6 +316,10 @@ export type ApplicationForm = {
   adminNote: string | null;
   correctionNote: string | null;
   createdStudentUserId: number | null;
+  /** The coupon the family redeemed (a snapshot taken at submit), if any. */
+  couponCode?: string | null;
+  couponType?: "PERCENT" | "FIXED" | null;
+  couponValue?: number | null;
   courseLevelId?: number | null;
   /** Staff detail only: the level or track chosen on a special-course application. */
   courseLevel?: { id: number; name: string } | null;
@@ -453,6 +457,28 @@ export type DashboardStats = {
   students: number;
   teachers: number;
   unanswered: number;
+};
+
+export type Coupon = {
+  id: number;
+  code: string;
+  description: string | null;
+  discountType: "PERCENT" | "FIXED";
+  value: number;
+  appliesTo: "ALL" | "REGULAR" | "SPECIAL" | "RE_ADMISSION";
+  maxUses: number | null;
+  validFrom: ISODate | null;
+  validUntil: ISODate | null;
+  active: boolean;
+  used: number;
+  createdAt: ISODate;
+};
+
+export type CouponCheck = {
+  code: string;
+  label: string;
+  description: string | null;
+  options: { key: string; discount: number; payable: number }[];
 };
 
 /* ----------------------------------- CRM ----------------------------------- */

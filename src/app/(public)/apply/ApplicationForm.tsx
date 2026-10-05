@@ -5,7 +5,11 @@ import { Recaptcha } from "@/components/forms/Recaptcha";
 import { Field, SelectField, PhotoField, ConsentField, inputCls } from "@/components/forms/fields";
 import { keepForm } from "@/components/forms/keep-form";
 import { krw } from "@/lib/format";
-import { submitApplication, previewFee, type ApplyState, type FeePreviewState, type RegistrationType } from "./actions";
+import {
+  submitApplication, previewFee, checkCoupon,
+  type ApplyState, type FeePreviewState, type RegistrationType,
+} from "./actions";
+import type { CouponCheck } from "@/services/types";
 
 export type ClassChoice = { id: number; name: string };
 export type CourseChoice = { value: string; label: string; levels: { id: number; name: string }[] };
@@ -46,15 +50,61 @@ export function ApplicationForm({
   const [fee, setFee] = useState<FeePreviewState | null>(null);
   const [loadingFee, setLoadingFee] = useState(false);
   const latest = useRef(0);
+  // The coupon: what is typed, the priced result once applied, and any message about it.
+  const [couponInput, setCouponInput] = useState("");
+  const [coupon, setCoupon] = useState<CouponCheck | null>(null);
+  const [couponMsg, setCouponMsg] = useState<string | null>(null);
+  const [checkingCoupon, setCheckingCoupon] = useState(false);
+  const couponTicket = useRef(0);
 
   const isSpecial = type === "SPECIAL";
   const isRegular = type === "REGULAR";
   const levels = courses.find((c) => c.value === course)?.levels ?? [];
 
   /** Ask the server for the fee table. Only the newest request may update the panel. */
+  /** Price the coupon for the current choice. A coupon that stops applying is dropped with a message. */
+  async function applyCoupon(code: string, nextType: RegistrationType, pick: { course?: string; level?: string; cls?: string }) {
+    const special = nextType === "SPECIAL";
+    if (!(special ? pick.course : pick.cls)) {
+      // Nothing to price against yet; an applied coupon is dropped so it cannot show a stale price.
+      setCoupon(null);
+      setCouponMsg(`Choose a ${special ? "course" : "grade"} first, then apply the coupon.`);
+      return;
+    }
+    const ticket = ++couponTicket.current;
+    setCheckingCoupon(true);
+    const result = await checkCoupon(
+      code,
+      nextType,
+      special
+        ? { courseName: pick.course, courseLevelId: Number(pick.level) || undefined }
+        : { courseLevelId: Number(pick.cls) },
+    );
+    if (ticket !== couponTicket.current) return;
+    setCheckingCoupon(false);
+    if ("error" in result) {
+      setCoupon(null);
+      setCouponMsg(result.error);
+    } else {
+      setCoupon(result.coupon);
+      setCouponInput(result.coupon.code);
+      setCouponMsg(null);
+    }
+  }
+
+  function removeCoupon() {
+    couponTicket.current++;
+    setCoupon(null);
+    setCouponMsg(null);
+    setCouponInput("");
+    setCheckingCoupon(false);
+  }
+
   async function refreshFee(nextType: RegistrationType, pick: { course?: string; level?: string; cls?: string }) {
     const ticket = ++latest.current;
     const special = nextType === "SPECIAL";
+    // A coupon already applied must be re-priced (or dropped) for the new class or course.
+    if (coupon) void applyCoupon(coupon.code, nextType, pick);
     if (!(special ? pick.course : pick.cls)) {
       setFee(null);
       setLoadingFee(false);
@@ -191,7 +241,57 @@ export function ApplicationForm({
         </>
       )}
 
-      <FeePanel type={type} fee={fee} loading={loadingFee} bcsk={bcsk} />
+      <FeePanel type={type} fee={fee} loading={loadingFee} bcsk={bcsk} coupon={coupon} />
+
+      {/* ------------------------------------------------------------------ coupon */}
+      <div className="rounded-xl border border-line p-4">
+        <label htmlFor="coupon-code" className="text-xs font-bold text-ink">Discount coupon (optional)</label>
+        <div className="mt-1.5 flex gap-2">
+          <input
+            id="coupon-code"
+            value={couponInput}
+            onChange={(e) => {
+              setCouponInput(e.target.value.toUpperCase());
+              if (coupon && e.target.value.trim().toUpperCase() !== coupon.code) setCoupon(null);
+              setCouponMsg(null);
+            }}
+            onKeyDown={(e) => {
+              // Enter here means "apply the coupon", not "submit the whole application".
+              if (e.key === "Enter") {
+                e.preventDefault();
+                void applyCoupon(couponInput, type, { course, level: levelId, cls: classId });
+              }
+            }}
+            readOnly={!!coupon}
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="Enter code"
+            className={`${inputCls} font-mono uppercase`}
+          />
+          {coupon ? (
+            <button type="button" onClick={removeCoupon} className="shrink-0 rounded-lg border border-line px-4 text-xs font-bold text-ink-soft hover:bg-mist">
+              Remove
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={checkingCoupon || !couponInput.trim()}
+              onClick={() => void applyCoupon(couponInput, type, { course, level: levelId, cls: classId })}
+              className="shrink-0 rounded-lg bg-green hover:bg-green-deep disabled:opacity-60 px-4 text-xs font-bold text-white transition-colors"
+            >
+              {checkingCoupon ? "Checking…" : "Apply"}
+            </button>
+          )}
+        </div>
+        <div aria-live="polite" className="mt-1.5 text-xs">
+          {coupon && <p className="font-semibold text-green">Coupon {coupon.code} applied: {coupon.label}.</p>}
+          {couponMsg && <p role="alert" className="font-semibold text-red-600">{couponMsg}</p>}
+          {!coupon && !couponMsg && couponInput.trim() && !checkingCoupon && (
+            <p className="text-ink-soft">Press Apply to use this coupon. A code you do not apply is not sent.</p>
+          )}
+        </div>
+        <input type="hidden" name="couponCode" value={coupon?.code ?? ""} />
+      </div>
 
       {/* ------------------------------------------------------- applicant, common */}
       <h2 className={section}>{isSpecial ? "Applicant information" : "Student information"}</h2>
@@ -269,7 +369,7 @@ export function ApplicationForm({
 }
 
 /** The fee structure for the chosen grade or course, shown before anything is submitted. */
-function FeePanel({ type, fee, loading, bcsk }: { type: RegistrationType; fee: FeePreviewState | null; loading: boolean; bcsk: boolean }) {
+function FeePanel({ type, fee, loading, bcsk, coupon }: { type: RegistrationType; fee: FeePreviewState | null; loading: boolean; bcsk: boolean; coupon: CouponCheck | null }) {
   const prompt = type === "SPECIAL" ? "Choose a course to see its fees." : "Choose a grade to see its fees.";
   return (
     <div className="rounded-xl border border-line bg-mist p-4" aria-live="polite">
@@ -295,10 +395,30 @@ function FeePanel({ type, fee, loading, bcsk }: { type: RegistrationType; fee: F
                       <dd className="text-ink">{krw(l.amount)}</dd>
                     </div>
                   ))}
-                  <div className="flex justify-between gap-3 border-t border-line pt-1 font-bold">
-                    <dd className="text-ink">Total to pay</dd>
-                    <dd className="text-green">{krw(o.total)}</dd>
-                  </div>
+                  {(() => {
+                    const off = coupon?.options.find((x) => x.key === o.key);
+                    return off && off.discount > 0 ? (
+                      <>
+                        <div className="flex justify-between gap-3 border-t border-line pt-1">
+                          <dd className="text-ink-soft">Subtotal</dd>
+                          <dd className="text-ink">{krw(o.total)}</dd>
+                        </div>
+                        <div className="flex justify-between gap-3">
+                          <dd className="text-green">Coupon {coupon!.code}</dd>
+                          <dd className="text-green">−{krw(off.discount)}</dd>
+                        </div>
+                        <div className="flex justify-between gap-3 border-t border-line pt-1 font-bold">
+                          <dd className="text-ink">Total to pay</dd>
+                          <dd className="text-green">{krw(off.payable)}</dd>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex justify-between gap-3 border-t border-line pt-1 font-bold">
+                        <dd className="text-ink">Total to pay</dd>
+                        <dd className="text-green">{krw(o.total)}</dd>
+                      </div>
+                    );
+                  })()}
                 </dl>
               );
             })}

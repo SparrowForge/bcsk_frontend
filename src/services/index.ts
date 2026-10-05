@@ -87,6 +87,9 @@ export const admissions = {
   /** Every registration type - REGULAR, SPECIAL, RE_ADMISSION - goes through the one endpoint. */
   submit: (input: Record<string, unknown>) =>
     api.post<ApplicationCreated>("/admissions", input, { auth: false }),
+  /** Would this coupon work here, and what would it take off? Display only; the backend re-checks at submit. */
+  couponCheck: (input: { code: string; type: string; courseName?: string; courseLevelId?: number }) =>
+    api.post<T.CouponCheck>("/admissions/coupon-check", input, { auth: false }),
   /** The fee table for the chosen grade or course. Display only; the backend recomputes at payment. */
   feePreview: (q: { type: string; courseName?: string; courseLevelId?: number }) => {
     const qs = new URLSearchParams({ type: q.type });
@@ -120,7 +123,15 @@ export const admissions = {
 
 /* --------------------------------- payment --------------------------------- */
 
-export type Quote = { applicationId: number; applicantName: string; amount: number; breakdown: string };
+export type Quote = {
+  applicationId: number;
+  applicantName: string;
+  amount: number;
+  /** The fee before a coupon, and what the coupon took off (0 when none was used). */
+  subtotal: number;
+  discount: number;
+  breakdown: string;
+};
 
 export const payments = {
   /** SEC-3: the amount comes from the server. A client never proposes a price. */
@@ -328,6 +339,14 @@ export const admin = {
 };
 
 /* ----------------------------------- CRM ----------------------------------- */
+
+/* --------------------------------- coupons --------------------------------- */
+export const coupons = {
+  list: () => api.get<T.Coupon[]>("/coupons"),
+  create: (input: Record<string, unknown>) => api.post<T.Coupon>("/coupons", input),
+  update: (id: number, input: Record<string, unknown>) => api.patch<T.Coupon>(`/coupons/${id}`, input),
+  remove: (id: number) => api.delete<{ ok: boolean; deactivated: boolean }>(`/coupons/${id}`),
+};
 
 const query = (params: Record<string, string | number | undefined>) =>
   new URLSearchParams(

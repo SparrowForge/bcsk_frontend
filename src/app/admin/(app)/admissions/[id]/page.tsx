@@ -40,6 +40,12 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
     ["Address (Bangladesh)", app.addressBangladesh],
     ["Emergency contact", app.emergencyContact],
     ["PIPA consent", app.parentalConsent ? "Given by guardian at application" : "MISSING"],
+    [
+      "Coupon",
+      app.couponCode
+        ? `${app.couponCode} (${app.couponType === "PERCENT" ? `${app.couponValue}% off` : `${krw(app.couponValue ?? 0)} off`})`
+        : null,
+    ],
     ["Note", app.adminNote],
   ];
 

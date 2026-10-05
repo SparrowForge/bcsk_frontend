@@ -54,7 +54,14 @@ export default async function PaymentPage({
               <h2 className="mt-1 font-bold text-ink">{app.applicantName}</h2>
               <p className="text-xs text-ink-soft mt-1">{fee.breakdown}</p>
             </div>
-            <p className="font-display text-3xl font-semibold text-green">{krw(fee.amount)}</p>
+            <div className="text-right">
+              {fee.discount > 0 && (
+                <p className="text-xs text-ink-soft">
+                  <span className="line-through">{krw(fee.subtotal)}</span> · coupon −{krw(fee.discount)}
+                </p>
+              )}
+              <p className="font-display text-3xl font-semibold text-green">{krw(fee.amount)}</p>
+            </div>
           </div>
         </div>
 

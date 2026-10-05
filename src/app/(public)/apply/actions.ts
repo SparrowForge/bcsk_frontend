@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { admissions, files, toActionError, type FeeStructure } from "@/services";
+import { admissions, files, toActionError, type CouponCheck, type FeeStructure } from "@/services";
 
 /**
  * FR-ADM-02/03/10: the one registration form.
@@ -70,6 +70,8 @@ export async function submitApplication(_prev: ApplyState, formData: FormData): 
       highestEducation: get("highestEducation"),
       // SEC-3: persisted on the record, and the only thing the fee calculation reads.
       isBcskStudent: formData.get("isBcskStudent") === "on",
+      // Only a coupon the family has applied (and seen priced) is sent; the backend re-checks it.
+      couponCode: get("couponCode"),
     });
   } catch (e) {
     if (e instanceof Error && !("code" in e)) return { error: e.message };
@@ -77,6 +79,23 @@ export async function submitApplication(_prev: ApplyState, formData: FormData): 
   }
   // SEC-7: the token is what opens the payment step. An application id alone is useless.
   redirect(`/apply/payment/${created.applicationId}?t=${created.paymentToken}`);
+}
+
+export type CouponState = { coupon: CouponCheck } | { error: string };
+
+/** Would this coupon work for the registration being filled in, and what does it take off? */
+export async function checkCoupon(
+  code: string,
+  type: RegistrationType,
+  choice: { courseName?: string; courseLevelId?: number },
+): Promise<CouponState> {
+  if (!code.trim()) return { error: "Enter a coupon code." };
+  if (!TYPES.includes(type)) return { error: "Choose what you are registering for." };
+  try {
+    return { coupon: await admissions.couponCheck({ code, type, ...choice }) };
+  } catch (e) {
+    return toActionError(e);
+  }
 }
 
 export type FeePreviewState = { fee: FeeStructure } | { error: string };
