@@ -22,6 +22,7 @@ const ROUTES: { path: string; priority: number }[] = [
   { path: "/admission/tuition-fee", priority: 0.9 },
   { path: "/apply", priority: 0.9 },
   { path: "/contact", priority: 0.8 },
+  { path: "/enquiry", priority: 0.7 },
   { path: "/bcsk/education-process", priority: 0.7 },
   { path: "/bcsk/administration", priority: 0.6 },
   { path: "/bcsk/teachers", priority: 0.7 },

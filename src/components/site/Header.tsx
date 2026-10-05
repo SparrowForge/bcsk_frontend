@@ -29,6 +29,7 @@ export async function Header() {
         { label: t.nav.reAdmission, href: "/admission/re-admission" },
         { label: t.nav.tuitionFee, href: "/admission/tuition-fee" },
         { label: t.nav.brochure, href: "/admission/brochure" },
+        { label: t.nav.enquiry, href: "/enquiry" },
       ],
     },
     {
