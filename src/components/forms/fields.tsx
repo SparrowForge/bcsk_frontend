@@ -67,17 +67,23 @@ export function SelectField({
   );
 }
 
-export function PhotoField({ label = "Applicant photo (JPG/PNG, max 1 MB)" }: { label?: string }) {
+export function PhotoField({
+  label = "Applicant photo (JPG/PNG, max 1 MB)",
+  required = true,
+}: {
+  label?: string;
+  required?: boolean;
+}) {
   return (
     <label className="block">
       <span className="text-xs font-bold text-ink">
-        {label} <span className="text-crimson-ink">*</span>
+        {label} {required && <span className="text-crimson-ink">*</span>}
       </span>
       <input
         type="file"
         name="photo"
         accept="image/jpeg,image/png,image/webp"
-        required
+        required={required}
         className="mt-1.5 block w-full text-xs file:mr-3 file:rounded-lg file:border-0 file:bg-mist file:px-4 file:py-2.5 file:text-xs file:font-bold file:text-green"
       />
     </label>

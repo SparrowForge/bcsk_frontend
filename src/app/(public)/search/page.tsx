@@ -94,7 +94,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                 {courses.map((c) => (
                   <li key={c.id}>
                     <Link
-                      href={["deen", "ielts-for-kids", "abacus"].includes(c.slug) ? `/courses/${c.slug}` : "/admission/special-course"}
+                      href={
+                        ["deen", "ielts-for-kids", "abacus"].includes(c.slug)
+                          ? `/courses/${c.slug}`
+                          : c.slug === "regular-course"
+                            ? "/admission/regular-course"
+                            : "/admission/special-course"
+                      }
                       className="group block bg-white border border-line rounded-xl p-4 hover:shadow-sm"
                     >
                       <span className="font-bold text-green group-hover:text-green-mid">{c.name}</span>

@@ -51,6 +51,8 @@ export const site = {
       `/public/search?q=${encodeURIComponent(q)}&lang=${lang}`,
       0,
     ),
+  /** The classes of the Regular Course (Pre-Primary, Class 1-5) as CourseLevel rows. */
+  regularLevels: () => api.public<{ id: number; name: string; code: string }[]>("/public/regular-levels", 300),
   /** With each course's levels/tracks, for the application form's level choice. */
   specialCourses: () =>
     api.public<(T.Course & { levels: { id: number; name: string }[] })[]>("/public/special-courses", 300),
@@ -78,11 +80,20 @@ export const site = {
 
 export type ApplicationCreated = { applicationId: number; paymentToken: string };
 
+export type FeeOption = { key: string; label: string; lines: { label: string; amount: number }[]; total: number };
+export type FeeStructure = { title: string; options: FeeOption[]; bookFee: number | null };
+
 export const admissions = {
-  submitRegular: (input: Record<string, unknown>) =>
-    api.post<ApplicationCreated>("/admissions/regular", input, { auth: false }),
-  submitSpecial: (input: Record<string, unknown>) =>
-    api.post<ApplicationCreated>("/admissions/special", input, { auth: false }),
+  /** Every registration type - REGULAR, SPECIAL, RE_ADMISSION - goes through the one endpoint. */
+  submit: (input: Record<string, unknown>) =>
+    api.post<ApplicationCreated>("/admissions", input, { auth: false }),
+  /** The fee table for the chosen grade or course. Display only; the backend recomputes at payment. */
+  feePreview: (q: { type: string; courseName?: string; courseLevelId?: number }) => {
+    const qs = new URLSearchParams({ type: q.type });
+    if (q.courseName) qs.set("courseName", q.courseName);
+    if (q.courseLevelId) qs.set("courseLevelId", String(q.courseLevelId));
+    return api.public<FeeStructure>(`/admissions/fee-preview?${qs}`, 300);
+  },
   /**
    * The staff queue. Cursor-paginated server-side, so a limit is passed explicitly rather
    * than relying on the 25-row default the admin table would silently truncate to.

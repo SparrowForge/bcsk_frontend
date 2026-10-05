@@ -1,63 +1,75 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { admissions, files, toActionError } from "@/services";
+import { admissions, files, toActionError, type FeeStructure } from "@/services";
 
 /**
- * FR-ADM-02/03: the application forms.
+ * FR-ADM-02/03/10: the one registration form.
  *
- * Validation, rate limiting (SEC-8), captcha (SEC-9), the minimum-age rule (GAP-12) and the
- * BCSK-discount claim (SEC-3) are all enforced by the backend. This action's job is to move
- * the photo and the fields across, then hand back the capability token that unlocks payment.
+ * Regular admission, special course and re-admission share this action and the backend's single
+ * `ApplicationForm` table. Validation, rate limiting (SEC-8), captcha (SEC-9), the minimum-age
+ * rule (GAP-12), the returning-student check and the BCSK-discount claim (SEC-3) are all
+ * enforced by the backend. This action moves the photo and the fields across, then hands back
+ * the capability token that unlocks payment.
  */
 
 export type ApplyState = { error?: string } | null;
 
-/** Upload the applicant photo first — the application row stores its path, not the bytes. */
-async function uploadPhoto(formData: FormData): Promise<string> {
+const TYPES = ["REGULAR", "SPECIAL", "RE_ADMISSION"] as const;
+export type RegistrationType = (typeof TYPES)[number];
+
+/** Upload the applicant photo first - the application row stores its path, not the bytes. */
+async function uploadPhoto(formData: FormData, required: boolean): Promise<string | undefined> {
   const file = formData.get("photo");
   if (!(file instanceof File) || file.size === 0) {
-    throw new Error("A photo upload is required (JPG/PNG, max 1 MB).");
+    if (required) throw new Error("A photo upload is required (JPG/PNG, max 1 MB).");
+    return undefined;
   }
   const { path } = await files.upload(file, "applications");
   return path;
 }
 
-function fields(formData: FormData): Record<string, unknown> {
+export async function submitApplication(_prev: ApplyState, formData: FormData): Promise<ApplyState> {
   const get = (k: string) => {
     const v = formData.get(k);
     return typeof v === "string" && v.trim() ? v.trim() : undefined;
   };
-  return {
-    applicantName: get("applicantName"),
-    dob: get("dob"),
-    gender: get("gender"),
-    religion: get("religion"),
-    phone: get("phone"),
-    email: get("email"),
-    addressKorea: get("addressKorea"),
-    addressBangladesh: get("addressBangladesh"),
-    emergencyContact: get("emergencyContact"),
-    // A checkbox posts "on" when ticked and nothing when not; the API expects a boolean.
-    parentalConsent: formData.get("parentalConsent") === "on",
-    learningMode: get("learningMode"),
-    recaptchaToken: get("recaptchaToken"),
-  };
-}
+  const type = get("type") as RegistrationType | undefined;
+  if (!type || !TYPES.includes(type)) return { error: "Choose what you are registering for." };
 
-export async function submitRegular(_prev: ApplyState, formData: FormData): Promise<ApplyState> {
-  let created: Awaited<ReturnType<typeof admissions.submitRegular>>;
+  let created: Awaited<ReturnType<typeof admissions.submit>>;
   try {
-    const photoPath = await uploadPhoto(formData);
-    created = await admissions.submitRegular({
-      ...fields(formData),
+    const photoPath = await uploadPhoto(formData, type !== "RE_ADMISSION");
+    created = await admissions.submit({
+      type,
+      applicantName: get("applicantName"),
+      dob: get("dob"),
+      gender: get("gender"),
+      religion: get("religion"),
+      phone: get("phone"),
+      email: get("email"),
+      addressKorea: get("addressKorea"),
+      addressBangladesh: get("addressBangladesh"),
+      emergencyContact: get("emergencyContact"),
+      learningMode: get("learningMode"),
+      // A checkbox posts "on" when ticked and nothing when not; the API expects a boolean.
+      parentalConsent: formData.get("parentalConsent") === "on",
+      recaptchaToken: get("recaptchaToken"),
       photoPath,
-      grade: String(formData.get("grade") ?? ""),
-      fatherName: String(formData.get("fatherName") ?? "").trim(),
-      motherName: String(formData.get("motherName") ?? "").trim(),
-      guardianProfession: String(formData.get("guardianProfession") ?? "").trim() || undefined,
-      guardianEducation: String(formData.get("guardianEducation") ?? "").trim() || undefined,
-      guardianPhone2: String(formData.get("guardianPhone2") ?? "").trim() || undefined,
+      fatherName: get("fatherName"),
+      motherName: get("motherName"),
+      guardianProfession: get("guardianProfession"),
+      guardianEducation: get("guardianEducation"),
+      guardianPhone2: get("guardianPhone2"),
+      // re-admission
+      studentId: get("studentId"),
+      // special course
+      courseName: get("courseName"),
+      // The class (regular, re-admission) or the level/track (special) - one CourseLevel id.
+      courseLevelId: Number(get("courseLevelId")) || undefined,
+      highestEducation: get("highestEducation"),
+      // SEC-3: persisted on the record, and the only thing the fee calculation reads.
+      isBcskStudent: formData.get("isBcskStudent") === "on",
     });
   } catch (e) {
     if (e instanceof Error && !("code" in e)) return { error: e.message };
@@ -67,22 +79,19 @@ export async function submitRegular(_prev: ApplyState, formData: FormData): Prom
   redirect(`/apply/payment/${created.applicationId}?t=${created.paymentToken}`);
 }
 
-export async function submitSpecial(_prev: ApplyState, formData: FormData): Promise<ApplyState> {
-  let created: Awaited<ReturnType<typeof admissions.submitSpecial>>;
+export type FeePreviewState = { fee: FeeStructure } | { error: string };
+
+/** The fee table for the grade or course just chosen. Display only - payment is recomputed. */
+export async function previewFee(
+  type: RegistrationType,
+  choice: { courseName?: string; courseLevelId?: number },
+): Promise<FeePreviewState> {
+  const chosen = type === "SPECIAL" ? choice.courseName : choice.courseLevelId;
+  if (!TYPES.includes(type) || !chosen) return { error: "Choose a course to see its fees." };
   try {
-    const photoPath = await uploadPhoto(formData);
-    created = await admissions.submitSpecial({
-      ...fields(formData),
-      photoPath,
-      courseName: String(formData.get("courseName") ?? ""),
-      courseLevelId: Number(formData.get("courseLevelId")) || undefined,
-      highestEducation: String(formData.get("highestEducation") ?? "").trim() || undefined,
-      // SEC-3: persisted on the record, and the only thing the fee calculation reads.
-      isBcskStudent: formData.get("isBcskStudent") === "on",
-    });
+    const fee = await admissions.feePreview({ type, ...choice });
+    return { fee };
   } catch (e) {
-    if (e instanceof Error && !("code" in e)) return { error: e.message };
     return toActionError(e);
   }
-  redirect(`/apply/payment/${created.applicationId}?t=${created.paymentToken}`);
 }

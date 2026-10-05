@@ -351,6 +351,9 @@ export type FeeConfig = {
   key: string;
   label: string;
   kind: string;
+  /** What the fee prices: a level's own row, or a course's default row (no level). */
+  courseId?: number | null;
+  courseLevelId?: number | null;
   admissionFee: number;
   semesterFee: number;
   bcskPrice: number | null;

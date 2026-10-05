@@ -35,8 +35,6 @@ const ROUTES: { path: string; priority: number }[] = [
   { path: "/admission/quran-department", priority: 0.7 },
   { path: "/admission/re-admission", priority: 0.6 },
   { path: "/admission/brochure", priority: 0.6 },
-  { path: "/apply/regular", priority: 0.7 },
-  { path: "/apply/special", priority: 0.7 },
   { path: "/academic/curriculum", priority: 0.7 },
   { path: "/academic/syllabus", priority: 0.6 },
   { path: "/academic/book-list", priority: 0.6 },
