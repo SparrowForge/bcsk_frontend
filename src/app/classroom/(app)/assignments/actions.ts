@@ -1,5 +1,6 @@
 "use server";
 
+import { requireStudent } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { classroom, files, toActionError } from "@/services";
 
@@ -12,6 +13,7 @@ export type SubmitState = { ok?: boolean; error?: string } | null;
  * actually in, and that rule lives with the data rather than in this form handler.
  */
 export async function submitAssignment(_prev: SubmitState, formData: FormData): Promise<SubmitState> {
+  await requireStudent();
   const assignmentId = Number(formData.get("assignmentId"));
   const text = String(formData.get("text") ?? "").trim();
   const file = formData.get("file");

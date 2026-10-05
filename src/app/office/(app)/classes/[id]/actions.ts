@@ -1,5 +1,6 @@
 "use server";
 
+import { requireTeacher } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { office, files, toActionError } from "@/services";
 
@@ -12,12 +13,14 @@ import { office, files, toActionError } from "@/services";
  */
 
 export async function toggleLive(classSessionId: number, live: boolean, zoomLink?: string) {
+  await requireTeacher();
   await office.setLive(classSessionId, live, zoomLink);
   revalidatePath(`/office/classes/${classSessionId}`);
   revalidatePath("/classroom/dashboard");
 }
 
 export async function markAttendance(classSessionId: number, formData: FormData) {
+  await requireTeacher();
   const date = String(formData.get("date") ?? new Date().toISOString().slice(0, 10));
   const entries = [...formData.entries()]
     .filter(([k]) => k.startsWith("att-"))
@@ -29,6 +32,7 @@ export async function markAttendance(classSessionId: number, formData: FormData)
 export type TeacherFormState = { ok?: boolean; error?: string } | null;
 
 export async function postAssignment(_prev: TeacherFormState, formData: FormData): Promise<TeacherFormState> {
+  await requireTeacher();
   const classSessionId = Number(formData.get("classSessionId"));
   const title = String(formData.get("title") ?? "").trim();
   if (!title) return { error: "Give the assignment a title." };
@@ -53,6 +57,7 @@ export async function postAssignment(_prev: TeacherFormState, formData: FormData
 }
 
 export async function gradeSubmission(_prev: TeacherFormState, formData: FormData): Promise<TeacherFormState> {
+  await requireTeacher();
   const submissionId = Number(formData.get("submissionId"));
   const grade = String(formData.get("grade") ?? "").trim();
   const feedback = String(formData.get("feedback") ?? "").trim();
@@ -67,6 +72,7 @@ export async function gradeSubmission(_prev: TeacherFormState, formData: FormDat
 }
 
 export async function addClassVideo(_prev: TeacherFormState, formData: FormData): Promise<TeacherFormState> {
+  await requireTeacher();
   const classSessionId = Number(formData.get("classSessionId"));
   const title = String(formData.get("title") ?? "").trim();
   const videoUrl = String(formData.get("videoUrl") ?? "").trim();
