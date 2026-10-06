@@ -1,19 +1,17 @@
 import Link from "next/link";
 
-/** SEC-4.1: rendered when requirePermission() rejects a signed-in admin. */
+/** Rendered inside the student panel when `requireMenu()` rejects a page this account may not open. */
 export default function Forbidden() {
   return (
     <div className="max-w-lg">
       <p className="text-xs font-extrabold uppercase tracking-wide text-crimson-ink">403</p>
-      <h1 className="mt-2 font-display text-2xl font-semibold text-green">
-        You don&apos;t have access to this
-      </h1>
+      <h1 className="mt-2 font-display text-2xl font-semibold text-green">This page isn&apos;t available to you</h1>
       <p className="mt-3 text-sm text-ink-soft leading-relaxed">
-        You&apos;re signed in, but this menu isn&apos;t in your menu permissions. If you need it, ask a
-        Super Admin to review them under Menu Permissions.
+        Your account doesn&apos;t have access to this part of the classroom. If you think it should, please contact the
+        school office.
       </p>
       <Link
-        href="/admin/dashboard"
+        href="/classroom/dashboard"
         className="mt-6 inline-block bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-5 py-2.5 transition-colors"
       >
         Back to dashboard

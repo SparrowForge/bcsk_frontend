@@ -22,10 +22,13 @@ export function AssignmentPanel({
   classSessionId,
   assignments,
   enrolledCount,
+  canWrite,
 }: {
   classSessionId: number;
   assignments: A[];
   enrolledCount: number;
+  /** Insert on "My Classes": post assignments and grade submissions. */
+  canWrite: boolean;
 }) {
   const [postState, postAction, posting] = useActionState<TeacherFormState, FormData>(postAssignment, null);
   const postKept = useKeptForm(postAction, postState, { resetOnSuccess: true });
@@ -35,15 +38,15 @@ export function AssignmentPanel({
     <section className="bg-white rounded-2xl border border-line p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-display text-lg font-semibold text-green">Assignments & Homework</h2>
-        <button
+        {canWrite && <button
           onClick={() => setShowForm(!showForm)}
           className="bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2 transition-colors"
         >
           {showForm ? "Close" : "+ Post assignment"}
-        </button>
+        </button>}
       </div>
 
-      {showForm && (
+      {canWrite && showForm && (
         <form {...postKept} className="bg-mist rounded-xl p-4 space-y-3 mb-6">
           <input type="hidden" name="classSessionId" value={classSessionId} />
           <input name="title" required placeholder="Assignment title" className={input} />
@@ -85,7 +88,7 @@ export function AssignmentPanel({
             <div className="px-5 pb-4 divide-y divide-line">
               {a.submissions.length === 0 && <p className="text-xs text-ink-soft py-3">No submissions yet.</p>}
               {a.submissions.map((s) => (
-                <SubmissionRow key={s.id} sub={s} />
+                <SubmissionRow key={s.id} sub={s} canGrade={canWrite} />
               ))}
             </div>
           </details>
@@ -95,7 +98,7 @@ export function AssignmentPanel({
   );
 }
 
-function SubmissionRow({ sub }: { sub: Sub }) {
+function SubmissionRow({ sub, canGrade }: { sub: Sub; canGrade: boolean }) {
   const [state, action, pending] = useActionState<TeacherFormState, FormData>(gradeSubmission, null);
   const kept = useKeptForm(action, state, { resetOnSuccess: true });
   return (
@@ -110,6 +113,9 @@ function SubmissionRow({ sub }: { sub: Sub }) {
         )}
       </div>
       {sub.text && <p className="mt-1.5 text-xs text-ink bg-mist rounded-lg p-3">{sub.text}</p>}
+      {!canGrade ? (
+        sub.grade && <p className="mt-2 text-xs text-ink"><b>Grade:</b> {sub.grade}{sub.feedback ? ` — ${sub.feedback}` : ""}</p>
+      ) : (
       <form {...kept} className="mt-2 flex flex-wrap items-center gap-2">
         <input type="hidden" name="submissionId" value={sub.id} />
         <input
@@ -133,6 +139,7 @@ function SubmissionRow({ sub }: { sub: Sub }) {
         {state?.error && <span className="text-xs text-red-600 font-semibold">{state.error}</span>}
         {state?.ok && <span className="text-xs text-green font-semibold">✓</span>}
       </form>
+      )}
     </div>
   );
 }

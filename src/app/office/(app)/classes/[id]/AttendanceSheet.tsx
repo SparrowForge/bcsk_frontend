@@ -7,9 +7,12 @@ export function AttendanceSheet({
   classSessionId,
   date,
   students,
+  canSave,
 }: {
   classSessionId: number;
   date: string;
+  /** Without Insert on "My Classes" the sheet is shown read-only. */
+  canSave: boolean;
   students: { userId: number; name: string; studentId: string; current: string }[];
 }) {
   const [pending, start] = useTransition();
@@ -18,7 +21,9 @@ export function AttendanceSheet({
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
       <h2 className="font-display text-lg font-semibold text-green mb-1">Attendance — {date}</h2>
-      <p className="text-xs text-ink-soft mb-4">Class roster. Choose a status per student and save.</p>
+      <p className="text-xs text-ink-soft mb-4">
+        {canSave ? "Class roster. Choose a status per student and save." : "Class roster. Your account can view attendance but not record it."}
+      </p>
       <form
         action={(formData) => {
           start(async () => {
@@ -40,6 +45,7 @@ export function AttendanceSheet({
                 name={`att-${s.userId}`}
                 defaultValue={s.current || "PRESENT"}
                 aria-label={`Attendance for ${s.name}`}
+                disabled={!canSave}
                 className="ml-auto rounded-lg border border-line px-3 py-2 text-xs font-bold focus:border-green-mid focus:outline-none"
               >
                 <option value="PRESENT">Present</option>
@@ -51,7 +57,7 @@ export function AttendanceSheet({
         </div>
         {students.length === 0 ? (
           <p className="text-sm text-ink-soft">No students enrolled yet.</p>
-        ) : (
+        ) : !canSave ? null : (
           <div className="mt-4 flex items-center gap-3">
             <button
               disabled={pending}

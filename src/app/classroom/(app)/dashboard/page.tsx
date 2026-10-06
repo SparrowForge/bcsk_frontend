@@ -20,7 +20,9 @@ export default async function StudentDashboard() {
     { href: "/classroom/attendance", label: "Attendance Report", icon: "✅" },
     { href: "/classroom/payments", label: "Payment Report", icon: "🧾" },
     { href: "/classroom/re-admission", label: "Re-Admission", icon: "🔄" },
-  ];
+    // Only the services this student's menus allow: a tile for a menu a super admin has switched
+    // off would lead straight to a 403.
+  ].filter((q) => session.menus.some((m) => m.href === q.href));
 
   return (
     <div className="space-y-8">

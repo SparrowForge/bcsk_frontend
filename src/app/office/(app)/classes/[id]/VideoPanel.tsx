@@ -7,9 +7,12 @@ import { addClassVideo, type TeacherFormState } from "./actions";
 export function VideoPanel({
   classSessionId,
   videos,
+  canAdd,
 }: {
   classSessionId: number;
   videos: { id: number; title: string; url: string; date: string }[];
+  /** Insert on "My Classes". */
+  canAdd: boolean;
 }) {
   const [state, action, pending] = useActionState<TeacherFormState, FormData>(addClassVideo, null);
   const kept = useKeptForm(action, state, { resetOnSuccess: true });
@@ -17,7 +20,7 @@ export function VideoPanel({
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
       <h2 className="font-display text-lg font-semibold text-green mb-4">Class Videos</h2>
-      <form {...kept} className="bg-mist rounded-xl p-4 flex flex-wrap gap-3 items-center mb-5">
+      {canAdd && <form {...kept} className="bg-mist rounded-xl p-4 flex flex-wrap gap-3 items-center mb-5">
         <input type="hidden" name="classSessionId" value={classSessionId} />
         <input
           name="title"
@@ -39,7 +42,7 @@ export function VideoPanel({
         </button>
         {state?.error && <p className="w-full text-xs font-semibold text-red-600">{state.error}</p>}
         {state?.ok && <p className="w-full text-xs font-semibold text-green">Video added.</p>}
-      </form>
+      </form>}
       <ul className="space-y-2">
         {videos.length === 0 && <li className="text-sm text-ink-soft">No videos yet.</li>}
         {videos.map((v) => (

@@ -8,6 +8,9 @@ import { DeskStatusCard } from "./DeskStatusCard";
 /** FR-TCH-02/05: teacher profile, assigned classes grid, notifications panel. */
 export default async function TeacherDashboard() {
   const session = await requireTeacher();
+  // A teacher without the "My Classes" menu still sees their timetable here, but not a link into a
+  // page that would refuse them.
+  const canManage = session.menus.some((m) => m.key === "office.classes");
   const { profile, sessions, notifications, openQuestions } = await office.dashboard();
 
   return (
@@ -34,12 +37,9 @@ export default async function TeacherDashboard() {
         <section>
           <h2 className="font-display text-xl font-semibold text-ink mb-4">My Classes — Semester {SEMESTER_CURRENT}</h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            {sessions.map((s) => (
-              <Link
-                key={s.id}
-                href={`/office/classes/${s.id}`}
-                className="group bg-white rounded-2xl border border-line p-5 hover:shadow-md transition-shadow"
-              >
+            {sessions.map((s) => {
+              const body = (
+              <>
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-bold text-green group-hover:text-green-mid transition-colors leading-snug">{s.title}</h3>
                   {s.isLive && (
@@ -52,11 +52,27 @@ export default async function TeacherDashboard() {
                 <p className="mt-1.5 text-xs text-ink-soft">
                   {s.dayOfWeek} · {s.startTime}{s.endTime ? `–${s.endTime}` : ""} · {s._count.enrollments} {s._count.enrollments === 1 ? "student" : "students"}
                 </p>
-                <span className="inline-block mt-3 text-crimson-ink text-xs font-bold uppercase tracking-wide">
-                  Manage class →
-                </span>
-              </Link>
-            ))}
+                {canManage && (
+                  <span className="inline-block mt-3 text-crimson-ink text-xs font-bold uppercase tracking-wide">
+                    Manage class →
+                  </span>
+                )}
+              </>
+              );
+              return canManage ? (
+                <Link
+                  key={s.id}
+                  href={`/office/classes/${s.id}`}
+                  className="group bg-white rounded-2xl border border-line p-5 hover:shadow-md transition-shadow"
+                >
+                  {body}
+                </Link>
+              ) : (
+                <div key={s.id} className="group bg-white rounded-2xl border border-line p-5">
+                  {body}
+                </div>
+              );
+            })}
             {sessions.length === 0 && (
               <p className="bg-white rounded-2xl border border-line p-6 text-sm text-ink-soft sm:col-span-2">
                 No classes assigned yet — the admin assigns classes from the Scheduling module.

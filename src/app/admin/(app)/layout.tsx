@@ -35,20 +35,25 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </div>
       </aside>
       <div className="flex-1 min-w-0">
-        <header className="bg-white border-b border-line h-16 flex items-center justify-between px-4 sm:px-6 sticky top-0 z-40 no-print">
-          <div className="lg:hidden flex items-center gap-2">
-            <LogoMark size={30} priority />
-            <span className="font-display font-semibold text-sm text-green">BCSK Admin</span>
+        <header className="bg-white border-b border-line sticky top-0 z-40 no-print">
+          <div className="h-16 flex items-center justify-between px-4 sm:px-6">
+            <div className="lg:hidden flex items-center gap-2">
+              <LogoMark size={30} priority />
+              <span className="font-display font-semibold text-sm text-green">BCSK Admin</span>
+            </div>
+            <div className="flex items-center gap-3 ml-auto">
+              <Link href="/" className="text-xs font-bold text-ink-soft hover:text-green-mid hidden sm:block">← Public site</Link>
+              <LogoutButton dest="/admin" />
+            </div>
           </div>
-          <nav className="lg:hidden overflow-x-auto flex gap-3 text-xs font-bold text-ink-soft mx-3">
-            {nav.slice(0, 6).map((n) => (
+          {/* Below desktop width this row is the only navigation, so it carries every menu on its own
+              full-width line and scrolls sideways. It used to sit inside the header row and stop at
+              six items, leaving Tickets, CMS, Users, Settings… unreachable on a tablet or phone. */}
+          <nav aria-label="Admin navigation (compact)" className="lg:hidden overflow-x-auto flex gap-4 px-4 sm:px-6 pb-3 text-xs font-bold text-ink-soft">
+            {nav.map((n) => (
               <Link key={n.href} href={n.href} className="whitespace-nowrap hover:text-green">{n.label}</Link>
             ))}
           </nav>
-          <div className="flex items-center gap-3 ml-auto">
-            <Link href="/" className="text-xs font-bold text-ink-soft hover:text-green-mid hidden sm:block">← Public site</Link>
-            <LogoutButton dest="/admin" />
-          </div>
         </header>
         <main className="p-4 sm:p-8">{children}</main>
       </div>

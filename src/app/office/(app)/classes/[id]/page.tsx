@@ -22,7 +22,11 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
   const cs = detail.classSession;
   const { roster, assignments, videos, todayAttendance: todayAtt } = detail;
 
-  const today = new Date().toISOString().slice(0, 10);
+  // The school's calendar day in Korea: the UTC date is still "yesterday" until 09:00 KST.
+  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date());
+  // What this teacher's switches on "My Classes" allow: Insert = attendance, assignments, grading,
+  // videos; Update = going live. Controls they may not use are not shown at all.
+  const flags = session.menus.find((m) => m.key === "office.classes")!.flags;
 
   return (
     <div className="space-y-8 max-w-4xl">
@@ -31,16 +35,23 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
           <div>
             <h1 className="font-display text-2xl font-semibold text-green">{cs.title}</h1>
             <p className="text-sm text-ink-soft mt-1">
-              {cs.dayOfWeek} · {cs.startTime}{cs.endTime ? `–${cs.endTime}` : ""} · {roster.length} students
+              {cs.dayOfWeek} · {cs.startTime}{cs.endTime ? `–${cs.endTime}` : ""} · {roster.length} {roster.length === 1 ? "student" : "students"}
             </p>
           </div>
-          <LiveControls classSessionId={cs.id} isLive={cs.isLive} zoomLink={cs.zoomLink} />
+          {flags.update ? (
+            <LiveControls classSessionId={cs.id} isLive={cs.isLive} zoomLink={cs.zoomLink} />
+          ) : (
+            <span className={`text-xs font-bold rounded-full px-3 py-1.5 ${cs.isLive ? "bg-crimson text-white" : "bg-mist text-ink-soft"}`}>
+              {cs.isLive ? "Live now" : "Not live"}
+            </span>
+          )}
         </div>
       </section>
 
       <AttendanceSheet
         classSessionId={cs.id}
         date={today}
+        canSave={flags.insert}
         students={roster.map((e) => ({
           userId: e.student.id,
           name: e.student.name,
@@ -67,10 +78,12 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
           })),
         }))}
         enrolledCount={roster.length}
+        canWrite={flags.insert}
       />
 
       <VideoPanel
         classSessionId={cs.id}
+        canAdd={flags.insert}
         videos={videos.map((v) => ({
           id: v.id,
           title: v.title,
