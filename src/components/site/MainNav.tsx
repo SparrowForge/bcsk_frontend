@@ -23,6 +23,11 @@ export function MainNav({
 }) {
   const [open, setOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  // The desktop dropdown that was just used. The panels open on hover and focus, and a
+  // client-side navigation keeps both: the pointer is still over the menu and the clicked link
+  // still has focus, so the panel stayed open over the new page. A used panel stays shut until
+  // the pointer leaves its menu or focus enters it again.
+  const [dismissed, setDismissed] = useState<string | null>(null);
   const pathname = usePathname();
 
   return (
@@ -43,7 +48,12 @@ export function MainNav({
           // the English menu clears the edge by only a few pixels.
           const alignRight = i >= items.length - 2;
           return item.children ? (
-            <div key={item.label} className="relative group">
+            <div
+              key={item.label}
+              className="relative group"
+              onMouseLeave={() => dismissed === item.label && setDismissed(null)}
+              onFocus={() => dismissed === item.label && setDismissed(null)}
+            >
               <button
                 className={`px-2.5 py-2 text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-green-mid transition-colors ${
                   item.children.some((c) => pathname.startsWith(c.href)) ? "text-green-mid" : "text-ink"
@@ -58,13 +68,21 @@ export function MainNav({
               <div
                 className={`absolute ${
                   alignRight ? "right-0" : "left-0"
-                } top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all z-40`}
+                } top-full pt-1 opacity-0 invisible transition-all z-40 ${
+                  dismissed === item.label
+                    ? ""
+                    : "group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible"
+                }`}
               >
                 <div className="bg-white rounded-xl shadow-lg border border-line py-2 min-w-56">
                   {item.children.map((c) => (
                     <Link
                       key={c.href}
                       href={c.href}
+                      onClick={(e) => {
+                        setDismissed(item.label);
+                        e.currentTarget.blur();
+                      }}
                       className={`block px-4 py-2 text-sm font-semibold hover:bg-mist hover:text-green ${
                         pathname === c.href ? "text-green-mid" : "text-ink-soft"
                       }`}
