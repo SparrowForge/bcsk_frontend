@@ -13,11 +13,16 @@ import { returnLabel } from "./board-format";
  * Nothing is guessed from the timetable, so an empty board means nobody has signed in yet
  * rather than that the widget is broken — which is what `boardEmpty` says instead of
  * rendering a grid of placeholder people.
+ *
+ * Since October 2026 it lives on the teacher dashboard rather than the homepage: the school
+ * wanted who-is-online visible to staff after they sign in, not to every visitor. A dashboard
+ * should not perform an entrance, so it renders with `animate={false}` there.
  */
-export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary }) {
+export function OfficeBoard({ board, t, animate = true }: { board: SchoolBoard; t: Dictionary; animate?: boolean }) {
+  const motion = animate ? reveal : () => ({});
   return (
     <section aria-labelledby="office-board" className="mt-6">
-      <div {...reveal()} className="text-center">
+      <div {...motion()} className="text-center">
         <h3 id="office-board" className="font-display text-xl font-semibold text-green inline-flex items-center gap-2">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-green-mid" aria-hidden>
             <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5" />
@@ -36,7 +41,7 @@ export function OfficeBoard({ board, t }: { board: SchoolBoard; t: Dictionary })
           ) : (
             <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5">
               {board.desks.map((d, i) => (
-                <DeskCard key={d.id} desk={d} index={i} t={t} />
+                <DeskCard key={d.id} desk={d} index={i} t={t} animate={animate} />
               ))}
             </ul>
           )}
@@ -50,11 +55,13 @@ function DeskCard({
   desk,
   index,
   t,
+  animate,
 }: {
   desk: SchoolBoard["desks"][number];
   /** Position in the row, which is all the stagger needs to deal the cards in order. */
   index: number;
   t: Dictionary;
+  animate: boolean;
 }) {
   const inClass = desk.status === "IN_CLASS";
   // A desk card reports one of three things, and the status line is the only place the
@@ -69,7 +76,7 @@ function DeskCard({
 
   return (
     <li
-      {...reveal("zoom", index, 55)}
+      {...(animate ? reveal("zoom", index, 55) : {})}
       className="hover-lift rounded-lg border border-green-mid/25 hover:border-green-mid/60 bg-white overflow-hidden flex flex-col"
     >
       <p className="pt-2.5 text-center text-[11px] font-extrabold uppercase tracking-wide text-green-mid">

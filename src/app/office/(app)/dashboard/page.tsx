@@ -1,7 +1,9 @@
 import { formatDate } from "@/lib/dates";
 import Link from "next/link";
 import { requireTeacher } from "@/lib/auth";
-import { office } from "@/services";
+import { office, site } from "@/services";
+import { getDict } from "@/lib/i18n";
+import { OfficeBoard } from "@/components/home/OfficeBoard";
 import { SEMESTER_CURRENT, classLevelLabel } from "@/lib/constants";
 import { DeskStatusCard } from "./DeskStatusCard";
 
@@ -11,7 +13,13 @@ export default async function TeacherDashboard() {
   // A teacher without the "My Classes" menu still sees their timetable here, but not a link into a
   // page that would refuse them.
   const canManage = session.menus.some((m) => m.key === "office.classes");
-  const { profile, sessions, notifications, openQuestions } = await office.dashboard();
+  const [{ profile, sessions, notifications, openQuestions }, board, { t }] = await Promise.all([
+    office.dashboard(),
+    // The office board left the homepage in October 2026: who is at their desk and who is
+    // teaching is for staff, so it lives here. A failed read drops the board, not the page.
+    site.schoolBoard().catch(() => null),
+    getDict(),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -32,6 +40,12 @@ export default async function TeacherDashboard() {
           <p className="text-xs font-bold text-ink-soft uppercase">Questions waiting</p>
         </div>
       </section>
+
+      {board && (
+        <div className="-mt-6">
+          <OfficeBoard board={board} t={t} animate={false} />
+        </div>
+      )}
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
         <section>

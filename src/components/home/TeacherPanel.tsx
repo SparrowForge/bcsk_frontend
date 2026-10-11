@@ -43,7 +43,8 @@ export function TeacherPanel({ teachers, t }: { teachers: PublicTeacher[]; t: Di
 
 /**
  * One face. The photograph is the point of the card, so it is large and ringed — a parent
- * should be able to recognise the teacher at the school gate from it.
+ * should be able to recognise the teacher at the school gate from it. Photos are uploaded in
+ * Admin → Teachers; until one is, the card shows the teacher's initials.
  */
 function TeacherCard({ teacher, index, t }: { teacher: PublicTeacher; index: number; t: Dictionary }) {
   return (
@@ -77,6 +78,13 @@ function TeacherCard({ teacher, index, t }: { teacher: PublicTeacher; index: num
       {teacher.subjects && (
         <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
           <span className="font-bold text-green">{t.common.teacher}:</span> {teacher.subjects}
+        </p>
+      )}
+      {/* Qualifications and background — the chairman asked for each teacher's information
+          beside the photo, and the bio is where the school records it. */}
+      {teacher.bio && (
+        <p className="mt-3 border-t border-line pt-3 text-[12.5px] leading-relaxed text-ink-soft line-clamp-4">
+          {teacher.bio}
         </p>
       )}
     </article>

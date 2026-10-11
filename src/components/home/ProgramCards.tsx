@@ -4,19 +4,64 @@ import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
 
 /**
+ * One colour per programme, applied to everything inside its card — stripe, halo, icon disc,
+ * title and link — so a card reads as one piece and the four read as four. Full class strings
+ * rather than a built-up `bg-${x}`: Tailwind only ships the classes it can see written out.
+ */
+const THEMES = {
+  regular: {
+    stripe: "bg-green",
+    halo: "bg-green-soft",
+    disc: "bg-green group-hover:bg-green-deep shadow-[0_10px_20px_-12px_rgba(0,77,57,0.9)]",
+    text: "text-green",
+    border: "hover:border-green/40",
+  },
+  ielts: {
+    stripe: "bg-ielts",
+    halo: "bg-ielts-soft",
+    disc: "bg-ielts group-hover:bg-ielts-deep shadow-[0_10px_20px_-12px_rgba(23,74,136,0.9)]",
+    text: "text-ielts",
+    border: "hover:border-ielts/40",
+  },
+  deen: {
+    stripe: "bg-deen",
+    halo: "bg-deen-soft",
+    disc: "bg-deen group-hover:bg-deen-deep shadow-[0_10px_20px_-12px_rgba(83,45,128,0.9)]",
+    text: "text-deen",
+    border: "hover:border-deen/40",
+  },
+  // The orange fill is too light for a white glyph, so the disc uses the deeper step, and the
+  // title and link use the text-strength orange rather than the fill.
+  abacus: {
+    stripe: "bg-abacus",
+    halo: "bg-abacus-soft",
+    disc: "bg-abacus-deep group-hover:bg-abacus-ink shadow-[0_10px_20px_-12px_rgba(180,83,9,0.9)]",
+    text: "text-abacus-ink",
+    border: "hover:border-abacus/50",
+  },
+} as const;
+
+/**
  * The four things a family can enrol a child in, as one row of cards.
  *
  * Each card is the whole link rather than just its "Learn more" line: a parent taps the card,
- * not the small text at its foot. The card is a pale green tint with a solid green disc
- * carrying the icon — the tint says "one of a set", the disc gives each card a single focal
- * point, and the hover darkens the disc so the one under the pointer stands out from the row.
+ * not the small text at its foot. A colour stripe along the top and a soft halo behind the
+ * icon disc name the programme before its title does; the hover darkens the disc so the card
+ * under the pointer stands out from the row.
  */
 export function ProgramCards({ t }: { t: Dictionary }) {
   const programs = [
-    { title: t.home.regularClasses, text: t.home.progRegularText, href: "/academic/curriculum", icon: <BookIcon /> },
-    { title: t.nav.ielts, text: t.home.progIeltsText, href: "/courses/ielts-for-kids", icon: <CapIcon /> },
-    { title: t.nav.deen, text: t.home.progDeenText, href: "/courses/deen", icon: <MosqueIcon /> },
-    { title: t.nav.abacus, text: t.home.progAbacusText, href: "/courses/abacus", icon: <AbacusIcon /> },
+    {
+      title: t.home.regularClasses,
+      text: t.home.progRegularText,
+      href: "/academic/curriculum",
+      icon: <BookIcon />,
+      theme: THEMES.regular,
+      details: <RegularDetails t={t} />,
+    },
+    { title: t.nav.ielts, text: t.home.progIeltsText, href: "/courses/ielts-for-kids", icon: <CapIcon />, theme: THEMES.ielts },
+    { title: t.nav.deen, text: t.home.progDeenText, href: "/courses/deen", icon: <MosqueIcon />, theme: THEMES.deen },
+    { title: t.nav.abacus, text: t.home.progAbacusText, href: "/courses/abacus", icon: <AbacusIcon />, theme: THEMES.abacus },
   ];
 
   return (
@@ -31,19 +76,27 @@ export function ProgramCards({ t }: { t: Dictionary }) {
           <li key={p.href} {...reveal("up", i, 90)}>
             <Link
               href={p.href}
-              className="group hover-lift flex h-full flex-col items-center rounded-2xl border border-green-mid/15 bg-white px-6 pt-8 pb-6 text-center hover:border-green-mid/30"
+              className={`group hover-lift relative isolate flex h-full flex-col items-center overflow-hidden rounded-2xl border border-line bg-white px-6 pt-9 pb-6 text-center ${p.theme.border}`}
             >
+              <span aria-hidden className={`absolute inset-x-0 top-0 h-1.5 ${p.theme.stripe}`} />
+              {/* The halo: a large soft disc cut off by the card's top edge, so the icon sits
+                  in a pool of its own colour rather than floating on white. */}
               <span
                 aria-hidden
-                className="grid h-16 w-16 place-items-center rounded-full bg-green text-white shadow-[0_10px_20px_-12px_rgba(0,77,57,0.9)] transition-[background-color,transform] duration-300 group-hover:bg-green-deep group-hover:scale-105 motion-reduce:transform-none"
+                className={`absolute left-1/2 -top-24 -z-10 h-48 w-48 -translate-x-1/2 rounded-full ${p.theme.halo}`}
+              />
+              <span
+                aria-hidden
+                className={`grid h-16 w-16 place-items-center rounded-full text-white ring-4 ring-white transition-[background-color,transform] duration-300 group-hover:scale-105 motion-reduce:transform-none ${p.theme.disc}`}
               >
                 {p.icon}
               </span>
-              <h3 className="mt-5 font-display text-[1.15rem] font-bold text-green">{p.title}</h3>
+              <h3 className={`mt-5 font-display text-[1.15rem] font-bold ${p.theme.text}`}>{p.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{p.text}</p>
+              {p.details}
               {/* mt-auto pins the link to the card's foot, so a row with uneven copy still
                   lines its four links up. */}
-              <span className="nudge mt-auto pt-5 inline-flex items-center gap-1.5 text-[13px] font-bold text-green-mid group-hover:underline underline-offset-4">
+              <span className={`nudge mt-auto pt-5 inline-flex items-center gap-1.5 text-[13px] font-bold group-hover:underline underline-offset-4 ${p.theme.text}`}>
                 {t.home.learnMore}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12h14M13 6l6 6-6 6" />
@@ -54,6 +107,56 @@ export function ProgramCards({ t }: { t: Dictionary }) {
         ))}
       </ul>
     </section>
+  );
+}
+
+/* Darkest last: each class a step up from the one before. */
+const STEP_BARS = [
+  "h-3.5 bg-green/30",
+  "h-5 bg-green/45",
+  "h-6.5 bg-green/60",
+  "h-8 bg-green/75",
+  "h-9.5 bg-green/90",
+  "h-11 bg-green",
+];
+
+/**
+ * What Regular Classes covers, at a glance: the six classes drawn as a staircase from
+ * Pre-Primary up to Class 5, and the two things every class shares underneath it.
+ *
+ * The bars are decoration and hidden from assistive tech; the labels under them are the real
+ * list, named as a whole by `progRegularLadder`.
+ */
+function RegularDetails({ t }: { t: Dictionary }) {
+  const steps = [t.home.progPre, "1", "2", "3", "4", "5"];
+  return (
+    <div className="mt-5 w-full rounded-xl bg-green-soft/70 px-3 pt-3.5 pb-2.5">
+      <div aria-hidden className="flex items-end gap-1.5 border-b-2 border-green/25">
+        {STEP_BARS.map((bar) => (
+          <span key={bar} className={`flex-1 rounded-t-md ${bar}`} />
+        ))}
+      </div>
+      <ol aria-label={t.home.progRegularLadder} className="mt-1.5 flex gap-1.5">
+        {steps.map((s) => (
+          <li key={s} className="flex-1 min-w-0 text-[10.5px] font-bold leading-none text-green">
+            {s}
+          </li>
+        ))}
+      </ol>
+      <ul className="mt-3 flex flex-wrap justify-center gap-1.5">
+        {[t.home.progNctb, t.home.progGlobalEnglish].map((tag) => (
+          <li
+            key={tag}
+            className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-green ring-1 ring-green/15"
+          >
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="m5 12.5 4.5 4.5L19 7.5" />
+            </svg>
+            {tag}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

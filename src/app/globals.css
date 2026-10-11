@@ -63,6 +63,18 @@
   --abacus: #f7931e;
   --abacus-deep: #d97706; /* hover and pressed */
   --abacus-soft: #fff1de; /* panel tint */
+  --abacus-ink: #b45309; /* orange *as text* on white (5.0:1) — titles and links */
+
+  /* --- Programme accents: the homepage "Our Programs" cards only. Four programmes need four
+     hues a parent can tell apart at a glance, so this is the one sanctioned exception to rule 3.
+     Regular Classes keeps the brand green and Abacus its own orange; IELTS and Deen take a blue
+     and a violet chosen far enough from both. Each fill carries white at AA or better. --- */
+  --ielts: #1f5fae; /* 6.3:1 */
+  --ielts-deep: #174a88;
+  --ielts-soft: #e8f0fa;
+  --deen: #6b3fa0; /* 7.4:1 */
+  --deen-deep: #532d80;
+  --deen-soft: #f1eaf8;
 
   --font-display: var(--font-fraunces), var(--font-bangla), Georgia, serif;
   --font-body: var(--font-nunito), var(--font-bangla), var(--font-korean), system-ui, sans-serif;
@@ -87,6 +99,13 @@
   --color-abacus: var(--abacus);
   --color-abacus-deep: var(--abacus-deep);
   --color-abacus-soft: var(--abacus-soft);
+  --color-abacus-ink: var(--abacus-ink);
+  --color-ielts: var(--ielts);
+  --color-ielts-deep: var(--ielts-deep);
+  --color-ielts-soft: var(--ielts-soft);
+  --color-deen: var(--deen);
+  --color-deen-deep: var(--deen-deep);
+  --color-deen-soft: var(--deen-soft);
   --color-paper: var(--paper);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);

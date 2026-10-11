@@ -27,9 +27,10 @@ const PAGE_ROUTES: Record<string, string> = {
   syllabus: "/academic/syllabus",
   "academic-calendar": "/academic/calendar",
   "class-schedule": "/academic/class-schedule",
-  "why-bcsk": "/#school-overview",
-  "mission-vision": "/#school-overview",
-  "education-management": "/#school-overview",
+  "why-bcsk": "/#why-bcsk",
+  // School Overview left the homepage in October 2026; these two pages now belong with About.
+  "mission-vision": "/bcsk/about-us",
+  "education-management": "/bcsk/about-us",
   "privacy-policy": "/privacy-policy",
   "refund-policy": "/refund-policy",
 };

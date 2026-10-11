@@ -285,6 +285,12 @@ export const admin = {
   saveMember: (input: Record<string, unknown>) => api.post<T.GoverningMemberRow>("/admin/governing", input),
   deleteMember: (id: number) => api.delete<unknown>(`/admin/governing/${id}`),
 
+  teacherProfiles: () => api.get<T.TeacherProfileRow[]>("/admin/teacher-profiles"),
+  updateTeacherProfile: (
+    id: number,
+    input: Partial<Pick<T.TeacherProfileRow, "designation" | "subjects" | "bio" | "photoUrl" | "isPublic" | "displayOrder">>,
+  ) => api.patch<{ id: number; teacherId: string }>(`/admin/teacher-profiles/${id}`, input),
+
   cornerPosts: () => api.get<T.StudentCornerPost[]>("/admin/student-corner"),
   saveCornerPost: (input: Record<string, unknown>) =>
     api.post<T.StudentCornerPost>("/admin/student-corner", input),

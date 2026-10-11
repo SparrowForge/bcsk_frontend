@@ -17,9 +17,14 @@ export default async function CmsListPage() {
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-display text-2xl font-semibold text-green">CMS Pages</h1>
-        <Link href="/admin/cms/new" className="bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors">
-          + New page
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/admin/cms/teachers" className="border-2 border-green/20 hover:border-green text-green text-xs font-bold rounded-lg px-4 py-2 transition-colors">
+            Teacher profiles
+          </Link>
+          <Link href="/admin/cms/new" className="bg-crimson hover:bg-crimson-deep text-white text-xs font-bold rounded-lg px-4 py-2.5 transition-colors">
+            + New page
+          </Link>
+        </div>
       </div>
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {[...bySlug.entries()].map(([slug, versions]) => (

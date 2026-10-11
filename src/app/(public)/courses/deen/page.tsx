@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { site } from "@/services";
 import { getLang } from "@/lib/i18n";
 import { getContact } from "@/lib/contact";
+import { PhotoBanner, BannerRule } from "@/components/site/PhotoBanner";
 import { PrayerBoard } from "./PrayerBoard";
 import {
   COURSES,
@@ -18,16 +19,22 @@ import {
 } from "./content";
 
 export const metadata: Metadata = {
-  title: "Deen — Qur'an & Islamic Studies",
+  title: "Islamic Education in Korea (IEK)",
   description:
-    "Qur'an recitation with Tajweed and Islamic studies at BCSK, with daily prayer times for Seoul, an Ibadah corner and a kids zone.",
+    "Islamic Education in Korea (IEK) at BCSK: Qur'an recitation with Tajweed and Islamic studies, with daily prayer times for Seoul, an Ibadah corner and a kids zone.",
 };
 
 const L = {
-  eyebrow: { bn: "দ্বীন · কুরআন ও ইসলামিক শিক্ষা", en: "Deen · Qur'an & Islamic Studies" },
-  school: { bn: "বাংলাদেশ কমিউনিটি স্কুল, দক্ষিণ কোরিয়া", en: "Bangladesh Community School, South Korea" },
-  tagline: { bn: "জাগতিক ও দ্বীনি শিক্ষার সমন্বিত প্রয়াস", en: "Worldly and Islamic education, brought together" },
-  apply: { bn: "ভর্তি আবেদন করুন", en: "Apply for Deen classes" },
+  // The programme was renamed from "Qur'an & Deen" in October 2026; the banner carries the
+  // new name in two lines, as the school's reference image sets it.
+  iekLine1: { bn: "ইসলামিক এডুকেশন", en: "Islamic Education" },
+  iekLine2: { bn: "ইন কোরিয়া", en: "in Korea" },
+  slogan: { bn: "জাগতিক ও দ্বীনি শিক্ষার সমন্বিত প্রয়াস", en: "Worldly and Islamic education, brought together" },
+  iekText: {
+    bn: "BCSK-তে আমরা আধুনিক শিক্ষার পাশাপাশি বিশুদ্ধ ইসলামিক শিক্ষা দিই — যাতে শিক্ষার্থীরা দৃঢ় ঈমান, সুন্দর চরিত্র ও কোরিয়ায় একটি ভারসাম্যপূর্ণ ভবিষ্যৎ গড়ে তুলতে পারে।",
+    en: "At BCSK, we provide authentic Islamic education alongside modern learning, helping students build strong faith, good character and a balanced future in Korea.",
+  },
+  chooseCourse: { bn: "কোর্স বেছে নিন", en: "Choose a Course" },
   courses: { bn: "আমাদের কোর্স সমূহ", en: "Our Courses" },
   learnMore: { bn: "আরো জানুন", en: "Learn more" },
   applyCourse: { bn: "এই কোর্সে ভর্তি হোন", en: "Apply for this course" },
@@ -78,7 +85,7 @@ const L = {
     bn: "কুরআন ও ইসলামিক শিক্ষা অথবা হিফজ প্রোগ্রামে আবেদন করুন — ছেলে, মেয়ে ও মহিলাদের জন্য আলাদা ক্লাস।",
     en: "Apply for Qur'an & Islamic Studies or the Hifz program — separate classes for boys, girls and ladies.",
   },
-  applyDeen: { bn: "আবেদন — কুরআন ও দ্বীন", en: "Apply — Qur'an & Deen" },
+  applyDeen: { bn: "আবেদন — ইসলামিক এডুকেশন (IEK)", en: "Apply — Islamic Education (IEK)" },
   applyHifz: { bn: "আবেদন — হিফজ প্রোগ্রাম", en: "Apply — Hifz Program" },
   footer: {
     bn: "বাংলাদেশ কমিউনিটি স্কুল, দক্ষিণ কোরিয়া — দ্বীন ও দুনিয়ার সমন্বিত শিক্ষা কার্যক্রম।",
@@ -193,21 +200,41 @@ export default async function DeenPage() {
 
   return (
     <div lang={lang}>
-      {/* hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-6">
-        <div className="relative bg-green rounded-3xl px-6 sm:px-12 py-12 overflow-hidden text-white text-center">
-          <div className="absolute -right-12 -top-12 w-56 h-56 rounded-full bg-green-deep/60" aria-hidden />
-          <div className="absolute -left-10 bottom-0 w-32 h-32 rounded-full bg-crimson/20" aria-hidden />
-          <p className="relative text-xs font-extrabold tracking-[0.2em] uppercase text-green-soft">{t(L.eyebrow)}</p>
-          <h1 className="relative mt-3 font-display text-3xl sm:text-5xl font-semibold leading-tight">{t(L.school)}</h1>
-          <p className="relative mt-3 text-white/80 text-base sm:text-lg">{t(L.tagline)}</p>
+      {/* hero — the IEK banner from the school's reference image */}
+      <PhotoBanner image="/images/banners/iek-mosque.jpg" imagePosition="center 60%">
+        <div aria-hidden className="flex items-center gap-3 text-green">
+          <span className="h-px w-12 bg-green/40" />
+          <svg width="40" height="40" viewBox="0 0 48 48" fill="currentColor">
+            <path d="M24 4.5a3.4 3.4 0 1 0 2.6 5.6 4.2 4.2 0 1 1-2.6-5.6Z" />
+            <path d="M23 14h2v4h-2zM10 34c0-8 6.3-13.5 14-15.5C31.7 20.5 38 26 38 34H10Zm-4 2h36v3H6z" />
+          </svg>
+          <span className="h-px w-12 bg-green/40" />
+        </div>
+        <h1 className="mt-3 font-display font-extrabold leading-[1.02] tracking-tight text-green">
+          <span className="block text-4xl sm:text-5xl lg:text-[3.4rem]">{t(L.iekLine1)}</span>
+          <span className="block text-[2.6rem] sm:text-6xl lg:text-[4.2rem]">
+            {t(L.iekLine2)} <span className="align-middle text-2xl font-bold text-crimson sm:text-3xl">(IEK)</span>
+          </span>
+        </h1>
+        <p className="mt-3 font-display text-lg italic text-green-mid sm:text-xl">{t(L.slogan)}</p>
+        <BannerRule />
+        <p className="mt-4 max-w-md text-[14.5px] leading-relaxed text-ink-soft">{t(L.iekText)}</p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href="#courses"
+            className="press inline-flex items-center gap-2 rounded-full bg-green px-6 py-2.5 text-sm font-bold text-white hover:bg-green-deep"
+          >
+            {t(L.learnMore)} <span aria-hidden>→</span>
+          </a>
           <Link
             href="/apply/special?course=deen"
-            className="relative inline-block mt-7 bg-crimson hover:bg-crimson-deep text-white font-bold rounded-lg px-7 py-3 text-sm transition-colors"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-green px-6 py-2 text-sm font-bold text-green hover:bg-green-soft"
           >
-            {t(L.apply)}
+            {t(L.chooseCourse)} <span aria-hidden>→</span>
           </Link>
         </div>
+      </PhotoBanner>
+      <section className="mx-auto max-w-7xl px-4">
         <nav className="mt-4 flex flex-wrap justify-center gap-2" aria-label="Deen sections">
           {sections.map(([href, label]) => (
             <a

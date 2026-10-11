@@ -4,32 +4,26 @@ import { reveal } from "@/lib/motion";
 import { cms, site, getSettings } from "@/services";
 import { HeroLanguageSlider } from "@/components/site/HeroLanguageSlider";
 import { CountUp } from "@/components/home/CountUp";
-import { SchoolStatusBar } from "@/components/home/SchoolStatusBar";
-import { OfficeBoard } from "@/components/home/OfficeBoard";
+import { SchoolNewsBand } from "@/components/home/SchoolNewsBand";
 import { ClassroomBoard } from "@/components/home/ClassroomBoard";
 import { TeacherPanel } from "@/components/home/TeacherPanel";
-import { SchoolOverview } from "@/components/home/SchoolOverview";
+import { WhyChooseBcsk } from "@/components/home/WhyChooseBcsk";
 import { OpinionsGrid } from "@/components/home/OpinionsGrid";
-import { LatestNews } from "@/components/home/LatestNews";
-import { StudentsLounge } from "@/components/home/StudentsLounge";
+import { StudentCornerBand } from "@/components/home/StudentCornerBand";
 import { ProgramCards } from "@/components/home/ProgramCards";
 
 /**
- * The homepage, as the school's design deck lays it out (LP-1 … LP-6):
+ * The homepage, after the school's design deck (LP-1 … LP-6) as revised in October 2026:
  *
- *   LP-1  hero + the four headline figures
- *   LP-2  school hours, current status, and the office board — who is at their desk
+ *   LP-1  hero + the four headline figures, then the four programme cards
+ *   LP-2  school hours and current status beside News & Events — one band, at the school's
+ *         request, where they used to be two. The office board (who is at their desk) moved
+ *         to the teacher dashboard: it is for staff, not visitors.
  *   LP-3  the classroom board — which rooms are running right now
- *   LP-4  school overview: why BCSK, mission, management, tuition
+ *         the teacher panel
+ *   LP-4  Why Choose BCSK (replaced School Overview)
  *   LP-5  six recorded opinions about the school
- *   LP-6  the student shortcuts and the seminar gallery
- *
- * Plus two bands the deck does not draw: the teacher panel between LP-3 and LP-4, and latest
- * news between LP-5 and LP-6. The deck drops both, but the school publishes news and the
- * homepage is where families look for it, and the staff are what a parent asks about first —
- * so each wears the same band bar as the sections it sits between rather than reading as a
- * bolt-on. The program cards after the stats band are a third: what a child can enrol in is
- * the next question after "how big is the school".
+ *   LP-6  Student Corner (replaced the Students Lounge shortcuts and gallery)
  *
  * Every read is caught individually: a homepage is the one page that must never 500, and a
  * CMS page an admin has not written yet is a missing panel, not an outage.
@@ -40,17 +34,13 @@ export default async function HomePage() {
     hero,
     stats,
     board,
-    whyBcsk,
-    missionVision,
-    educationManagement,
-    fees,
-    albums,
     heroImages,
     chairmanMsg,
     principalMsg,
     governingBody,
     teachers,
     news,
+    cornerPosts,
   ] = await Promise.all([
     cms.page("home-hero", lang).catch(() => null),
     getSettings([
@@ -62,17 +52,13 @@ export default async function HomePage() {
       "school_time_weekend",
     ]),
     site.schoolBoard().catch(() => null),
-    cms.page("why-bcsk", lang).catch(() => null),
-    cms.page("mission-vision", lang).catch(() => null),
-    cms.page("education-management", lang).catch(() => null),
-    cms.fees().catch(() => []),
-    cms.gallery().catch(() => []),
     site.heroImages().catch(() => []),
     cms.page("message-chairman", lang).catch(() => null),
     cms.page("message-principal", lang).catch(() => null),
     cms.governingBody().catch(() => []),
     cms.teachers().catch(() => []),
-    cms.news(3).catch(() => []),
+    cms.news(4).catch(() => []),
+    site.studentCorner().catch(() => []),
   ]);
 
   // LP-1: the four figures the school publishes, in the deck's order. Values are
@@ -160,26 +146,25 @@ export default async function HomePage() {
             <li
               key={s.label}
               {...reveal("up", i, 90)}
-              // Green blocks, not another tint: these four figures are the page's opening claim,
-              // and set against the pale band underneath they read as the anchor of the hero
-              // rather than as a second, weaker copy of it. The red cap and the shadow are
-              // what stop four identical rectangles from reading as a table.
-              className="hover-lift relative overflow-hidden bg-gradient-to-br from-green to-green-deep rounded-xl px-5 py-7 text-center shadow-[0_14px_30px_-20px_rgba(0,77,57,0.95)]"
+              // White cards with green figures, at the school's request — the same look as the
+              // section headings, which also lost their green fill. The red cap, the border and
+              // the shadow are what stop four identical rectangles from reading as a table.
+              className="hover-lift relative overflow-hidden rounded-xl border border-green/15 bg-white px-5 py-7 text-center shadow-[0_14px_30px_-20px_rgba(0,77,57,0.6)]"
             >
               <span aria-hidden className="absolute inset-x-0 top-0 h-1 bg-crimson" />
               <span
                 aria-hidden
-                className="absolute -right-6 -bottom-8 h-24 w-24 rounded-full bg-white/[0.06]"
+                className="absolute -right-6 -bottom-8 h-24 w-24 rounded-full bg-green/[0.06]"
               />
               {/* The deck runs the class count into its own label — "6 Classes" on one line —
                   and stacks the other three. `inline` carries that difference. */}
-              <p className="font-display text-[1.6rem] leading-tight font-semibold text-white">
+              <p className="font-display text-[1.6rem] leading-tight font-semibold text-green">
                 {/* `tabular-nums` so a figure counting up to 120 does not jitter its own card. */}
                 <CountUp value={s.value} className="tabular-nums" />
                 {s.inline && <span className="ml-1.5">{s.label}</span>}
               </p>
-              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-white/85">{s.label}</p>}
-              {s.sub && <p className="mt-0.5 text-[12px] text-white/75">{s.sub}</p>}
+              {!s.inline && <p className="mt-0.5 text-[1.05rem] font-bold text-green-mid">{s.label}</p>}
+              {s.sub && <p className="mt-0.5 text-[12px] text-ink-soft">{s.sub}</p>}
             </li>
           ))}
         </ul>
@@ -188,17 +173,20 @@ export default async function HomePage() {
       {/* ---------------- PROGRAMS ---------------- */}
       <ProgramCards t={t} />
 
-      {/* ---------------- LP-2 / LP-3 · THE LIVE BOARDS ---------------- */}
+      {/* ---------------- LP-2 · SCHOOL STATUS + NEWS & EVENTS ---------------- */}
+      <SchoolNewsBand
+        t={t}
+        lang={lang}
+        open={board?.open ?? false}
+        liveCount={board?.liveCount ?? 0}
+        weekday={stats.school_time_weekday || undefined}
+        weekend={stats.school_time_weekend || undefined}
+        news={news}
+      />
+
+      {/* ---------------- LP-3 · THE CLASSROOM BOARD ---------------- */}
       {board && (
-        <section className="logo-shade mx-auto max-w-7xl px-4 mt-12">
-          <SchoolStatusBar
-            t={t}
-            open={board.open}
-            liveCount={board.liveCount}
-            weekday={stats.school_time_weekday || undefined}
-            weekend={stats.school_time_weekend || undefined}
-          />
-          <OfficeBoard board={board} t={t} />
+        <section className="logo-shade mx-auto max-w-7xl px-4 mt-6">
           <ClassroomBoard board={board} t={t} />
         </section>
       )}
@@ -206,23 +194,14 @@ export default async function HomePage() {
       {/* ---------------- TEACHER PANEL ---------------- */}
       <TeacherPanel t={t} teachers={teachers} />
 
-      {/* ---------------- LP-4 · SCHOOL OVERVIEW ---------------- */}
-      <SchoolOverview
-        t={t}
-        whyBcsk={whyBcsk}
-        missionVision={missionVision}
-        educationManagement={educationManagement}
-        fees={fees}
-      />
+      {/* ---------------- LP-4 · WHY CHOOSE BCSK ---------------- */}
+      <WhyChooseBcsk t={t} />
 
       {/* ---------------- LP-5 · OPINIONS ---------------- */}
       <OpinionsGrid t={t} available={voicesAvailable} />
 
-      {/* ---------------- LATEST NEWS & EVENTS ---------------- */}
-      <LatestNews t={t} lang={lang} news={news} />
-
-      {/* ---------------- LP-6 · STUDENTS LOUNGE + GALLERY ---------------- */}
-      <StudentsLounge t={t} albums={albums} />
+      {/* ---------------- LP-6 · STUDENT CORNER ---------------- */}
+      <StudentCornerBand t={t} posts={cornerPosts} />
     </>
   );
 }

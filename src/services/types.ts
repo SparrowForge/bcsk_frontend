@@ -411,6 +411,19 @@ export type StudentCornerPost = {
   createdAt: ISODate;
 };
 
+/** A teacher's public profile as the admin editor sees it — never the account's login details. */
+export type TeacherProfileRow = {
+  id: number;
+  teacherId: string;
+  name: string;
+  designation: string | null;
+  subjects: string | null;
+  bio: string | null;
+  photoUrl: string | null;
+  isPublic: boolean;
+  displayOrder: number;
+};
+
 export type GoverningMemberRow = {
   id: number;
   kind: string;

@@ -16,7 +16,7 @@ export type CourseChoice = { value: string; label: string; levels: { id: number;
 
 const TYPES: { value: RegistrationType; label: string; hint: string }[] = [
   { value: "REGULAR", label: "Regular course", hint: "New student, Pre-Primary to Class 5" },
-  { value: "SPECIAL", label: "Special course", hint: "IELTS, Abacus, Qur'an & Deen, Hifz…" },
+  { value: "SPECIAL", label: "Special course", hint: "IELTS, Abacus, Islamic Education (IEK), Hifz…" },
   { value: "RE_ADMISSION", label: "Re-admission", hint: "Current BCSK student, next semester" },
 ];
 

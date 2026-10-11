@@ -7,7 +7,7 @@ import { navMetadata } from "@/lib/seo";
 import { ApplicationForm } from "./ApplicationForm";
 
 export function generateMetadata() {
-  return navMetadata("applyNow", "Apply to BCSK online: the Regular Course from Pre-Primary to Class 5, a special course such as IELTS for Kids, Abacus or Qur'an & Deen, or re-admission for current students.");
+  return navMetadata("applyNow", "Apply to BCSK online: the Regular Course from Pre-Primary to Class 5, a special course such as IELTS for Kids, Abacus or Islamic Education in Korea (IEK), or re-admission for current students.");
 }
 
 /** FR-ADM-01: Apply Now - one form for regular admission, special courses and re-admission. */
