@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { useKeptForm } from "@/components/forms/keep-form";
 import type { TeacherProfileRow } from "@/services/types";
 import { saveTeacherProfile, type TeacherProfileState } from "./actions";
 
@@ -9,9 +10,12 @@ const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:
 /** One teacher's public profile, editable in place. */
 export function TeacherProfileForm({ teacher }: { teacher: TeacherProfileRow }) {
   const [state, action, pending] = useActionState<TeacherProfileState, FormData>(saveTeacherProfile, null);
+  // Reset after a save so the photo picker empties (a second Save must not upload it again);
+  // the other fields come back holding the values just saved. A refusal keeps what was typed.
+  const kept = useKeptForm(action, state, { resetOnSuccess: true });
 
   return (
-    <form action={action} className="rounded-2xl border border-line bg-white p-5 sm:p-6">
+    <form {...kept} className="rounded-2xl border border-line bg-white p-5 sm:p-6">
       <input type="hidden" name="id" value={teacher.id} />
       <div className="flex flex-wrap items-start gap-5">
         <div className="flex flex-col items-center gap-2">

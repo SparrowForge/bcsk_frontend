@@ -277,8 +277,10 @@ export const admin = {
   deleteAlbum: (id: number) => api.delete<unknown>(`/admin/gallery/albums/${id}`),
 
   heroImages: () => api.get<T.HeroImage[]>("/admin/hero-images"),
-  addHeroImage: (url: string, caption: string | null) =>
-    api.post<T.HeroImage>("/admin/hero-images", { url, caption }),
+  addHeroImage: (url: string, caption: string | null, opts: { displayOrder?: number; active?: boolean } = {}) =>
+    api.post<T.HeroImage>("/admin/hero-images", { url, caption, ...opts }),
+  updateHeroImage: (id: number, input: Partial<Pick<T.HeroImage, "caption" | "displayOrder" | "active">>) =>
+    api.patch<T.HeroImage>(`/admin/hero-images/${id}`, input),
   deleteHeroImage: (id: number) => api.delete<unknown>(`/admin/hero-images/${id}`),
 
   members: () => api.get<T.GoverningMemberRow[]>("/admin/governing"),

@@ -7,8 +7,9 @@ import { SCHOOL } from "@/lib/constants";
  * The homepage hero visual. When the admin has uploaded photos (Admin → Homepage Slider,
  * capped at 5), those rotate — real content, so each gets real alt text and the region is
  * not hidden from assistive tech. With none uploaded yet, falls back to the three-language
- * illustration below, which *is* purely decorative (`aria-hidden`) — a screen reader gains
- * nothing from three foreign scripts read aloud.
+ * illustration below with photos of students between its bubbles. The bubbles are purely
+ * decorative (`aria-hidden`) — a screen reader gains nothing from three foreign scripts read
+ * aloud — while the photos carry alt text.
  */
 const BUBBLES = [
   {
@@ -96,62 +97,126 @@ function PhotoSlider({ images }: { images: HeroImage[] }) {
   );
 }
 
+/**
+ * Images woven between the three language bubbles while no admin photos exist.
+ *
+ * The first two are the school's own: a BCSK event photo and the original three-language
+ * illustration. Their uploaded copies (`gallery/8f061fe65d04b6b2.png`, `gallery/58ca4f6fb5a5c92e.png`)
+ * have no FileBlob row, so `/api/files/...` 404s for both; they ship with the site instead.
+ * The last two are placeholders from the school's design mockups (`public/images/banners/`).
+ * Uploading photos in Admin → Homepage Slider replaces this whole rotation.
+ *
+ * `contain` is for the illustration: it is taller than the frame, and cropping it to fill
+ * cut its bubbles off. It sits on its own cream instead.
+ */
+const SLIDE_IMAGES: { src: string; alt: string; position?: string; contain?: { bg: string } }[] = [
+  {
+    src: "/images/home/students-boishakh.jpg",
+    alt: "BCSK students in traditional dress at the student–guardian gathering and Bangla New Year celebration",
+  },
+  {
+    src: "/images/home/languages-illustration.png",
+    alt: "Speech bubbles in Bangla, English and Korean above an open book",
+    contain: { bg: "#fbf6ea" },
+  },
+  { src: "/images/banners/curriculum-students.jpg", alt: "BCSK students holding their curriculum books", position: "40% 30%" },
+  { src: "/images/banners/abacus-hero.jpg", alt: "A BCSK student working on an abacus in class", position: "45% 30%" },
+];
+
+/** Bubbles and images alternate, starting on the bubbles. */
+const SLIDES = [
+  { kind: "bubble", index: 0 },
+  { kind: "photo", index: 0 },
+  { kind: "bubble", index: 1 },
+  { kind: "photo", index: 1 },
+  { kind: "bubble", index: 2 },
+  { kind: "photo", index: 2 },
+  { kind: "photo", index: 3 },
+] as const;
+
 function IllustrationSlider() {
-  const active = useRotation(BUBBLES.length);
+  const active = useRotation(SLIDES.length);
+  const current = SLIDES[active];
+  const bubbleActive = current.kind === "bubble";
 
   return (
-    <div className="relative h-72 sm:h-80 lg:h-[380px] select-none" aria-hidden>
-      {/* one bubble at a time, crossfading in place */}
-      <div className="absolute left-1/2 top-2 sm:top-4 -translate-x-1/2 w-32 h-28 sm:w-40 sm:h-32">
-        {BUBBLES.map((b, i) => (
-          <div
-            key={b.key}
-            className={`bubble-float absolute inset-0 flex items-center justify-center transition-opacity duration-700 motion-reduce:transition-none ${
-              i === active ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-          >
-            <div className={`relative ${b.bg} ${b.corner} w-full h-full flex items-center justify-center shadow-md`}>
-              <span lang={b.lang} className="text-4xl sm:text-5xl font-bold">
-                {b.text}
-              </span>
-              <div
-                className={`absolute ${b.tailPos} w-0 h-0 border-l-[14px] border-l-transparent border-t-[16px] ${b.tailBorder}`}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="relative h-72 sm:h-80 lg:h-[380px] select-none" role="region" aria-label={`${SCHOOL.name} — photos`}>
+      {/* the students: each photo fills the frame and crossfades over the illustration */}
+      {SLIDE_IMAGES.map((ph, i) => {
+        const on = current.kind === "photo" && current.index === i;
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={ph.src}
+            src={ph.src}
+            alt={ph.alt}
+            aria-hidden={!on}
+            className={`absolute inset-x-0 top-0 h-[calc(100%-1.5rem)] w-full rounded-3xl shadow-md transition-opacity duration-700 motion-reduce:transition-none ${
+              ph.contain ? "object-contain" : "object-cover"
+            } ${on ? "opacity-100" : "opacity-0"}`}
+            style={{ objectPosition: ph.position ?? "center", backgroundColor: ph.contain?.bg }}
+          />
+        );
+      })}
 
-      {/* the child beneath the bubbles: open book, shifted up to leave room for the dots */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-8 sm:bottom-10">
-        <svg width="220" height="130" viewBox="0 0 220 130" fill="none" aria-hidden>
-          <ellipse cx="110" cy="122" rx="85" ry="8" fill="#E4EFE9" />
-          <path
-            d="M110 45c-14-12-38-16-60-10v62c22-6 46-2 60 10 14-12 38-16 60-10V35c-22-6-46-2-60 10Z"
-            fill="#fff"
-            stroke="#006A4E"
-            strokeWidth="4"
-            strokeLinejoin="round"
-          />
-          <path d="M110 45v62" stroke="#006A4E" strokeWidth="4" />
-          <path
-            d="M62 52c14-3 28-1 38 5M62 66c14-3 28-1 38 5M62 80c14-3 28-1 38 5M158 52c-14-3-28-1-38 5M158 66c-14-3-28-1-38 5M158 80c-14-3-28-1-38 5"
-            stroke="#1FAE83"
-            strokeWidth="3.5"
-            strokeLinecap="round"
-          />
-          <path d="m40 30 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5 2.5-6Z" fill="#F42A41" />
-          <path d="m184 22 2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2 2-4.8Z" fill="#1FAE83" />
-          <circle cx="170" cy="52" r="4" fill="#1FAE83" />
-          <circle cx="52" cy="14" r="3" fill="#006A4E" />
-        </svg>
+      {/* the illustration: one bubble at a time above an open book, shown on bubble slides */}
+      <div
+        aria-hidden
+        className={`absolute inset-0 transition-opacity duration-700 motion-reduce:transition-none ${bubbleActive ? "opacity-100" : "opacity-0"}`}
+      >
+        <div className="absolute left-1/2 top-2 sm:top-4 -translate-x-1/2 w-32 h-28 sm:w-40 sm:h-32">
+          {BUBBLES.map((b, i) => {
+            const on = current.kind === "bubble" && current.index === i;
+            return (
+              <div
+                key={b.key}
+                className={`bubble-float absolute inset-0 flex items-center justify-center transition-opacity duration-700 motion-reduce:transition-none ${
+                  on ? "opacity-100" : "opacity-0 pointer-events-none"
+                }`}
+              >
+                <div className={`relative ${b.bg} ${b.corner} w-full h-full flex items-center justify-center shadow-md`}>
+                  <span lang={b.lang} className="text-4xl sm:text-5xl font-bold">
+                    {b.text}
+                  </span>
+                  <div
+                    className={`absolute ${b.tailPos} w-0 h-0 border-l-[14px] border-l-transparent border-t-[16px] ${b.tailBorder}`}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {/* the child beneath the bubbles: open book, shifted up to leave room for the dots */}
+        <div className="absolute left-1/2 -translate-x-1/2 bottom-8 sm:bottom-10">
+          <svg width="220" height="130" viewBox="0 0 220 130" fill="none" aria-hidden>
+            <ellipse cx="110" cy="122" rx="85" ry="8" fill="#E4EFE9" />
+            <path
+              d="M110 45c-14-12-38-16-60-10v62c22-6 46-2 60 10 14-12 38-16 60-10V35c-22-6-46-2-60 10Z"
+              fill="#fff"
+              stroke="#006A4E"
+              strokeWidth="4"
+              strokeLinejoin="round"
+            />
+            <path d="M110 45v62" stroke="#006A4E" strokeWidth="4" />
+            <path
+              d="M62 52c14-3 28-1 38 5M62 66c14-3 28-1 38 5M62 80c14-3 28-1 38 5M158 52c-14-3-28-1-38 5M158 66c-14-3-28-1-38 5M158 80c-14-3-28-1-38 5"
+              stroke="#1FAE83"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+            />
+            <path d="m40 30 2.5 6 6 2.5-6 2.5-2.5 6-2.5-6-6-2.5 6-2.5 2.5-6Z" fill="#F42A41" />
+            <path d="m184 22 2 4.8 4.8 2-4.8 2-2 4.8-2-4.8-4.8-2 4.8-2 2-4.8Z" fill="#1FAE83" />
+            <circle cx="170" cy="52" r="4" fill="#1FAE83" />
+            <circle cx="52" cy="14" r="3" fill="#006A4E" />
+          </svg>
+        </div>
       </div>
 
       {/* position dots */}
-      <div className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2">
-        {BUBBLES.map((b, i) => (
+      <div aria-hidden className="absolute inset-x-0 bottom-0 flex items-center justify-center gap-2">
+        {SLIDES.map((sl, i) => (
           <span
-            key={b.key}
+            key={`${sl.kind}-${sl.index}`}
             className={`w-2 h-2 rounded-full transition-colors duration-300 ${i === active ? "bg-green" : "bg-green/20"}`}
           />
         ))}

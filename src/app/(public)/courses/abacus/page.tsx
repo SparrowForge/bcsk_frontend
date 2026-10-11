@@ -13,6 +13,30 @@ const icon = {
   strokeLinejoin: "round" as const,
 };
 
+/** "Why Abacus?" — the four benefits from the school's first mockup. */
+const BENEFITS = [
+  {
+    title: "Boosts Brain Power",
+    text: "Activates both left and right brain hemispheres.",
+    glyph: <path d="M9.5 4A3 3 0 0 0 6.6 6.2 3 3 0 0 0 4.5 11a3 3 0 0 0 1 4.6A3 3 0 0 0 9.5 20H12V4H9.5ZM14.5 4a3 3 0 0 1 2.9 2.2 3 3 0 0 1 2.1 4.8 3 3 0 0 1-1 4.6 3 3 0 0 1-4 4.4H12V4h2.5ZM12 9H9.5M12 14h2.5" />,
+  },
+  {
+    title: "Improves Concentration",
+    text: "Helps children focus for longer periods.",
+    glyph: <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-4a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-4a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm0-1 7-7M16.5 3.5 19 5l1.5 2.5" />,
+  },
+  {
+    title: "Faster Calculation",
+    text: "Builds speed and accuracy in math.",
+    glyph: <path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12L13 2Z" />,
+  },
+  {
+    title: "Builds Confidence",
+    text: "Encourages independent and logical thinking.",
+    glyph: <path d="M4 20h16M6.5 20v-4M10.5 20v-7M14.5 20v-5M18.5 20V9M5 11l5-4 4 3 6-6M16 4h4v4" />,
+  },
+];
+
 /** The four steps of the curriculum, as the mockup names them. */
 const STEPS = [
   { title: "Foundation Level", text: "Build a strong number sense.", glyph: <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Zm0 9 8-4.5M12 12 4 7.5M12 12v9" /> },
@@ -86,6 +110,40 @@ export default function AbacusHomePage() {
             </div>
           </div>
         </details>
+      </section>
+
+      {/* Why Abacus */}
+      <section className="mx-auto max-w-7xl px-4 mt-14">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
+          <div>
+            <Eyebrow>Why Abacus?</Eyebrow>
+            <h2 className="mt-2 font-display text-3xl font-semibold text-green sm:text-4xl">More Than Just Math</h2>
+            <p className="mt-3 max-w-lg text-sm leading-relaxed text-ink-soft">
+              The Abacus program at BCSK is designed to develop children&apos;s brain power, improve concentration and
+              build lifelong problem-solving skills.
+            </p>
+            <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {BENEFITS.map((b) => (
+                <li key={b.title} className="hover-lift rounded-2xl border border-line bg-green-soft/50 px-3 py-5 text-center">
+                  <span aria-hidden className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-green text-white shadow-[0_8px_16px_-10px_rgba(0,77,57,0.9)]">
+                    <svg {...icon}>{b.glyph}</svg>
+                  </span>
+                  <h3 className="mt-3 text-[13.5px] font-bold leading-snug text-green">{b.title}</h3>
+                  <p className="mt-1 text-[11.5px] leading-relaxed text-ink-soft">{b.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {/* The photo carries the mockup's own "Learn Today, Lead Tomorrow" lettering; a
+              stand-in until a real class photo replaces it. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/banners/abacus-why.jpg"
+            alt="An abacus beside a notebook reading 2 + 8 = 10, with the words Learn Today, Lead Tomorrow"
+            loading="lazy"
+            className="aspect-[16/10] w-full rounded-2xl border border-line object-cover shadow-[0_18px_40px_-30px_rgba(0,77,57,0.7)]"
+          />
+        </div>
       </section>
 
       {/* Step-by-step learning */}
