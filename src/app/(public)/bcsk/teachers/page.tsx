@@ -4,7 +4,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { navMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
-  return navMetadata("teachers", "Meet the teachers and staff of Bangladesh Community School, Korea.");
+  return navMetadata("teachers", "Meet the teachers and staff of Bangladesh Community School.");
 }
 
 /** FR-ABOUT-02: staff list with photo, name, designation, bio — editable via Admin Panel. */

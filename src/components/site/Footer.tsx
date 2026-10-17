@@ -35,14 +35,24 @@ export async function Footer() {
   return (
     <footer className="bg-green text-white mt-14">
       <div className="mx-auto max-w-7xl px-4 py-8 grid gap-7 lg:grid-cols-[auto_1fr_auto] lg:gap-10 lg:items-center">
-        <Link href="/" className="flex items-center gap-3.5" aria-label="BCSK — Home">
-          <LogoMark size={58} />
+        {/* The badge at the size the school asked for (October 2026) — large enough to read its
+            ring — with the slogan under the name. The white disc behind it keeps the badge's
+            own dark ring from sinking into the green. */}
+        <Link href="/" className="flex items-center gap-4" aria-label="BCSK — Home">
+          {/* 72px on a phone, where the name beside it has barely 230px; 88px from `sm` up. */}
+          <span className="shrink-0 rounded-full bg-white p-1 shadow-[0_10px_24px_-12px_rgba(0,0,0,0.6)] [&_img]:h-[72px] [&_img]:w-[72px] sm:[&_img]:h-[88px] sm:[&_img]:w-[88px]">
+            <LogoMark size={88} />
+          </span>
           <span className="leading-tight">
             <span className="block font-display text-[17px] sm:text-xl font-semibold text-white">
               {SCHOOL.name}
             </span>
             <span className="block text-[17px] sm:text-xl font-bold text-white" lang="bn">
               {SCHOOL.nameBn}
+            </span>
+            <span className="mt-1.5 inline-flex items-center gap-2 text-[13px] font-semibold tracking-wide text-green-soft">
+              <span aria-hidden className="h-[2px] w-5 rounded-full bg-crimson-bright" />
+              {t.home.schoolMotto}
             </span>
           </span>
         </Link>

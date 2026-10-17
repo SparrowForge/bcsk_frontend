@@ -4,6 +4,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { classLevelLabel } from "@/lib/constants";
 import { reveal } from "@/lib/motion";
 import { BoardPanel } from "./SectionBar";
+import { CardSlider } from "./CardSlider";
 import { ClassScreen } from "./ClassScreen";
 import { formatMinutes } from "./board-format";
 
@@ -14,6 +15,12 @@ import { formatMinutes } from "./board-format";
  * is whichever of its subjects is live, a special course is its own card. An idle card
  * shows an em dash for duration and attendees rather than a zero, because nothing is
  * running and "0 attendees" would read as an empty classroom instead of a closed one.
+ *
+ * One row, as a slider (October 2026): the board used to wrap into two rows of five, and every
+ * class the school adds pushed it taller. The strip shows five at a time on a desktop and
+ * advances through the rest; the loop, pause control and reduced-motion handling live in
+ * `CardSlider`. The Admin and IT Support buttons that sat under it are gone at the school's
+ * request — both are in the footer of every page.
  */
 export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary }) {
   return (
@@ -32,48 +39,33 @@ export function ClassroomBoard({ board, t }: { board: SchoolBoard; t: Dictionary
           {board.classes.length === 0 ? (
             <p className="py-8 text-center text-sm text-ink-soft">{t.home.boardEmpty}</p>
           ) : (
-            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {board.classes.map((c, i) => (
-                <ClassCard key={c.key} row={c} index={i} t={t} />
-              ))}
-            </ul>
+            <CardSlider
+              t={t}
+              label={t.home.classroom}
+              basis="basis-1/2 sm:basis-1/3 lg:basis-1/5"
+              items={board.classes.map((c, i) => ({ key: c.key, node: <ClassCard row={c} index={i} t={t} /> }))}
+              footer={
+                // A parent watching a class they cannot join needs this route right here.
+                <Link
+                  href="/classroom/ask-teacher"
+                  className="group inline-flex items-center gap-1.5 text-[13px] font-bold text-green hover:text-green-mid transition-colors"
+                >
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none"
+                    aria-hidden
+                  >
+                    <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.5-8 5.5V22h16v-2.5c0-3-3.6-5.5-8-5.5Z" />
+                  </svg>
+                  {t.home.askTeacher}
+                </Link>
+              }
+            />
           )}
         </BoardPanel>
-      </div>
-
-      {/* The deck puts the three help routes directly under the board — the point at which a
-          parent watching a class they cannot join needs them. */}
-      <div {...reveal("right")} className="mt-4 flex flex-col items-end gap-1.5">
-        <Link
-          href="/classroom/ask-teacher"
-          className="group inline-flex items-center gap-1.5 text-[13px] font-bold text-green hover:text-green-mid transition-colors"
-        >
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="transition-transform duration-200 group-hover:scale-110 motion-reduce:transform-none"
-            aria-hidden
-          >
-            <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.4 0-8 2.5-8 5.5V22h16v-2.5c0-3-3.6-5.5-8-5.5Z" />
-          </svg>
-          {t.home.askTeacher}
-        </Link>
-        <span className="flex gap-1.5">
-          <Link
-            href="/contact"
-            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5"
-          >
-            {t.home.adminSupport}
-          </Link>
-          <Link
-            href="/contact?topic=IT"
-            className="press rounded bg-crimson hover:bg-crimson-deep text-white text-xs font-bold px-3 py-1.5"
-          >
-            {t.home.itSupport}
-          </Link>
-        </span>
       </div>
     </section>
   );
@@ -104,7 +96,7 @@ function ClassCard({
   t,
 }: {
   row: SchoolBoard["classes"][number];
-  /** Position on the board: picks the colour, numbers the badge, and staggers the entrance. */
+  /** Position on the board: picks the colour and numbers the badge. */
   index: number;
   t: Dictionary;
 }) {
@@ -112,10 +104,7 @@ function ClassCard({
   const tone = TONES[index % TONES.length];
 
   return (
-    <li
-      {...reveal("zoom", index, 60)}
-      className={`hover-lift rounded-2xl border ${tone.card} p-3 flex flex-col`}
-    >
+    <article className={`hover-lift flex h-full flex-col rounded-2xl border ${tone.card} p-3`}>
       <div className="flex items-center gap-2">
         <span
           aria-hidden
@@ -146,6 +135,6 @@ function ClassCard({
           <dd className="font-bold text-ink">{row.attendees ?? "—"}</dd>
         </div>
       </dl>
-    </li>
+    </article>
   );
 }

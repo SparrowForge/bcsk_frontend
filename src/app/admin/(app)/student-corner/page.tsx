@@ -2,7 +2,7 @@ import { requirePermission } from "@/lib/auth";
 import { admin } from "@/services";
 import { CornerEditor } from "./CornerEditor";
 
-/** FR-NEWS-03 (admin side): curate student articles, poems, artwork, achievements. */
+/** FR-NEWS-03 (admin side): curate student work — writing, artwork, handicrafts and any other activity. */
 export default async function AdminStudentCornerPage() {
   await requirePermission("corner:manage");
   const posts = await admin.cornerPosts();
@@ -18,6 +18,7 @@ export default async function AdminStudentCornerPage() {
           studentName: p.studentName,
           kind: p.kind,
           published: p.published,
+          imageUrl: p.imageUrl,
         }))}
       />
     </div>

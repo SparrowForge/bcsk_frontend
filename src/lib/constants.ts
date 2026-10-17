@@ -63,10 +63,12 @@ export type Lang = "en" | "bn" | "ko";
 export const SEMESTER_CURRENT = "2026-2";
 
 export const SCHOOL = {
-  name: "Bangladesh Community School, Korea",
+  /** The school's name without ", Korea", in every language, at the school's request
+   * (October 2026). The bank account below keeps the name the bank holds. */
+  name: "Bangladesh Community School",
   shortName: "BCSK",
-  nameBn: "বাংলাদেশ কমিউনিটি স্কুল, কোরিয়া",
-  nameKo: "방글라데시 커뮤니티 스쿨 코리아",
+  nameBn: "বাংলাদেশ কমিউনিটি স্কুল",
+  nameKo: "방글라데시 커뮤니티 스쿨",
   email: "bcskr22@gmail.com",
   phone: "+82 10-8948-3447",
   phone2: "+82 10-6893-6237",

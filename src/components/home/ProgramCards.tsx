@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { reveal } from "@/lib/motion";
 import { SectionBar } from "./SectionBar";
+import { CountUp } from "./CountUp";
 
 /**
  * One colour per programme, applied to everything inside its card — stripe, halo, icon disc,
@@ -15,6 +16,7 @@ const THEMES = {
     disc: "bg-green group-hover:bg-green-deep shadow-[0_10px_20px_-12px_rgba(0,77,57,0.9)]",
     text: "text-green",
     border: "hover:border-green/40",
+    chip: "ring-green/15",
   },
   ielts: {
     stripe: "bg-ielts",
@@ -22,6 +24,7 @@ const THEMES = {
     disc: "bg-ielts group-hover:bg-ielts-deep shadow-[0_10px_20px_-12px_rgba(23,74,136,0.9)]",
     text: "text-ielts",
     border: "hover:border-ielts/40",
+    chip: "ring-ielts/20",
   },
   deen: {
     stripe: "bg-deen",
@@ -29,6 +32,7 @@ const THEMES = {
     disc: "bg-deen group-hover:bg-deen-deep shadow-[0_10px_20px_-12px_rgba(83,45,128,0.9)]",
     text: "text-deen",
     border: "hover:border-deen/40",
+    chip: "ring-deen/20",
   },
   // The orange fill is too light for a white glyph, so the disc uses the deeper step, and the
   // title and link use the text-strength orange rather than the fill.
@@ -38,6 +42,7 @@ const THEMES = {
     disc: "bg-abacus-deep group-hover:bg-abacus-ink shadow-[0_10px_20px_-12px_rgba(180,83,9,0.9)]",
     text: "text-abacus-ink",
     border: "hover:border-abacus/50",
+    chip: "ring-abacus/30",
   },
 } as const;
 
@@ -48,6 +53,11 @@ const THEMES = {
  * not the small text at its foot. A colour stripe along the top and a soft halo behind the
  * icon disc name the programme before its title does; the hover darkens the disc so the card
  * under the pointer stands out from the row.
+ *
+ * Under the copy, every card carries the same panel (October 2026, replacing a staircase chart
+ * that only Regular Classes had): one figure that sizes the programme — classes, levels,
+ * programmes — counted up as it scrolls in, and the few things it covers as chips. The figures
+ * are the ones the course pages publish; IELTS runs ten levels and Abacus eight (0–7).
  */
 export function ProgramCards({ t }: { t: Dictionary }) {
   const programs = [
@@ -57,11 +67,40 @@ export function ProgramCards({ t }: { t: Dictionary }) {
       href: "/academic/curriculum",
       icon: <BookIcon />,
       theme: THEMES.regular,
-      details: <RegularDetails t={t} />,
+      figure: "6",
+      unit: t.home.progRegularFact,
+      tags: t.home.progRegularTags,
     },
-    { title: t.nav.ielts, text: t.home.progIeltsText, href: "/courses/ielts-for-kids", icon: <CapIcon />, theme: THEMES.ielts },
-    { title: t.nav.deen, text: t.home.progDeenText, href: "/courses/deen", icon: <MosqueIcon />, theme: THEMES.deen },
-    { title: t.nav.abacus, text: t.home.progAbacusText, href: "/courses/abacus", icon: <AbacusIcon />, theme: THEMES.abacus },
+    {
+      title: t.nav.ielts,
+      text: t.home.progIeltsText,
+      href: "/courses/ielts-for-kids",
+      icon: <CapIcon />,
+      theme: THEMES.ielts,
+      figure: "10",
+      unit: t.home.progIeltsFact,
+      tags: t.home.progIeltsTags,
+    },
+    {
+      title: t.nav.deen,
+      text: t.home.progDeenText,
+      href: "/courses/deen",
+      icon: <MosqueIcon />,
+      theme: THEMES.deen,
+      figure: "2",
+      unit: t.home.progDeenFact,
+      tags: t.home.progDeenTags,
+    },
+    {
+      title: t.nav.abacus,
+      text: t.home.progAbacusText,
+      href: "/courses/abacus",
+      icon: <AbacusIcon />,
+      theme: THEMES.abacus,
+      figure: "8",
+      unit: t.home.progAbacusFact,
+      tags: t.home.progAbacusTags,
+    },
   ];
 
   return (
@@ -93,10 +132,28 @@ export function ProgramCards({ t }: { t: Dictionary }) {
               </span>
               <h3 className={`mt-5 font-display text-[1.15rem] font-bold ${p.theme.text}`}>{p.title}</h3>
               <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">{p.text}</p>
-              {p.details}
-              {/* mt-auto pins the link to the card's foot, so a row with uneven copy still
-                  lines its four links up. */}
-              <span className={`nudge mt-auto pt-5 inline-flex items-center gap-1.5 text-[13px] font-bold group-hover:underline underline-offset-4 ${p.theme.text}`}>
+              {/* mt-auto pins the panel and the link to the card's foot, so a row with uneven
+                  copy still lines its four panels up. */}
+              <div className={`mt-auto w-full rounded-xl px-3 pt-3 pb-3.5 ${p.theme.halo}`}>
+                <p className={`flex items-baseline justify-center gap-1.5 ${p.theme.text}`}>
+                  <CountUp value={p.figure} className="font-display text-[2rem] font-bold leading-none tabular-nums" />
+                  <span className="text-[13px] font-extrabold uppercase tracking-wide">{p.unit}</span>
+                </p>
+                <ul className="mt-2.5 flex flex-wrap justify-center gap-1.5">
+                  {p.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className={`inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold ring-1 ${p.theme.text} ${p.theme.chip}`}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="m5 12.5 4.5 4.5L19 7.5" />
+                      </svg>
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <span className={`nudge pt-5 inline-flex items-center gap-1.5 text-[13px] font-bold group-hover:underline underline-offset-4 ${p.theme.text}`}>
                 {t.home.learnMore}
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12h14M13 6l6 6-6 6" />
@@ -107,56 +164,6 @@ export function ProgramCards({ t }: { t: Dictionary }) {
         ))}
       </ul>
     </section>
-  );
-}
-
-/* Darkest last: each class a step up from the one before. */
-const STEP_BARS = [
-  "h-3.5 bg-green/30",
-  "h-5 bg-green/45",
-  "h-6.5 bg-green/60",
-  "h-8 bg-green/75",
-  "h-9.5 bg-green/90",
-  "h-11 bg-green",
-];
-
-/**
- * What Regular Classes covers, at a glance: the six classes drawn as a staircase from
- * Pre-Primary up to Class 5, and the two things every class shares underneath it.
- *
- * The bars are decoration and hidden from assistive tech; the labels under them are the real
- * list, named as a whole by `progRegularLadder`.
- */
-function RegularDetails({ t }: { t: Dictionary }) {
-  const steps = [t.home.progPre, "1", "2", "3", "4", "5"];
-  return (
-    <div className="mt-5 w-full rounded-xl bg-green-soft/70 px-3 pt-3.5 pb-2.5">
-      <div aria-hidden className="flex items-end gap-1.5 border-b-2 border-green/25">
-        {STEP_BARS.map((bar) => (
-          <span key={bar} className={`flex-1 rounded-t-md ${bar}`} />
-        ))}
-      </div>
-      <ol aria-label={t.home.progRegularLadder} className="mt-1.5 flex gap-1.5">
-        {steps.map((s) => (
-          <li key={s} className="flex-1 min-w-0 text-[10.5px] font-bold leading-none text-green">
-            {s}
-          </li>
-        ))}
-      </ol>
-      <ul className="mt-3 flex flex-wrap justify-center gap-1.5">
-        {[t.home.progNctb, t.home.progGlobalEnglish].map((tag) => (
-          <li
-            key={tag}
-            className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-green ring-1 ring-green/15"
-          >
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="m5 12.5 4.5 4.5L19 7.5" />
-            </svg>
-            {tag}
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }
 

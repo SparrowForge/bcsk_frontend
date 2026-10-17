@@ -38,9 +38,13 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
     <PageShell title={item.title} eyebrow={item.type}>
       <div className="grid lg:grid-cols-[1fr_280px] gap-10">
         <article className="max-w-3xl">
-          <time className="text-xs font-bold text-ink-soft" dateTime={isoAttr(item.date)}>
+          <time className="text-sm font-extrabold text-ink" dateTime={isoAttr(item.date)}>
             {formatDate(item.date, lang)}
           </time>
+          {item.imageUrl && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={item.imageUrl} alt="" className="mt-4 w-full max-h-[460px] rounded-2xl object-cover" />
+          )}
           <div className="mt-4 text-[15px] text-ink leading-relaxed prose-bcsk" dangerouslySetInnerHTML={{ __html: item.html }} />
         </article>
         <SideCard />

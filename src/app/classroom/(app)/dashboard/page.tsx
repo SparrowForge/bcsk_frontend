@@ -47,7 +47,7 @@ export default async function StudentDashboard() {
           </p>
         </div>
         <div className="ml-auto hidden sm:block text-right text-xs text-ink-soft">
-          <p className="font-bold text-green">Bangladesh Community School, Korea</p>
+          <p className="font-bold text-green">Bangladesh Community School</p>
           <p>Classroom Portal</p>
         </div>
       </section>

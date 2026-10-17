@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { EventNews } from "@/services/types";
 import { SCHOOL, type Lang } from "@/lib/constants";
-import { dayOfMonth, isoAttr, monthShort } from "@/lib/dates";
+import { formatDate, isoAttr } from "@/lib/dates";
 import { reveal } from "@/lib/motion";
 
 /**
@@ -15,7 +15,9 @@ import { reveal } from "@/lib/motion";
  * call the school open above a board showing every room idle. The two time strings are admin
  * settings; a school that has not filled them in gets no row rather than invented hours.
  *
- * Right: the latest news, the first item large and the rest as a list.
+ * Right: the latest news, the first item large and the rest as a list. Every item has a
+ * picture slot, a bold date and its description (October 2026): an item the office has not
+ * given a photo yet shows a branded card in its type's colour rather than an empty box.
  */
 export function SchoolNewsBand({
   t,
@@ -118,22 +120,15 @@ export function SchoolNewsBand({
             <>
               <Link
                 href={`/events/news/${featured.id}`}
-                // Without a photo the story takes the whole card; an empty half read as a
-                // picture that failed to load.
-                className={`hover-lift group mt-6 grid overflow-hidden rounded-xl border border-line ${featured.imageUrl ? "sm:grid-cols-2" : ""}`}
+                className="hover-lift group mt-6 grid overflow-hidden rounded-xl border border-line sm:grid-cols-2"
               >
-                {featured.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={featured.imageUrl} alt="" loading="lazy" className="aspect-[16/10] h-full w-full object-cover" />
-                )}
+                <NewsPicture item={featured} t={t} className="aspect-[16/10] h-full w-full" />
                 <div className="flex flex-col p-4">
-                  <div className="flex items-start gap-3">
-                    <DateBadge date={featured.date} lang={lang} solid />
-                    <h3 className="font-display text-lg font-semibold leading-snug text-green group-hover:text-green-mid">
-                      {featured.title}
-                    </h3>
-                  </div>
-                  <p className="mt-2 line-clamp-3 text-[13px] leading-relaxed text-ink-soft">{featured.body}</p>
+                  <NewsDate date={featured.date} lang={lang} />
+                  <h3 className="mt-1.5 font-display text-lg font-semibold leading-snug text-green group-hover:text-green-mid">
+                    {featured.title}
+                  </h3>
+                  <p className="mt-2 line-clamp-4 text-[13px] leading-relaxed text-ink-soft">{featured.body}</p>
                   <span aria-hidden className="mt-auto self-end pt-2 text-green">→</span>
                 </div>
               </Link>
@@ -143,18 +138,15 @@ export function SchoolNewsBand({
                     <li key={n.id}>
                       <Link
                         href={`/events/news/${n.id}`}
-                        className="group flex items-center gap-3 rounded-xl border border-line p-3 transition-colors hover:border-green/40 hover:bg-green-soft/40"
+                        className="group flex items-start gap-3 rounded-xl border border-line p-3 transition-colors hover:border-green/40 hover:bg-green-soft/40"
                       >
-                        <DateBadge date={n.date} lang={lang} />
-                        {n.imageUrl && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={n.imageUrl} alt="" loading="lazy" className="hidden h-16 w-24 shrink-0 rounded-lg object-cover sm:block" />
-                        )}
+                        <NewsPicture item={n} t={t} compact className="h-[4.5rem] w-24 shrink-0 rounded-lg sm:h-20 sm:w-28" />
                         <div className="min-w-0 flex-1">
-                          <h3 className="line-clamp-2 text-[14px] font-bold leading-snug text-green group-hover:text-green-mid">{n.title}</h3>
+                          <NewsDate date={n.date} lang={lang} small />
+                          <h3 className="mt-0.5 line-clamp-2 text-[14px] font-bold leading-snug text-green group-hover:text-green-mid">{n.title}</h3>
                           <p className="mt-0.5 line-clamp-2 text-[12.5px] leading-relaxed text-ink-soft">{n.body}</p>
                         </div>
-                        <span aria-hidden className="shrink-0 text-green">→</span>
+                        <span aria-hidden className="shrink-0 self-center text-green">→</span>
                       </Link>
                     </li>
                   ))}
@@ -185,17 +177,67 @@ function TimeRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-function DateBadge({ date, lang, solid }: { date: string; lang: Lang; solid?: boolean }) {
+/** The date in bold, as the school asked: a reader scans news by when it happened. */
+function NewsDate({ date, lang, small }: { date: string; lang: Lang; small?: boolean }) {
   return (
     <time
       dateTime={isoAttr(date)}
-      className={`grid w-12 shrink-0 place-items-center rounded-lg py-1.5 text-center leading-none ${
-        solid ? "bg-green text-white" : "bg-green-soft text-green"
-      }`}
+      className={`inline-flex items-center gap-1.5 font-extrabold text-crimson-ink ${small ? "text-[11.5px]" : "text-[13px]"}`}
     >
-      <span className="font-display text-lg font-semibold">{dayOfMonth(date)}</span>
-      <span className="mt-0.5 text-[10px] font-bold">{monthShort(date, lang)}</span>
+      <svg width={small ? 12 : 14} height={small ? 12 : 14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
+        <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
+        <path d="M3.5 10h17M8 3v4M16 3v4" />
+      </svg>
+      {formatDate(date, lang)}
     </time>
+  );
+}
+
+/**
+ * A news item's picture. Until the office uploads one (Admin → News & Events), the slot holds
+ * a card in the item's type colour — its icon, its type, and the school badge — so a list of
+ * items without photos still reads as a list of pictures rather than of missing ones.
+ */
+function NewsPicture({
+  item,
+  t,
+  compact,
+  className = "",
+}: {
+  item: EventNews;
+  t: Dictionary;
+  compact?: boolean;
+  className?: string;
+}) {
+  if (item.imageUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={item.imageUrl} alt="" loading="lazy" className={`object-cover ${className}`} />
+    );
+  }
+  const look =
+    item.type === "SEMINAR"
+      ? { bg: "from-ielts to-ielts-deep", label: t.home.newsTypeSeminar, icon: <path d="M3 5h18v11H3zM8 21h8M12 16v5M7 9h6M7 12h10" /> }
+      : item.type === "EVENT"
+        ? { bg: "from-green-mid to-green-deep", label: t.home.newsTypeEvent, icon: <path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z" /> }
+        : { bg: "from-crimson to-crimson-deep", label: t.home.newsTypeNews, icon: <path d="M4 5h13v14H6a2 2 0 0 1-2-2zM17 9h3v8a2 2 0 0 1-2 2M8 9h5M8 12.5h5M8 16h3" /> };
+  return (
+    <div aria-hidden className={`relative isolate grid place-items-center overflow-hidden bg-gradient-to-br text-white ${look.bg} ${className}`}>
+      <span className="dot-grid absolute inset-0 -z-10 opacity-25" />
+      <Image
+        src="/images/bcsk-logo.png"
+        alt=""
+        width={160}
+        height={160}
+        className={`absolute -z-10 opacity-15 ${compact ? "-right-4 -bottom-5 h-16 w-16" : "-right-8 -bottom-10 h-40 w-40"}`}
+      />
+      <span className="flex flex-col items-center gap-1.5">
+        <svg width={compact ? 22 : 40} height={compact ? 22 : 40} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+          {look.icon}
+        </svg>
+        <span className={`font-extrabold uppercase tracking-wider ${compact ? "text-[9px]" : "text-[11px]"}`}>{look.label}</span>
+      </span>
+    </div>
   );
 }
 

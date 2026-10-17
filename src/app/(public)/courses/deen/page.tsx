@@ -97,11 +97,11 @@ const L = {
 const KOIE = {
   body: {
     en: [
-      "Bangladesh Community School Korea (BCSK) is proud to run its Online Islamic Education Program, designed specifically for Bangladeshi children living across South Korea. Wherever they live, students have access to structured and authentic Islamic learning from the comfort of their homes, taught by qualified and experienced instructors.",
+      "Bangladesh Community School (BCSK) is proud to run its Online Islamic Education Program, designed specifically for Bangladeshi children living across South Korea. Wherever they live, students have access to structured and authentic Islamic learning from the comfort of their homes, taught by qualified and experienced instructors.",
       "The program supports children's spiritual development and helps them stay connected to their religious identity in a multicultural environment — especially valuable for families in areas without a local Islamic institution. As it grows, BCSK aims to add advanced Islamic studies, interactive sessions and certification tracks.",
     ],
     bn: [
-      "বাংলাদেশ কমিউনিটি স্কুল কোরিয়া (BCSK) দক্ষিণ কোরিয়ায় বসবাসরত বাংলাদেশি শিশুদের জন্য বিশেষভাবে তৈরি অনলাইন ইসলামিক শিক্ষা কার্যক্রম পরিচালনা করছে। শিক্ষার্থীরা যেখানেই থাকুক, ঘরে বসেই যোগ্য ও অভিজ্ঞ শিক্ষকদের কাছ থেকে সুশৃঙ্খল ও বিশুদ্ধ ইসলামি শিক্ষা গ্রহণ করতে পারে।",
+      "বাংলাদেশ কমিউনিটি স্কুল (BCSK) দক্ষিণ কোরিয়ায় বসবাসরত বাংলাদেশি শিশুদের জন্য বিশেষভাবে তৈরি অনলাইন ইসলামিক শিক্ষা কার্যক্রম পরিচালনা করছে। শিক্ষার্থীরা যেখানেই থাকুক, ঘরে বসেই যোগ্য ও অভিজ্ঞ শিক্ষকদের কাছ থেকে সুশৃঙ্খল ও বিশুদ্ধ ইসলামি শিক্ষা গ্রহণ করতে পারে।",
       "এই কার্যক্রম শিশুদের আত্মিক বিকাশে সহায়তা করে এবং বহুসাংস্কৃতিক পরিবেশে তাদের দ্বীনি পরিচয়ের সাথে যুক্ত রাখে — বিশেষ করে যেসব এলাকায় স্থানীয় ইসলামি প্রতিষ্ঠান নেই সেখানকার পরিবারের জন্য। ভবিষ্যতে উচ্চতর ইসলামি শিক্ষা, ইন্টারেক্টিভ সেশন ও সার্টিফিকেশন ট্র্যাক যুক্ত করার পরিকল্পনা রয়েছে।",
     ],
   } satisfies Record<Lang, string[]>,

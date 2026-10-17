@@ -160,7 +160,10 @@ export function CardSlider({
               data-card
               aria-hidden={copy || undefined}
               inert={copy || undefined}
-              className={`shrink-0 snap-start px-2.5 ${basis}`}
+              // `min-w-0`: a flex item never shrinks below its content's min-content width, and a
+              // truncated one-line label still counts at full length there — the classroom card
+              // titled "Arabic / Deen (Qur'an & Islamic Studies)" came out wider than the rest.
+              className={`min-w-0 shrink-0 snap-start px-2.5 ${basis}`}
             >
               {item.node}
             </div>

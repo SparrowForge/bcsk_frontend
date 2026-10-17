@@ -46,7 +46,7 @@ const notoKr = Noto_Sans_KR({
 
 export const metadata: Metadata = {
   title: {
-    default: "Bangladesh Community School, Korea (BCSK)",
+    default: "Bangladesh Community School (BCSK)",
     template: "%s | BCSK",
   },
   description:

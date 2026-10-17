@@ -2,12 +2,17 @@
 
 import { useActionState, useState, useTransition } from "react";
 import { useKeptForm } from "@/components/forms/keep-form";
+import { PictureField } from "@/components/forms/PictureField";
+import { SUGGESTED_KINDS, kindTitle } from "@/lib/corner-kinds";
 import { saveCornerPost, deleteCornerPost, type CornerState } from "./actions";
 
-type Post = { id: number; title: string; body: string; studentName: string; kind: string; published: boolean };
+type Post = { id: number; title: string; body: string; studentName: string; kind: string; published: boolean; imageUrl: string | null };
 const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function CornerEditor({ posts }: { posts: Post[] }) {
+  // Suggest every kind already in use as well as the standard ones, so a kind typed once is
+  // offered again with the same spelling.
+  const kinds = [...new Set([...SUGGESTED_KINDS, ...posts.map((p) => kindTitle(p.kind))])];
   const [editing, setEditing] = useState<Post | "new" | null>(null);
   const [state, action, pending] = useActionState<CornerState, FormData>(saveCornerPost, null);
   const kept = useKeptForm(action, state, { resetOnSuccess: true });
@@ -29,12 +34,21 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
           <div className="grid sm:grid-cols-3 gap-4">
             <label className="block text-xs font-bold text-ink">
               Kind
-              <select name="kind" defaultValue={current?.kind ?? "ARTICLE"} className={`mt-1.5 ${input}`}>
-                <option value="ARTICLE">Article</option>
-                <option value="POEM">Poem</option>
-                <option value="ARTWORK">Artwork</option>
-                <option value="ACHIEVEMENT">Achievement</option>
-              </select>
+              <input
+                name="kind"
+                required
+                list="corner-kinds"
+                maxLength={40}
+                defaultValue={current ? kindTitle(current.kind) : "Article"}
+                placeholder="e.g. Handicraft"
+                className={`mt-1.5 ${input}`}
+              />
+              <datalist id="corner-kinds">
+                {kinds.map((k) => (
+                  <option key={k} value={k} />
+                ))}
+              </datalist>
+              <span className="mt-1 block text-[11px] font-normal text-ink-soft">Pick one or type a new kind.</span>
             </label>
             <label className="block text-xs font-bold text-ink sm:col-span-2">
               Student name & class
@@ -49,6 +63,7 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
             Body
             <textarea name="body" required rows={6} defaultValue={current?.body ?? ""} className={`mt-1.5 ${input}`} />
           </label>
+          <PictureField current={current?.imageUrl ?? null} optional />
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-xs font-bold text-ink">
               <input type="checkbox" name="published" defaultChecked={current?.published ?? true} className="w-4 h-4 accent-green" />
@@ -66,7 +81,7 @@ export function CornerEditor({ posts }: { posts: Post[] }) {
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {posts.map((p) => (
           <div key={p.id} className="px-5 py-3.5 flex flex-wrap items-center gap-3">
-            <span className="text-[10px] font-extrabold uppercase text-crimson-ink w-20">{p.kind}</span>
+            <span className="text-[10px] font-extrabold uppercase text-crimson-ink w-24 truncate" title={kindTitle(p.kind)}>{kindTitle(p.kind)}</span>
             <div className="min-w-48 flex-1">
               <p className="font-bold text-ink text-sm">{p.title}</p>
               <p className="text-[11px] text-ink-soft">{p.studentName}{!p.published && " · draft"}</p>

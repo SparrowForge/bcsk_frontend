@@ -6,7 +6,7 @@ import { EnquiryForm } from "./EnquiryForm";
 
 export const metadata: Metadata = {
   title: "Enquire about admission | BCSK",
-  description: "Ask Bangladesh Community School, Korea about classes, courses and admission.",
+  description: "Ask Bangladesh Community School about classes, courses and admission.",
 };
 
 export default async function EnquiryPage() {

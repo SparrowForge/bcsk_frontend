@@ -6,7 +6,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { navMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
-  return navMetadata("latestNews", "News and events from Bangladesh Community School, Korea.");
+  return navMetadata("latestNews", "News and events from Bangladesh Community School.");
 }
 
 /** FR-NEWS-01: latest news listing. */
@@ -18,15 +18,21 @@ export default async function NewsPage() {
     <PageShell title={t.nav.latestNews} eyebrow={t.nav.eventsNews}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl">
         {items.map((n) => (
-          <Link key={n.id} href={`/events/news/${n.id}`} className="group bg-white border border-line rounded-2xl p-6 hover:shadow-md transition-shadow flex flex-col">
-            <p className="text-xs font-bold uppercase tracking-wide text-crimson-ink">{n.type}</p>
-            <h2 className="mt-2 font-display text-lg font-semibold text-green group-hover:text-green-mid transition-colors leading-snug">
-              {n.title}
-            </h2>
-            <p className="mt-2 text-sm text-ink-soft line-clamp-4">{n.body}</p>
-            <time className="block mt-auto pt-3 text-xs text-ink-soft" dateTime={isoAttr(n.date)}>
-              {formatDate(n.date, lang)}
-            </time>
+          <Link key={n.id} href={`/events/news/${n.id}`} className="group bg-white border border-line rounded-2xl overflow-hidden hover:shadow-md transition-shadow flex flex-col">
+            {n.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={n.imageUrl} alt="" loading="lazy" className="aspect-[16/10] w-full object-cover" />
+            )}
+            <div className="p-6 flex flex-1 flex-col">
+              <p className="text-xs font-bold uppercase tracking-wide text-crimson-ink">{n.type}</p>
+              <h2 className="mt-2 font-display text-lg font-semibold text-green group-hover:text-green-mid transition-colors leading-snug">
+                {n.title}
+              </h2>
+              <p className="mt-2 text-sm text-ink-soft line-clamp-4">{n.body}</p>
+              <time className="block mt-auto pt-3 text-xs font-extrabold text-ink" dateTime={isoAttr(n.date)}>
+                {formatDate(n.date, lang)}
+              </time>
+            </div>
           </Link>
         ))}
       </div>

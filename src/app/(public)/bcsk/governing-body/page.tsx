@@ -4,7 +4,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { navMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
-  return navMetadata("governingBody", "The Governing Body that oversees Bangladesh Community School, Korea, and its members.");
+  return navMetadata("governingBody", "The Governing Body that oversees Bangladesh Community School, and its members.");
 }
 
 /** FR-ABOUT-03: governing body member listing. */

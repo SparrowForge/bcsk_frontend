@@ -2,7 +2,7 @@ import { Logo } from "@/components/Logo";
 import { getDict } from "@/lib/i18n";
 import { MainNav, type NavItem } from "./MainNav";
 
-/** FR-HOME-02: primary navigation — Home, BCSK, Admission, Academic, Student Lounge, Events & News, Contact. */
+/** FR-HOME-02: primary navigation — Home, BCSK, Admission, Academic, Courses, Student Lounge, Events & News, Contact. */
 export async function Header() {
   const { t } = await getDict();
 
@@ -40,8 +40,15 @@ export async function Header() {
         { label: t.nav.syllabus, href: "/academic/syllabus" },
         { label: t.nav.academicCalendar, href: "/academic/calendar" },
         { label: t.nav.classSchedule, href: "/academic/class-schedule" },
-        { label: t.nav.deen, href: "/courses/deen" },
+      ],
+    },
+    // The three special courses have their own menu (October 2026); they used to sit at the
+    // foot of Academic, under the book list and the timetable, where nobody looked for them.
+    {
+      label: t.nav.courses,
+      children: [
         { label: t.nav.ielts, href: "/courses/ielts-for-kids" },
+        { label: t.nav.deen, href: "/courses/deen" },
         { label: t.nav.abacus, href: "/courses/abacus" },
       ],
     },

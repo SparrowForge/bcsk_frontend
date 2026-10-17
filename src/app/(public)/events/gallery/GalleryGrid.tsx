@@ -55,7 +55,9 @@ export function GalleryGrid({ albums }: { albums: Album[] }) {
 
       <div className="space-y-10">
         {visible.map((album) => (
-          <section key={album.id}>
+          // The homepage gallery's "View All" links here by album; the margin keeps the title
+          // clear of the sticky header when the browser scrolls to it.
+          <section key={album.id} id={`album-${album.id}`} className="scroll-mt-28">
             <h2 className="font-display text-xl font-semibold text-green mb-4">
               {album.title}
               {album.category && (

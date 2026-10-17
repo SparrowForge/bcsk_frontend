@@ -20,6 +20,7 @@ export default async function AdminNewsPage() {
           // <input type="date"> wants yyyy-mm-dd; the API sends a full ISO timestamp.
           date: (isoAttr(n.date) ?? "").slice(0, 10),
           published: n.published,
+          imageUrl: n.imageUrl,
         }))}
       />
     </div>

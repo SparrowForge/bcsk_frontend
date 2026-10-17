@@ -2,9 +2,10 @@
 
 import { useActionState, useState, useTransition } from "react";
 import { useKeptForm } from "@/components/forms/keep-form";
+import { PictureField } from "@/components/forms/PictureField";
 import { saveNews, deleteNews, type NewsState } from "./actions";
 
-type Item = { id: number; type: string; title: string; body: string; date: string; published: boolean };
+type Item = { id: number; type: string; title: string; body: string; date: string; published: boolean; imageUrl: string | null };
 const input = "w-full rounded-lg border border-line px-3.5 py-2.5 text-sm focus:border-green-mid focus:outline-none";
 
 export function NewsEditor({ items }: { items: Item[] }) {
@@ -53,6 +54,7 @@ export function NewsEditor({ items }: { items: Item[] }) {
             Body
             <textarea name="body" required rows={5} defaultValue={current?.body ?? ""} className={`mt-1.5 ${input}`} />
           </label>
+          <PictureField current={current?.imageUrl ?? null} />
           <div className="flex items-center gap-3">
             <button disabled={pending} className="bg-green hover:bg-green-deep disabled:opacity-60 text-white text-sm font-bold rounded-lg px-6 py-2.5 transition-colors">
               {pending ? "Saving…" : "Save"}
@@ -66,6 +68,14 @@ export function NewsEditor({ items }: { items: Item[] }) {
       <div className="bg-white rounded-2xl border border-line divide-y divide-line">
         {items.map((n) => (
           <div key={n.id} className="px-5 py-3.5 flex flex-wrap items-center gap-3">
+            {n.imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={n.imageUrl} alt="" className="h-10 w-14 rounded-md object-cover" />
+            ) : (
+              <span className="grid h-10 w-14 place-items-center rounded-md bg-mist text-[9px] font-bold text-ink-soft" title="No picture yet">
+                no photo
+              </span>
+            )}
             <span className="text-[10px] font-extrabold uppercase text-crimson-ink w-16">{n.type}</span>
             <div className="min-w-48 flex-1">
               <p className="font-bold text-ink text-sm">{n.title}</p>

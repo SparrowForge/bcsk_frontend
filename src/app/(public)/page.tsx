@@ -10,6 +10,7 @@ import { TeacherPanel } from "@/components/home/TeacherPanel";
 import { WhyChooseBcsk } from "@/components/home/WhyChooseBcsk";
 import { OpinionsGrid } from "@/components/home/OpinionsGrid";
 import { StudentCornerBand } from "@/components/home/StudentCornerBand";
+import { GalleryBand } from "@/components/home/GalleryBand";
 import { ProgramCards } from "@/components/home/ProgramCards";
 
 /**
@@ -19,11 +20,12 @@ import { ProgramCards } from "@/components/home/ProgramCards";
  *   LP-2  school hours and current status beside News & Events — one band, at the school's
  *         request, where they used to be two. The office board (who is at their desk) moved
  *         to the teacher dashboard: it is for staff, not visitors.
- *   LP-3  the classroom board — which rooms are running right now
- *         the teacher panel
+ *         the teacher panel — moved up to follow News & Events (October 2026, second round)
+ *   LP-3  the classroom board — which rooms are running right now, one row as a slider
  *   LP-4  Why Choose BCSK (replaced School Overview)
  *   LP-5  six recorded opinions about the school
- *   LP-6  Student Corner (replaced the Students Lounge shortcuts and gallery)
+ *   LP-6  Student Corner (replaced the Students Lounge shortcuts), then the photo and video
+ *         gallery, which closes the page
  *
  * Every read is caught individually: a homepage is the one page that must never 500, and a
  * CMS page an admin has not written yet is a missing panel, not an outage.
@@ -41,6 +43,7 @@ export default async function HomePage() {
     teachers,
     news,
     cornerPosts,
+    albums,
   ] = await Promise.all([
     cms.page("home-hero", lang).catch(() => null),
     getSettings([
@@ -59,6 +62,7 @@ export default async function HomePage() {
     cms.teachers().catch(() => []),
     cms.news(4).catch(() => []),
     site.studentCorner().catch(() => []),
+    cms.gallery().catch(() => []),
   ]);
 
   // LP-1: the four figures the school publishes, in the deck's order. Values are
@@ -184,15 +188,15 @@ export default async function HomePage() {
         news={news}
       />
 
+      {/* ---------------- TEACHER PANEL ---------------- */}
+      <TeacherPanel t={t} teachers={teachers} />
+
       {/* ---------------- LP-3 · THE CLASSROOM BOARD ---------------- */}
       {board && (
         <section className="logo-shade mx-auto max-w-7xl px-4 mt-6">
           <ClassroomBoard board={board} t={t} />
         </section>
       )}
-
-      {/* ---------------- TEACHER PANEL ---------------- */}
-      <TeacherPanel t={t} teachers={teachers} />
 
       {/* ---------------- LP-4 · WHY CHOOSE BCSK ---------------- */}
       <WhyChooseBcsk t={t} />
@@ -202,6 +206,9 @@ export default async function HomePage() {
 
       {/* ---------------- LP-6 · STUDENT CORNER ---------------- */}
       <StudentCornerBand t={t} posts={cornerPosts} />
+
+      {/* ---------------- PHOTO & VIDEO GALLERY ---------------- */}
+      <GalleryBand t={t} albums={albums} />
     </>
   );
 }

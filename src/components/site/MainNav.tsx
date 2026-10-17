@@ -37,8 +37,10 @@ export function MainNav({
           reading as one item and makes the whole bar two rows tall. Bengali labels are longer
           than the English ones and SolaimanLipi sets them wider again, so at the narrow end of
           the desktop range two of them used to wrap. Nowrap keeps the bar one row; the masthead
-          beside it yields first, which is what its `truncate` is for. */}
-      <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          beside it yields first, which is what its `truncate` is for.
+          Below xl the items are a step smaller and closer together: the Courses menu (October
+          2026) made eight items, and at 1024px it left the school name 121px — "Bangladesh Co…". */}
+      <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1" aria-label="Main navigation">
         {items.map((item, i) => {
           // The two menus nearest the right edge open leftwards. A dropdown is 224px wide and
           // sits `absolute` under its trigger, so anchoring every one of them to its left edge
@@ -55,7 +57,7 @@ export function MainNav({
               onFocus={() => dismissed === item.label && setDismissed(null)}
             >
               <button
-                className={`px-2.5 py-2 text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-green-mid transition-colors ${
+                className={`px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-bold rounded-md flex items-center gap-1 whitespace-nowrap hover:text-green-mid transition-colors ${
                   item.children.some((c) => pathname.startsWith(c.href)) ? "text-green-mid" : "text-ink"
                 }`}
                 aria-haspopup="true"
@@ -97,7 +99,7 @@ export function MainNav({
             <Link
               key={item.label}
               href={item.href!}
-              className={`px-2.5 py-2 text-sm font-bold rounded-md whitespace-nowrap hover:text-green-mid transition-colors ${
+              className={`px-1.5 xl:px-2.5 py-2 text-[13px] xl:text-sm font-bold rounded-md whitespace-nowrap hover:text-green-mid transition-colors ${
                 pathname === item.href ? "text-green-mid" : "text-ink"
               }`}
             >
@@ -107,7 +109,7 @@ export function MainNav({
         })}
         <Link
           href="/contact"
-          className="ml-2 shrink-0 whitespace-nowrap bg-green hover:bg-green-deep text-white text-sm font-bold rounded-lg px-4 py-2 transition-colors"
+          className="ml-1.5 xl:ml-2 shrink-0 whitespace-nowrap bg-green hover:bg-green-deep text-white text-[13px] xl:text-sm font-bold rounded-lg px-3 xl:px-4 py-2 transition-colors"
         >
           {contactLabel}
         </Link>

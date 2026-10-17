@@ -82,7 +82,7 @@ export default function AbacusLayout({ children }: { children: React.ReactNode }
           </div>
           <div className="lg:pl-80">
             <h2 className="font-display text-2xl font-semibold text-white sm:text-3xl">Give Your Child the Power of Numbers</h2>
-            <p className="mt-1.5 text-sm text-white/80">Join our Abacus Program at Bangladesh Community School, Korea.</p>
+            <p className="mt-1.5 text-sm text-white/80">Join our Abacus Program at Bangladesh Community School.</p>
           </div>
           <Link
             href="/apply/special?course=abacus"

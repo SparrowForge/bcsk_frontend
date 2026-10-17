@@ -5,7 +5,7 @@ import { PageShell } from "@/components/site/PageShell";
 import { navMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
-  return navMetadata("tuitionFee", "Admission, semester and book fees for each class at Bangladesh Community School, Korea, from Pre-Primary to Class 5.");
+  return navMetadata("tuitionFee", "Admission, semester and book fees for each class at Bangladesh Community School, from Pre-Primary to Class 5.");
 }
 
 const krw = (n: number) => `₩${n.toLocaleString("en-US")}`;
