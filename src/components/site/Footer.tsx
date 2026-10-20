@@ -50,9 +50,11 @@ export async function Footer() {
             <span className="block text-[17px] sm:text-xl font-bold text-white" lang="bn">
               {SCHOOL.nameBn}
             </span>
-            <span className="mt-1.5 inline-flex items-center gap-2 text-[13px] font-semibold tracking-wide text-green-soft">
-              <span aria-hidden className="h-[2px] w-5 rounded-full bg-crimson-bright" />
+            {/* The red rule sits under the slogan, as it does under every band title, rather
+                than in front of it where it pushed the slogan out of line with the name. */}
+            <span className="mt-1.5 block text-[13px] font-semibold tracking-wide text-green-soft">
               {t.home.schoolMotto}
+              <span aria-hidden className="mt-1.5 block h-[2px] w-12 rounded-full bg-crimson-bright" />
             </span>
           </span>
         </Link>

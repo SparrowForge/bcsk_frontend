@@ -15,7 +15,8 @@ const MAX_POSTS = 12;
  *
  * Second round of changes (October 2026):
  *   - **Its own background.** It sat on the same green logo shade as the Opinions band above
- *     it, so the two read as one. It now has the warm band (`band-warm` in globals.css).
+ *     it, so the two read as one. It had a warm pink band for a while; at the school's request
+ *     it now sits on the plain white page, which is what separates it from Opinions.
  *   - **Any kind of work.** Kinds are typed by the admin, not picked from four, so arts,
  *     handicrafts and whatever activity comes next appear without a deploy. Each kind keeps
  *     one colour for its stripe, its label and its filter chip (`lib/corner-kinds.ts`).
@@ -32,7 +33,7 @@ export function StudentCornerBand({ t, posts }: { t: Dictionary; posts: StudentC
   });
 
   return (
-    <section className="logo-shade band-warm mx-auto max-w-7xl px-4 mt-16 pb-2">
+    <section className="mx-auto max-w-7xl px-4 mt-16 pb-2">
       <SectionBar>{t.nav.studentCorner}</SectionBar>
       <p {...reveal()} className="mx-auto mt-4 max-w-2xl text-center text-[14.5px] text-ink-soft">
         {t.home.studentCornerIntro}
