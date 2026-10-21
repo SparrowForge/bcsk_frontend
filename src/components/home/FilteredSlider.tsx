@@ -56,7 +56,8 @@ export function FilteredSlider({
           })}
         </div>
       )}
-      <CardSlider key={filter ?? "all"} t={t} label={label} basis={basis} items={visible} footer={footer} />
+      {/* Centred under the centred heading and chips — and a filter can leave a single card. */}
+      <CardSlider key={filter ?? "all"} t={t} label={label} basis={basis} items={visible} footer={footer} center />
     </>
   );
 }

@@ -6,6 +6,7 @@ import { classLevelLabel } from "@/lib/constants";
 import { krw } from "@/lib/format";
 import { formatDate } from "@/lib/dates";
 import { DecisionButtons } from "./DecisionButtons";
+import { AssessmentForm } from "./AssessmentForm";
 
 /** FR-ADMIN-03: review, approve, reject, or request corrections. */
 export default async function AdmissionDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -25,11 +26,23 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
     ...(app.type === "SPECIAL"
       ? [["Level / track", app.courseLevel?.name ?? "Not chosen (applied before levels were asked)"] as [string, string]]
       : []),
+    ["First name", app.firstName ?? null],
+    ["Last name", app.lastName ?? null],
     ["Date of birth", app.dob ? formatDate(app.dob) : null],
     ["Gender", app.gender],
     ["Religion", app.religion],
+    ["Present class", app.presentQualification ?? null],
     ["Father's name", app.fatherName],
+    ["Father's email", app.fatherEmail ?? null],
+    ["Father's education", app.fatherEducation ?? null],
+    ["Father's profession", app.fatherProfession ?? null],
+    ["Father's phone", app.fatherPhone ?? null],
     ["Mother's name", app.motherName],
+    ["Mother's email", app.motherEmail ?? null],
+    ["Mother's education", app.motherEducation ?? null],
+    ["Mother's profession", app.motherProfession ?? null],
+    ["Mother's phone", app.motherPhone ?? null],
+    // Older applications asked one guardian's details instead of each parent's.
     ["Guardian profession", app.guardianProfession],
     ["Guardian education", app.guardianEducation],
     ["Phone", app.phone],
@@ -38,7 +51,10 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
     ["Highest education", app.highestEducation],
     ["Address (Korea)", app.addressKorea],
     ["Address (Bangladesh)", app.addressBangladesh],
-    ["Emergency contact", app.emergencyContact],
+    [
+      "Emergency contact / guarantor",
+      app.emergencyContactName ? `${app.emergencyContactName}, ${app.emergencyContactPhone ?? ""}` : app.emergencyContact,
+    ],
     ["PIPA consent", app.parentalConsent ? "Given by guardian at application" : "MISSING"],
     [
       "Coupon",
@@ -104,6 +120,12 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
           <b>Correction requested:</b> {app.correctionNote}
         </p>
       )}
+
+      <AssessmentForm
+        applicationId={app.id}
+        assessorComment={app.assessorComment ?? ""}
+        paymentNote={app.paymentNote ?? ""}
+      />
 
       <div className="mt-8">
         <DecisionButtons applicationId={app.id} status={app.status} hasAccount={app.createdStudentUserId !== null} />

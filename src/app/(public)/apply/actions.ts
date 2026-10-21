@@ -37,12 +37,23 @@ export async function submitApplication(_prev: ApplyState, formData: FormData): 
   const type = get("type") as RegistrationType | undefined;
   if (!type || !TYPES.includes(type)) return { error: "Choose what you are registering for." };
 
+  // The form asks first and last name, and the emergency contact in two parts. The API also
+  // keeps the joined values, which re-admission matching and activation still key on.
+  const firstName = get("firstName");
+  const lastName = get("lastName");
+  const applicantName = [firstName, lastName].filter(Boolean).join(" ") || undefined;
+  const emergencyContactName = get("emergencyContactName");
+  const emergencyContactPhone = get("emergencyContactPhone");
+  const emergencyContact = [emergencyContactName, emergencyContactPhone].filter(Boolean).join(", ") || undefined;
+
   let created: Awaited<ReturnType<typeof admissions.submit>>;
   try {
     const photoPath = await uploadPhoto(formData, type !== "RE_ADMISSION");
     created = await admissions.submit({
       type,
-      applicantName: get("applicantName"),
+      applicantName,
+      firstName,
+      lastName,
       dob: get("dob"),
       gender: get("gender"),
       religion: get("religion"),
@@ -50,17 +61,25 @@ export async function submitApplication(_prev: ApplyState, formData: FormData): 
       email: get("email"),
       addressKorea: get("addressKorea"),
       addressBangladesh: get("addressBangladesh"),
-      emergencyContact: get("emergencyContact"),
+      emergencyContact,
+      emergencyContactName,
+      emergencyContactPhone,
       learningMode: get("learningMode"),
       // A checkbox posts "on" when ticked and nothing when not; the API expects a boolean.
       parentalConsent: formData.get("parentalConsent") === "on",
       recaptchaToken: get("recaptchaToken"),
       photoPath,
       fatherName: get("fatherName"),
+      fatherEmail: get("fatherEmail"),
+      fatherEducation: get("fatherEducation"),
+      fatherProfession: get("fatherProfession"),
+      fatherPhone: get("fatherPhone"),
       motherName: get("motherName"),
-      guardianProfession: get("guardianProfession"),
-      guardianEducation: get("guardianEducation"),
-      guardianPhone2: get("guardianPhone2"),
+      motherEmail: get("motherEmail"),
+      motherEducation: get("motherEducation"),
+      motherProfession: get("motherProfession"),
+      motherPhone: get("motherPhone"),
+      presentQualification: get("presentQualification"),
       // re-admission
       studentId: get("studentId"),
       // special course

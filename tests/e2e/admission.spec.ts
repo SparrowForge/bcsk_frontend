@@ -97,7 +97,9 @@ test.describe("admission funnel", () => {
     await page.goto("/apply/regular");
 
     const name = applicant();
-    await page.fill('input[name="applicantName"]', name);
+    // The form asks first and last name; the action joins them back into `name`.
+    await page.fill('input[name="firstName"]', "E2E");
+    await page.fill('input[name="lastName"]', name.slice("E2E ".length));
     await page.fill('input[name="dob"]', "2016-04-11");
     await page.selectOption('select[name="gender"]', { index: 1 });
     await page.selectOption('select[name="religion"]', { index: 1 });
@@ -108,7 +110,8 @@ test.describe("admission funnel", () => {
     await page.fill('input[name="motherName"]', "Mother Name");
     await page.fill('textarea[name="addressKorea"], input[name="addressKorea"]', "Yongin-si");
     await page.fill('textarea[name="addressBangladesh"], input[name="addressBangladesh"]', "Dhaka");
-    await page.fill('input[name="emergencyContact"]', "+82 10 9999 8888");
+    await page.fill('input[name="emergencyContactName"]', "Guarantor Name");
+    await page.fill('input[name="emergencyContactPhone"]', "+82 10 9999 8888");
     await page.setInputFiles('input[name="photo"]', {
       name: "photo.png",
       mimeType: "image/png",

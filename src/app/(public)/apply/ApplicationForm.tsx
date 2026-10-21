@@ -296,10 +296,11 @@ export function ApplicationForm({
       {/* ------------------------------------------------------- applicant, common */}
       <h2 className={section}>{isSpecial ? "Applicant information" : "Student information"}</h2>
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label={isSpecial ? "Applicant's full name" : "Student's full name"} name="applicantName" required autoComplete="name" />
-        <Field label="Date of birth" name="dob" type="date" required />
+        <Field label="First name" name="firstName" required autoComplete="given-name" />
+        <Field label="Last name" name="lastName" required autoComplete="family-name" />
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-3 gap-4">
+        <Field label="Date of birth" name="dob" type="date" required />
         <SelectField label="Gender" name="gender" required options={[{ value: "Male", label: "Male" }, { value: "Female", label: "Female" }]} />
         <SelectField
           label="Religion"
@@ -320,30 +321,48 @@ export function ApplicationForm({
       />
 
       {!isSpecial && (
+        <Field label="Student's present class (e.g. Class 1, Korean school)" name="presentQualification" />
+      )}
+
+      {!isSpecial && (
         <>
-          <h2 className={section}>Guardian information</h2>
+          <h2 className={section}>Father</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Father's name" name="fatherName" required={isRegular} />
-            <Field label="Mother's name" name="motherName" required={isRegular} />
+            <Field label="Father's email" name="fatherEmail" type="email" />
           </div>
-          {isRegular && (
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Field label="Guardian profession" name="guardianProfession" />
-              <Field label="Guardian education" name="guardianEducation" />
-            </div>
-          )}
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Field label="Educational qualification" name="fatherEducation" />
+            <Field label="Profession" name="fatherProfession" />
+            <Field label="Phone" name="fatherPhone" type="tel" />
+          </div>
+
+          <h2 className={section}>Mother</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label="Mother's name" name="motherName" required={isRegular} />
+            <Field label="Mother's email" name="motherEmail" type="email" />
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <Field label="Educational qualification" name="motherEducation" />
+            <Field label="Profession" name="motherProfession" />
+            <Field label="Phone" name="motherPhone" type="tel" />
+          </div>
         </>
       )}
 
       <h2 className={section}>Contact &amp; addresses</h2>
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Phone number" name="phone" required autoComplete="tel" placeholder="+82 10-…" />
-        {isRegular ? <Field label="Second phone (optional)" name="guardianPhone2" /> : <span />}
+        <Field label="Main contact phone" name="phone" required autoComplete="tel" placeholder="+82 10-…" />
+        <Field label="Email (confirmation is sent here)" name="email" type="email" required autoComplete="email" />
       </div>
-      <Field label="Email (confirmation is sent here)" name="email" type="email" required autoComplete="email" />
       <Field label={isRegular || type === "RE_ADMISSION" ? "Address in Korea" : "Address in Korea (optional)"} name="addressKorea" required={isRegular} />
       <Field label="Address in Bangladesh" name="addressBangladesh" required />
-      <Field label="Emergency contact (name + phone)" name="emergencyContact" required />
+
+      <h2 className={section}>Emergency contact / guarantor</h2>
+      <div className="grid sm:grid-cols-2 gap-4">
+        <Field label="Name" name="emergencyContactName" required />
+        <Field label="Contact number" name="emergencyContactPhone" type="tel" required />
+      </div>
 
       {isSpecial && (
         <label className="flex items-start gap-3 bg-green-soft rounded-xl p-4">

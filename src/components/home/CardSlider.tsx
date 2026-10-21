@@ -32,6 +32,7 @@ export function CardSlider({
   label,
   basis,
   footer,
+  center = false,
   t,
 }: {
   items: { key: string; node: React.ReactNode }[];
@@ -41,6 +42,12 @@ export function CardSlider({
   basis: string;
   /** Anything that sits at the right of the control row, such as a "see all" link. */
   footer?: React.ReactNode;
+  /**
+   * Centre the cards (and the footer) when they all fit and the strip is standing still.
+   * For a band under a centred heading: two cards hugging the left edge of a three-card row
+   * read as if one had failed to load.
+   */
+  center?: boolean;
   t: Dictionary;
 }) {
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -58,6 +65,9 @@ export function CardSlider({
 
   const loops = items.length > perView;
   const cards = loops ? [...items, ...items] : items;
+  // Only while nothing overflows: `justify-content: center` on a scroller that does overflow
+  // pushes its first card out past the left edge, where it cannot be scrolled back to.
+  const centred = center && !loops;
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -147,7 +157,7 @@ export function CardSlider({
         aria-label={label}
         aria-live="off"
         onPointerDown={() => setNudge((n) => n + 1)}
-        className="no-scrollbar -mx-2.5 flex overflow-x-auto py-2 scroll-smooth motion-reduce:scroll-auto snap-x snap-mandatory"
+        className={`no-scrollbar -mx-2.5 flex overflow-x-auto py-2 scroll-smooth motion-reduce:scroll-auto snap-x snap-mandatory ${centred ? "justify-center" : ""}`}
       >
         {cards.map((item, i) => {
           // The second copy exists only to make the wrap seamless. `inert` takes it out of
@@ -174,7 +184,7 @@ export function CardSlider({
       {/* Controls and the way out of the band share a row: the strip is wide, and stacking
           three small rows under it would turn the footer into more furniture than content. */}
       {(loops || footer) && (
-        <div className="mt-3 flex items-center justify-between gap-3">
+        <div className={`mt-3 flex items-center gap-3 ${centred ? "justify-center" : "justify-between"}`}>
           {loops ? (
             <div className="flex items-center gap-2">
               <StripButton label={t.common.previous} onClick={() => nudgeStep(-1)}>
@@ -191,7 +201,7 @@ export function CardSlider({
                 <path d="m9 5 7 7-7 7" />
               </StripButton>
             </div>
-          ) : (
+          ) : centred ? null : (
             <span />
           )}
           {footer}

@@ -287,6 +287,45 @@ export type TeacherTask = {
   dueDate: ISODate | null;
 };
 
+/* -------------------------- academic: general classes ------------------------- */
+
+export type ClassColor = "green" | "blue" | "purple" | "orange" | "teal" | "red" | "indigo";
+export type SubjectColor = "pink" | "purple" | "blue" | "teal" | "green" | "yellow" | "orange" | "red" | "indigo";
+export type SubjectCategory = "MAIN" | "RELATED" | "HOMEWORK";
+
+/** A class as its card on the All General Classes page shows it. */
+export type AcademicClassCard = {
+  id: number;
+  slug: string;
+  name: string;
+  ageRange: string | null;
+  summary: string | null;
+  color: ClassColor;
+  cardImageUrl: string | null;
+};
+
+export type ClassSubject = {
+  id: number;
+  classId: number;
+  title: string;
+  category: SubjectCategory;
+  description: string | null;
+  outcomes: string[];
+  coverImageUrl: string | null;
+  color: SubjectColor;
+  displayOrder: number;
+};
+
+export type AcademicClass = AcademicClassCard & {
+  tagline: string | null;
+  intro: string | null;
+  highlights: string[];
+  bannerImageUrl: string | null;
+  displayOrder: number;
+  active: boolean;
+  subjects?: ClassSubject[];
+};
+
 /* -------------------------------- admission ------------------------------- */
 
 export type ApplicationForm = {
@@ -294,6 +333,8 @@ export type ApplicationForm = {
   type: string;
   status: string;
   applicantName: string;
+  firstName?: string | null;
+  lastName?: string | null;
   dob: ISODate | null;
   gender: string | null;
   religion: string | null;
@@ -303,12 +344,27 @@ export type ApplicationForm = {
   addressKorea: string | null;
   addressBangladesh: string | null;
   emergencyContact: string | null;
+  emergencyContactName?: string | null;
+  emergencyContactPhone?: string | null;
   grade: string | null;
   fatherName: string | null;
+  fatherEmail?: string | null;
+  fatherEducation?: string | null;
+  fatherProfession?: string | null;
+  fatherPhone?: string | null;
   motherName: string | null;
+  motherEmail?: string | null;
+  motherEducation?: string | null;
+  motherProfession?: string | null;
+  motherPhone?: string | null;
+  /** Single-guardian fields from applications made before each parent was asked separately. */
   guardianProfession: string | null;
   guardianEducation: string | null;
   guardianPhone2: string | null;
+  presentQualification?: string | null;
+  /** Staff-written, from the admission assessment. */
+  assessorComment?: string | null;
+  paymentNote?: string | null;
   courseName: string | null;
   highestEducation: string | null;
   isBcskStudent: boolean;

@@ -1,7 +1,6 @@
-import { site } from "@/services";
-import { CLASS_LEVELS } from "@/lib/constants";
 import { PhotoBanner, BannerRule } from "@/components/site/PhotoBanner";
-import { CurriculumFilter } from "./CurriculumFilter";
+import { SectionDivider } from "@/components/academic/SectionDivider";
+import { ProgramImageCards } from "@/components/academic/ProgramImageCards";
 import { navMetadata } from "@/lib/seo";
 
 export function generateMetadata() {
@@ -82,16 +81,12 @@ const AREAS = [
   },
 ];
 
-/** FR-ACAD-02: NCTB-aligned subject list per class as structured, filterable content. */
-export default async function CurriculumPage() {
-  const entries = await site.curriculum();
-
-  const byClass = CLASS_LEVELS.map((c) => ({
-    key: c.key,
-    label: c.label,
-    subjects: entries.filter((e) => e.classLevel === c.key),
-  }));
-
+/**
+ * FR-ACAD-02. The banner and snapshot, then the four programmes as picture cards (Academic
+ * Curriculum design, Oct 2026). The class-by-class subject lists moved to each class's own page
+ * under /academic/classes, where the office edits them.
+ */
+export default function CurriculumPage() {
   return (
     <>
       <PhotoBanner image="/images/banners/curriculum-students.jpg" imagePosition="35% 30%">
@@ -146,15 +141,8 @@ export default async function CurriculumPage() {
         </ul>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 mt-16 pb-4">
-        <div className="mb-6">
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-crimson-ink">Class by class</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold text-green">Subjects in every class</h2>
-        </div>
-        <div className="max-w-4xl">
-          <CurriculumFilter classes={byClass} />
-        </div>
-      </section>
+      <SectionDivider />
+      <ProgramImageCards />
     </>
   );
 }

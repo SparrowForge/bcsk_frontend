@@ -119,6 +119,9 @@ export const admissions = {
   /** Sends the application back to the applicant with a note; it stays in the queue. */
   requestCorrections: (id: number, note: string) =>
     api.post<unknown>(`/admissions/${id}/corrections`, { note }),
+  /** The assessor's comment and payment notes. An empty string clears a field. */
+  saveAssessment: (id: number, notes: { assessorComment?: string; paymentNote?: string }) =>
+    api.post<unknown>(`/admissions/${id}/assessment`, notes),
 };
 
 /* --------------------------------- payment --------------------------------- */
@@ -364,6 +367,27 @@ export const userPermissions = {
 };
 
 /* --------------------------------- coupons --------------------------------- */
+/**
+ * Academic > All General Classes. The public reads carry the `academic` tag, which the admin
+ * actions expire, so an edit shows on the site straight away rather than after the 5 minutes.
+ */
+export const academic = {
+  classes: () => api.public<T.AcademicClassCard[]>("/academic/classes", 300, ["academic"]),
+  classPage: (slug: string) =>
+    api.public<T.AcademicClass>(`/academic/classes/${encodeURIComponent(slug)}`, 300, ["academic"]),
+  adminClasses: () => api.get<(T.AcademicClass & { _count: { subjects: number } })[]>("/academic/admin/classes"),
+  adminClass: (id: number) => api.get<T.AcademicClass>(`/academic/admin/classes/${id}`),
+  createClass: (input: Record<string, unknown>) => api.post<T.AcademicClass>("/academic/admin/classes", input),
+  updateClass: (id: number, input: Record<string, unknown>) =>
+    api.patch<T.AcademicClass>(`/academic/admin/classes/${id}`, input),
+  deleteClass: (id: number) => api.delete<{ id: number }>(`/academic/admin/classes/${id}`),
+  addSubject: (classId: number, input: Record<string, unknown>) =>
+    api.post<T.ClassSubject>(`/academic/admin/classes/${classId}/subjects`, input),
+  updateSubject: (id: number, input: Record<string, unknown>) =>
+    api.patch<T.ClassSubject>(`/academic/admin/subjects/${id}`, input),
+  deleteSubject: (id: number) => api.delete<{ id: number }>(`/academic/admin/subjects/${id}`),
+};
+
 export const coupons = {
   list: () => api.get<T.Coupon[]>("/coupons"),
   create: (input: Record<string, unknown>) => api.post<T.Coupon>("/coupons", input),

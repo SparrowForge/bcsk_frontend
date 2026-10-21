@@ -45,6 +45,25 @@ export async function rejectApplication(applicationId: number, formData: FormDat
   return { ok: true };
 }
 
+/** The assessor's comment and payment notes from the school's admission form. */
+export async function saveAssessment(
+  applicationId: number,
+  _prev: DecisionResult | null,
+  formData: FormData,
+): Promise<DecisionResult> {
+  await requirePermission("admissions:decide");
+  try {
+    await admissions.saveAssessment(applicationId, {
+      assessorComment: String(formData.get("assessorComment") ?? "").trim(),
+      paymentNote: String(formData.get("paymentNote") ?? "").trim(),
+    });
+  } catch (e) {
+    return toActionError(e);
+  }
+  revalidatePath(`/admin/admissions/${applicationId}`);
+  return { ok: true };
+}
+
 export async function requestCorrections(applicationId: number, formData: FormData): Promise<DecisionResult> {
   await requirePermission("admissions:decide");
   const note = String(formData.get("note") ?? "").trim();
