@@ -334,7 +334,7 @@ export function ApplicationForm({
           <div className="grid sm:grid-cols-3 gap-4">
             <Field label="Educational qualification" name="fatherEducation" />
             <Field label="Profession" name="fatherProfession" />
-            <Field label="Phone" name="fatherPhone" type="tel" />
+            <Field label="Phone" note="(WhatsApp preferable)" name="fatherPhone" type="tel" />
           </div>
 
           <h2 className={section}>Mother</h2>
@@ -345,14 +345,14 @@ export function ApplicationForm({
           <div className="grid sm:grid-cols-3 gap-4">
             <Field label="Educational qualification" name="motherEducation" />
             <Field label="Profession" name="motherProfession" />
-            <Field label="Phone" name="motherPhone" type="tel" />
+            <Field label="Phone" note="(WhatsApp preferable)" name="motherPhone" type="tel" />
           </div>
         </>
       )}
 
       <h2 className={section}>Contact &amp; addresses</h2>
       <div className="grid sm:grid-cols-2 gap-4">
-        <Field label="Main contact phone" name="phone" required autoComplete="tel" placeholder="+82 10-…" />
+        <Field label="Main contact phone" note="(WhatsApp preferable)" name="phone" required autoComplete="tel" placeholder="+82 10-…" />
         <Field label="Email (confirmation is sent here)" name="email" type="email" required autoComplete="email" />
       </div>
       <Field label={isRegular || type === "RE_ADMISSION" ? "Address in Korea" : "Address in Korea (optional)"} name="addressKorea" required={isRegular} />

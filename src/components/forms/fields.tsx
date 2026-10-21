@@ -10,6 +10,7 @@ export function Field({
   required = false,
   placeholder,
   autoComplete,
+  note,
 }: {
   label: string;
   name: string;
@@ -17,11 +18,14 @@ export function Field({
   required?: boolean;
   placeholder?: string;
   autoComplete?: string;
+  /** A short aside after the required mark, e.g. "(WhatsApp preferable)". */
+  note?: string;
 }) {
   return (
     <label className="block">
       <span className="text-xs font-bold text-ink">
         {label} {required && <span className="text-crimson-ink">*</span>}
+        {note && <span className="font-semibold text-ink-soft"> {note}</span>}
       </span>
       <input
         name={name}
