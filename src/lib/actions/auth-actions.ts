@@ -88,10 +88,23 @@ export async function changePassword(
   if (newPassword.length < 10) return { error: "Your new password must be at least 10 characters." };
   if (newPassword !== confirmPassword) return { error: "The two new passwords don't match." };
 
+  let result: { token?: string };
   try {
-    await api.post("/users/me/change-password", { currentPassword, newPassword });
+    result = await api.post<{ token?: string }>("/users/me/change-password", { currentPassword, newPassword });
   } catch (e) {
     return toActionError(e);
+  }
+  // A password change retires every session issued before it, this one included; the backend
+  // hands back a fresh token to keep the holder signed in.
+  if (result.token) {
+    const jar = await cookies();
+    jar.set("bcsk_session", result.token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 8 * 3600,
+      path: "/",
+    });
   }
   redirect(homeFor(session.role));
 }

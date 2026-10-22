@@ -305,6 +305,7 @@ export const admin = {
   updateCourse: (id: number, input: Record<string, unknown>) => api.patch<T.Course>(`/admin/courses/${id}`, input),
   updateLevel: (id: number, input: Record<string, unknown>) => api.patch<T.CourseLevel>(`/admin/levels/${id}`, input),
   addLevel: (courseId: number) => api.post<T.CourseLevel>(`/admin/courses/${courseId}/levels`),
+  deleteLevel: (id: number) => api.delete<{ id: number }>(`/admin/levels/${id}`),
 
   fees: () => api.get<T.FeeConfig[]>("/admin/fees"),
   updateFee: (id: number, input: Record<string, unknown>) => api.patch<T.FeeConfig>(`/admin/fees/${id}`, input),

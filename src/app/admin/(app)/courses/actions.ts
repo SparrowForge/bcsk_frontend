@@ -48,10 +48,7 @@ export async function updateLevel(_prev: CourseState, formData: FormData): Promi
   } catch (e) {
     return toActionError(e);
   }
-  revalidatePath("/admin/courses");
-  revalidatePath("/courses/abacus");
-  revalidatePath("/courses/ielts-for-kids");
-  revalidatePath("/courses/deen");
+  revalidateLevelPages();
   return { ok: true };
 }
 
@@ -59,4 +56,23 @@ export async function addLevel(courseId: number) {
   await requirePermission("courses:manage");
   await admin.addLevel(courseId);
   revalidatePath("/admin/courses");
+}
+
+/** The API refuses a level that still has classes or applications; that comes back as `error`. */
+export async function deleteLevel(id: number): Promise<CourseState> {
+  await requirePermission("courses:manage");
+  try {
+    await admin.deleteLevel(id);
+  } catch (e) {
+    return toActionError(e);
+  }
+  revalidateLevelPages();
+  return { ok: true };
+}
+
+function revalidateLevelPages() {
+  revalidatePath("/admin/courses");
+  revalidatePath("/courses/abacus");
+  revalidatePath("/courses/ielts-for-kids");
+  revalidatePath("/courses/deen");
 }
