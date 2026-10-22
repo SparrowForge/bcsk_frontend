@@ -10,10 +10,12 @@ import { join, relative, sep } from "node:path";
  *
  * Student and teacher actions check the menu switch they need (Insert / Update / Delete); the
  * desk-status card on the always-open teacher dashboard is the one that only needs the role.
+ * A few student actions are requests the API grants on the Access switch alone - applying for
+ * leave or a transfer, joining an online class - and those must still name it explicitly.
  */
 const ROOT = join(process.cwd(), "src", "app");
 const PANELS: Record<string, RegExp> = {
-  classroom: /await requireMenu\("classroom\.[\w-]+", "(insert|update|delete)"\)/,
+  classroom: /await requireMenu\("classroom\.[\w-]+", "(access|insert|update|delete)"\)/,
   office: /await require(Menu\("office\.[\w-]+", "(insert|update|delete)"\)|Teacher\(\))/,
   // Admin actions use a capability guard; plain requireAdmin() is only for shared screens.
   admin: /await require(Permission|SuperAdmin|Admin)\(/,

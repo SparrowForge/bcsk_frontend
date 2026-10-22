@@ -12,10 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** FR-TCH-01: Office login (Teacher ID + Password). */
-export default async function OfficeLoginPage() {
+export default async function OfficeLoginPage({ searchParams }: { searchParams: Promise<{ expired?: string }> }) {
   const session = await getSession();
   if (session?.role === "TEACHER") redirect("/office/dashboard");
   const { t } = await getDict();
+  const { expired } = await searchParams;
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-green-soft/50">
@@ -26,6 +27,7 @@ export default async function OfficeLoginPage() {
         loginLabel={t.auth.login}
         forgotLabel={t.auth.forgotPassword}
         invalidMessage={t.auth.invalidCredentials}
+        notice={expired ? t.auth.sessionExpired : undefined}
         action={loginTeacher}
         accent="bg-green-mid hover:bg-green-mid/85"
         demoHint={isDemoMode() ? "Demo: BCSK-T-003 / bcsk1234" : undefined}

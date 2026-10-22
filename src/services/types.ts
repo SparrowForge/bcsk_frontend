@@ -15,7 +15,7 @@ export type ISODate = string;
 
 /* --------------------------------- people --------------------------------- */
 
-export type Role = "STUDENT" | "TEACHER" | "ADMIN_SUPPORT" | "IT_SUPPORT" | "SUPER_ADMIN";
+export type Role = "STUDENT" | "TEACHER" | "HEAD_MASTER" | "ADMIN_SUPPORT" | "IT_SUPPORT" | "SUPER_ADMIN";
 
 export type UserRow = {
   id: number;
@@ -243,6 +243,8 @@ export type ExamResult = {
   marks: number;
   grade: string | null;
   remark: string | null;
+  /** LMS B5: the exam it was published from; null for results entered directly. */
+  examId?: number | null;
 };
 
 export type ProgressRecord = {
@@ -670,4 +672,231 @@ export type MenuEntry = {
   builtIn: boolean;
   /** How many users have a saved permission row for it. */
   assigned: number;
+};
+
+/* ------------------------------- LMS: academic setup (F1) ------------------------------ */
+
+export type Institute = {
+  id: number; code: string; name: string; nameBn: string | null; nameKo: string | null;
+  address: string | null; phone: string | null; email: string | null; website: string | null;
+  logoUrl: string | null; headMasterName: string | null; signatureUrl: string | null;
+  active: boolean; rankTies: "SHARED" | "SPLIT"; leaveTeacherMaxDays: number;
+};
+
+export type Department = {
+  id: number; name: string; code: string; headUserId: number | null; displayOrder: number; active: boolean;
+  head: { id: number; name: string } | null;
+  _count: { courses: number; subjects: number };
+};
+
+export type AcademicTerm = {
+  id: number; code: string; name: string; startDate: ISODate | null; endDate: ISODate | null; isCurrent: boolean;
+  _count: { batches: number };
+};
+
+/** A course with its classes (levels), for the structure pickers. */
+export type StructureCourse = {
+  id: number; slug: string; name: string; type: string; active: boolean;
+  department: { id: number; name: string } | null;
+  levels: { id: number; name: string; code: string | null }[];
+};
+
+export type SectionSummary = { id: number; name: string; capacity: number | null; active: boolean; _count: { enrollments: number } };
+
+export type Batch = {
+  id: number; name: string; termId: number; courseLevelId: number;
+  term: { id: number; code: string; name: string };
+  courseLevel: { id: number; name: string; course: { id: number; name: string } };
+  sections: SectionSummary[];
+};
+
+export type Subject = {
+  id: number; code: string; name: string; type: "THEORY" | "PRACTICAL"; departmentId: number | null;
+  displayOrder: number; active: boolean;
+  department: { id: number; name: string } | null;
+  _count: { curriculum: number; assignments: number };
+};
+
+export type CurriculumRow = {
+  id: number; courseLevelId: number; subjectId: number; fullMarks: number; passMarks: number; isOptional: boolean; displayOrder: number;
+  subject: { id: number; code: string; name: string; type: string; active: boolean };
+};
+
+export type SectionDetail = {
+  id: number; name: string; capacity: number | null; room: string | null; classTeacherId: number | null; active: boolean;
+  batch: { courseLevelId: number; termId: number };
+  students: { id: number; rollNo: number | null; status: string; student: { id: number; name: string; studentProfile: { studentId: string } | null } }[];
+  assignments: { id: number; subject: { id: number; code: string; name: string }; teacher: { id: number; teacherId: string; user: { name: string } } }[];
+  curriculum: CurriculumRow[];
+};
+
+export type StructureTeacher = { id: number; teacherId: string; designation: string | null; user: { id: number; name: string } };
+
+export type StructureStudent = {
+  id: number; name: string; loginId: string;
+  studentProfile: { classLevel: string; status: string } | null;
+  sectionPlaces: { id: number; rollNo: number | null; section: { id: number; name: string; batch: { id: number; name: string; termId: number } } }[];
+};
+
+export type RoutineSlot = {
+  id: number; title: string; dayOfWeek: string; startTime: string; endTime: string | null; room: string | null;
+  zoomLink: string | null; notice: string | null; semester: string; active: boolean; isLive: boolean;
+  sectionId: number | null; subjectId: number | null; teacherId: number | null;
+  section: { id: number; name: string; batch: { id: number; name: string; courseLevelId: number } } | null;
+  subject: { id: number; code: string; name: string } | null;
+  teacher: { id: number; teacherId: string; user: { name: string } } | null;
+};
+
+export type CalendarEventType = "TERM" | "HOLIDAY" | "EXAM" | "EVENT" | "MEETING";
+export type CalendarAudience = "ALL" | "STUDENTS" | "TEACHERS" | "STAFF";
+export type CalendarEvent = {
+  id: number; title: string; description: string | null; type: CalendarEventType; audience: CalendarAudience;
+  startDate: ISODate; endDate: ISODate; published: boolean; termId: number | null; courseLevelId: number | null;
+  term: { id: number; code: string } | null;
+  courseLevel: { id: number; name: string } | null;
+};
+
+/* ---------------------------------- teacher portal (LMS F2) ---------------------------------- */
+
+export type StudentRow = { id: number; name: string; studentProfile: { studentId: string } | null };
+
+/** A section the teacher teaches or leads in the current term. */
+export type TeacherSection = {
+  id: number; name: string; room: string | null; isClassTeacher: boolean;
+  batch: { id: number; name: string; term: { code: string; name: string }; courseLevel: { id: number; name: string } };
+  subjects: { id: number; code: string; name: string }[];
+  _count: { enrollments: number };
+};
+
+export type SectionRoster = {
+  sectionId: number; isClassTeacher: boolean;
+  students: { rollNo: number | null; student: { id: number; name: string; studentProfile: { studentId: string; photoUrl: string | null } | null } }[];
+};
+
+export type AttendanceTally = { present: number; absent: number; late: number; excused: number; total: number; rate: number | null };
+export type SectionAttendanceReport = {
+  sectionId: number; from: string; to: string;
+  students: ({ rollNo: number | null; student: StudentRow } & AttendanceTally)[];
+  days: ({ date: string } & AttendanceTally)[];
+  overall: AttendanceTally;
+};
+
+export type AttendanceSheetDay = {
+  classSessionId: number; date: string;
+  students: { student: StudentRow; status: string | null; remark: string | null }[];
+};
+
+export type MaterialKind = "FILE" | "LINK" | "VIDEO";
+export type CourseMaterial = {
+  id: number; title: string; description: string | null; kind: MaterialKind; fileUrl: string | null; linkUrl: string | null;
+  published: boolean; displayOrder: number; sectionId: number | null; courseLevelId: number; uploadedById: number | null;
+  createdAt: ISODate; updatedAt: ISODate;
+  subject: { id: number; code: string; name: string };
+  courseLevel: { id: number; name: string };
+  section: { id: number; name: string } | null;
+};
+
+export type OnlineClassStatus = "SCHEDULED" | "LIVE" | "ENDED" | "CANCELLED";
+export type TeacherOnlineClass = {
+  id: number; topic: string | null; startsAt: ISODate; endsAt: ISODate; status: OnlineClassStatus;
+  startedAt: ISODate | null; endedAt: ISODate | null; recordingUrl: string | null; joinUrl: string | null;
+  classSession: { id: number; title: string; subject: { name: string } | null; teacher: { user: { name: string } } | null };
+  _count: { joins: number };
+};
+export type OnlineClassJoins = {
+  onlineClass: { id: number; status: OnlineClassStatus; startsAt: ISODate; endsAt: ISODate };
+  people: { id: number; name: string; role: string; studentProfile: { studentId: string } | null; joinedAt: ISODate | null }[];
+};
+
+export type MarkSheetStatus = "NOT_STARTED" | "DRAFT" | "SUBMITTED" | "LOCKED";
+export type TeacherPaper = {
+  id: number; date: ISODate; startTime: string; endTime: string | null; room: string | null; fullMarks: number; passMarks: number;
+  examinerId: number | null; courseLevelId: number; subjectId: number;
+  exam: { id: number; name: string; termId: number };
+  subject: { name: string };
+  courseLevel: { name: string };
+  sections: { sectionId: number; section: string; status: MarkSheetStatus }[];
+};
+export type MarksGrid = {
+  paper: { id: number; exam: { id: number; name: string; status: string }; subject: string; date: ISODate; startTime: string; fullMarks: number; passMarks: number };
+  section: { id: number; name: string };
+  status: MarkSheetStatus; submittedAt: ISODate | null; reopenReason: string | null;
+  students: { rollNo: number | null; student: StudentRow; obtained: number | null; isAbsent: boolean }[];
+};
+
+export type LeaveStatus = "PENDING" | "REVIEWED" | "APPROVED" | "REJECTED" | "CANCELLED";
+export type LeaveRequest = {
+  id: number; fromDate: ISODate; toDate: ISODate; days: number; reason: string; attachmentUrl: string | null; status: LeaveStatus;
+  recommendation: "APPROVE" | "REJECT" | null; reviewedAt: ISODate | null; reviewNote: string | null;
+  decidedAt: ISODate | null; decisionNote: string | null; excusedMarks: number; createdAt: ISODate;
+  student: StudentRow;
+};
+
+export type ResultLineRow = {
+  id: number; subjectName: string; fullMarks: number; passMarks: number; obtained: number | null; isAbsent: boolean;
+  percent: number; grade: string; gradePoint: number | null; passed: boolean; isOptional: boolean;
+};
+export type ResultSummaryRow = {
+  id: number; examId: number; sectionId: number; studentUserId: number; rollNo: number | null;
+  totalObtained: number; totalFull: number; percent: number; gpa: number | null; grade: string; passed: boolean;
+  failedSubjects: number; sectionPosition: number | null; classPosition: number | null; withheld: boolean;
+  student: { name: string; studentProfile: { studentId: string } | null };
+  lines: ResultLineRow[];
+};
+export type SectionResultStatus = "PROCESSED" | "APPROVED" | "RETURNED" | "PUBLISHED";
+export type SectionResultReport = {
+  exam: { id: number; name: string; term: { code: string; name: string }; gradingScheme: { name: string; kind: string } };
+  status: SectionResultStatus; section: string; className: string; subjects: string[]; summaries: ResultSummaryRow[];
+};
+export type StudentPerformance = {
+  student: { id: number; name: string; studentId: string | null };
+  results: (Omit<ResultSummaryRow, "student" | "studentUserId"> & {
+    status: SectionResultStatus; withheldReason: string | null;
+    exam: { id: number; name: string; type: string; term: { code: string; name: string } };
+  })[];
+};
+
+/* ---------------------------------- student portal (LMS F3) ---------------------------------- */
+
+/** The student's place this term: class, section, roll number and subjects with their teachers. */
+export type StudentPlace = {
+  rollNo: number | null; sectionId: number; section: string; room: string | null; class: string;
+  term: { code: string; name: string }; classTeacher: string | null;
+  subjects: { id: number; code: string; name: string; fullMarks: number; passMarks: number; isOptional: boolean; teachers: string[] }[];
+};
+
+export type StudentOnlineClass = Omit<TeacherOnlineClass, "joinUrl" | "_count"> & { canJoin: boolean };
+
+export type StudentExam = {
+  id: number; name: string; type: string; instructions: string | null;
+  papers: {
+    id: number; date: ISODate; startTime: string; endTime: string | null; room: string | null; fullMarks: number; passMarks: number;
+    subject: { name: string }; courseLevel: { name: string };
+  }[];
+};
+
+export type StudentAttendanceSummary = {
+  classes: ({ classSessionId: number; title: string; subject: string | null } & AttendanceTally)[];
+  overall: AttendanceTally;
+};
+
+export type FeedEvent = Pick<CalendarEvent, "id" | "title" | "description" | "type" | "audience" | "startDate" | "endDate" | "courseLevel">;
+
+/** A published exam result of the student's own (withholding is never shown to them). */
+export type PublishedResult = {
+  id: number; examId: number; rollNo: number | null; totalObtained: number; totalFull: number; percent: number;
+  gpa: number | null; grade: string; passed: boolean; failedSubjects: number; sectionPosition: number | null; classPosition: number | null;
+  createdAt: ISODate;
+  exam: { id: number; name: string; type: string; term: { code: string; name: string } };
+  lines: ResultLineRow[];
+};
+
+export type IssuedDocument = { serial: string; type: string; issuedAt: ISODate; revokedAt: ISODate | null };
+
+export type TransferStatus = "SUBMITTED" | "VERIFIED" | "APPROVED" | "REJECTED" | "CANCELLED";
+export type TransferRequest = {
+  id: number; destination: string; reason: string; effectiveDate: ISODate; status: TransferStatus;
+  duesCleared: boolean; libraryCleared: boolean; verifiedAt: ISODate | null; verifyNote: string | null;
+  decidedAt: ISODate | null; decisionNote: string | null; letterSerial: string | null; createdAt: ISODate;
+  student: { id: number; name: string; studentProfile: { studentId: string; status: string } | null };
 };

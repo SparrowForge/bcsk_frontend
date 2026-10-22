@@ -6,13 +6,13 @@ import { NewUserForm } from "./NewUserForm";
 
 /** FR-ADMIN-06: users module — create/manage accounts, reset passwords, deactivate. */
 export default async function UsersPage({ searchParams }: { searchParams: Promise<{ role?: string }> }) {
-  await requirePermission("users:manage");
+  const session = await requirePermission("users:manage");
   const { role = "ALL" } = await searchParams;
   // `/users` returns every account ordered by role then id; the tabs are a view over it.
   const all = await usersApi.list();
   const users = role === "ALL" ? all : all.filter((u) => u.role === role);
 
-  const tabs = ["ALL", "STUDENT", "TEACHER", "ADMIN_SUPPORT", "IT_SUPPORT", "SUPER_ADMIN"];
+  const tabs = ["ALL", "STUDENT", "TEACHER", "HEAD_MASTER", "ADMIN_SUPPORT", "IT_SUPPORT", "SUPER_ADMIN"];
 
   return (
     <div className="max-w-5xl">
@@ -31,7 +31,8 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
         ))}
       </div>
 
-      <NewUserForm />
+      {/* Super admin and Head Master accounts are a super admin's to create; the API refuses anyone else. */}
+      <NewUserForm canCreatePrivileged={session.role === "SUPER_ADMIN"} />
 
       <div className="mt-6 scroll-fade overflow-x-auto rounded-2xl border border-line">
         <table className="w-full text-sm">

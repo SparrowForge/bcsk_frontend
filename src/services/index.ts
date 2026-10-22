@@ -71,7 +71,8 @@ export const site = {
   contact: (input: Record<string, unknown>) => api.post<{ ok: boolean }>("/public/contact", input, { auth: false }),
   verify: (serial: string) =>
     api.public<
-      | { valid: false; serial: string }
+      | { valid: false; serial: string; revoked?: undefined }
+      | { valid: false; revoked: true; serial: string; type: string; issuedAt: T.ISODate; revokedAt: T.ISODate }
       | { valid: true; serial: string; type: string; studentName: string; studentId: string | null; issuedAt: T.ISODate }
     >(`/verify/${encodeURIComponent(serial)}`, 0),
 };
@@ -445,3 +446,148 @@ export async function getSettings(keys: string[]): Promise<Record<string, string
   const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
   return Object.fromEntries(keys.map((k) => [k, map[k] ?? ""]));
 }
+
+/* ------------------------------- LMS: academic setup (F1) ------------------------------ */
+
+type Body = Record<string, unknown>;
+const qs = (params: Record<string, string | number | undefined>) => {
+  const s = query(params);
+  return s ? `?${s}` : "";
+};
+
+/** The institute's own profile and the settings that shape results and leave. */
+export const institute = {
+  get: () => api.get<T.Institute>("/institute"),
+  update: (input: Body) => api.patch<T.Institute>("/institute", input),
+  setRankTies: (rankTies: "SHARED" | "SPLIT") => api.patch<{ rankTies: string }>("/results/settings", { rankTies }),
+  setLeaveTeacherMaxDays: (leaveTeacherMaxDays: number) =>
+    api.patch<{ leaveTeacherMaxDays: number }>("/leave/settings", { leaveTeacherMaxDays }),
+};
+
+/** Departments, terms, batches, sections, subjects, curriculum and who teaches what. */
+export const structure = {
+  departments: () => api.get<T.Department[]>("/structure/departments"),
+  createDepartment: (input: Body) => api.post<T.Department>("/structure/departments", input),
+  updateDepartment: (id: number, input: Body) => api.patch<T.Department>(`/structure/departments/${id}`, input),
+  deleteDepartment: (id: number) => api.delete<{ id: number }>(`/structure/departments/${id}`),
+  setCourseDepartment: (courseId: number, departmentId: number | null) =>
+    api.patch<unknown>(`/structure/courses/${courseId}/department`, { departmentId }),
+
+  levels: () => api.get<T.StructureCourse[]>("/structure/levels"),
+
+  terms: () => api.get<T.AcademicTerm[]>("/structure/terms"),
+  createTerm: (input: Body) => api.post<T.AcademicTerm>("/structure/terms", input),
+  updateTerm: (id: number, input: Body) => api.patch<T.AcademicTerm>(`/structure/terms/${id}`, input),
+  setCurrentTerm: (id: number) => api.post<unknown>(`/structure/terms/${id}/current`),
+  deleteTerm: (id: number) => api.delete<{ id: number }>(`/structure/terms/${id}`),
+
+  batches: (termId?: number) => api.get<T.Batch[]>(`/structure/batches${qs({ termId })}`),
+  createBatch: (input: Body) => api.post<unknown>("/structure/batches", input),
+  deleteBatch: (id: number) => api.delete<{ id: number }>(`/structure/batches/${id}`),
+
+  section: (id: number) => api.get<T.SectionDetail>(`/structure/sections/${id}`),
+  createSection: (input: Body) => api.post<unknown>("/structure/sections", input),
+  updateSection: (id: number, input: Body) => api.patch<unknown>(`/structure/sections/${id}`, input),
+  deleteSection: (id: number) => api.delete<{ id: number }>(`/structure/sections/${id}`),
+  placeStudent: (sectionId: number, studentUserId: number, rollNo: number | null) =>
+    api.post<unknown>(`/structure/sections/${sectionId}/students`, { studentUserId, rollNo }),
+  numberRolls: (sectionId: number) => api.post<{ numbered: number }>(`/structure/sections/${sectionId}/roll-numbers`),
+  updatePlacement: (placementId: number, input: Body) => api.patch<unknown>(`/structure/placements/${placementId}`, input),
+  assignTeacher: (sectionId: number, teacherProfileId: number, subjectId: number) =>
+    api.post<unknown>(`/structure/sections/${sectionId}/teachers`, { teacherProfileId, subjectId }),
+  unassignTeacher: (assignmentId: number) => api.delete<unknown>(`/structure/assignments/${assignmentId}`),
+
+  subjects: () => api.get<T.Subject[]>("/structure/subjects"),
+  createSubject: (input: Body) => api.post<T.Subject>("/structure/subjects", input),
+  updateSubject: (id: number, input: Body) => api.patch<T.Subject>(`/structure/subjects/${id}`, input),
+  deleteSubject: (id: number) => api.delete<{ id: number }>(`/structure/subjects/${id}`),
+  curriculum: (levelId: number) => api.get<T.CurriculumRow[]>(`/structure/levels/${levelId}/subjects`),
+  setCurriculum: (levelId: number, subjectId: number, input: Body) =>
+    api.put<T.CurriculumRow>(`/structure/levels/${levelId}/subjects/${subjectId}`, input),
+  removeCurriculum: (levelId: number, subjectId: number) => api.delete<unknown>(`/structure/levels/${levelId}/subjects/${subjectId}`),
+
+  teachers: () => api.get<T.StructureTeacher[]>("/structure/teachers"),
+  students: (filter: { q?: string; unplacedInTermId?: number } = {}) =>
+    api.get<T.StructureStudent[]>(`/structure/students${qs(filter)}`),
+};
+
+/** The weekly class routine (slots are class sessions tied to a section and subject). */
+export const routine = {
+  slots: (filter: { termId?: number; sectionId?: number; teacherProfileId?: number } = {}) =>
+    api.get<T.RoutineSlot[]>(`/routine/slots${qs(filter)}`),
+  create: (input: Body) => api.post<T.RoutineSlot>("/routine/slots", input),
+  update: (id: number, input: Body) => api.patch<T.RoutineSlot>(`/routine/slots/${id}`, input),
+  remove: (id: number) => api.delete<unknown>(`/routine/slots/${id}`),
+};
+
+/**
+ * The teacher portal (LMS F2): the teacher's week, sections, materials, online classes, marks,
+ * leave review and results. Every route checks on the backend that the teacher teaches the
+ * section in question; these only shape the calls.
+ */
+export const teaching = {
+  week: () => api.get<T.RoutineSlot[]>("/office/routine"),
+  sections: () => api.get<T.TeacherSection[]>("/office/sections"),
+  roster: (sectionId: number) => api.get<T.SectionRoster>(`/office/sections/${sectionId}/students`),
+  attendanceReport: (sectionId: number, range: { from?: string; to?: string } = {}) =>
+    api.get<T.SectionAttendanceReport>(`/office/sections/${sectionId}/attendance-report${qs(range)}`),
+  attendanceSheet: (classSessionId: number, date: string) =>
+    api.get<T.AttendanceSheetDay>(`/office/classes/${classSessionId}/attendance${qs({ date })}`),
+
+  materials: () => api.get<T.CourseMaterial[]>("/office/materials"),
+  createMaterial: (sectionId: number, input: Body) => api.post<T.CourseMaterial>(`/office/sections/${sectionId}/materials`, input),
+  updateMaterial: (id: number, input: Body) => api.patch<T.CourseMaterial>(`/office/materials/${id}`, input),
+  deleteMaterial: (id: number) => api.delete<unknown>(`/office/materials/${id}`),
+
+  onlineClasses: (range: { from?: string; to?: string } = {}) => api.get<T.TeacherOnlineClass[]>(`/office/online-classes${qs(range)}`),
+  scheduleOnline: (classSessionId: number, input: Body) => api.post<unknown>(`/office/classes/${classSessionId}/online-classes`, input),
+  startOnline: (id: number) => api.post<unknown>(`/office/online-classes/${id}/start`),
+  endOnline: (id: number, recordingUrl: string | null) => api.post<unknown>(`/office/online-classes/${id}/end`, { recordingUrl }),
+  cancelOnline: (id: number, reason: string | null) => api.post<unknown>(`/office/online-classes/${id}/cancel`, { reason }),
+  onlineJoins: (id: number) => api.get<T.OnlineClassJoins>(`/office/online-classes/${id}/joins`),
+
+  papers: () => api.get<T.TeacherPaper[]>("/office/exams"),
+  marks: (paperId: number, sectionId: number) => api.get<T.MarksGrid>(`/office/papers/${paperId}/sections/${sectionId}/marks`),
+  saveMarks: (paperId: number, sectionId: number, entries: { studentUserId: number; obtained: number | null; isAbsent: boolean }[]) =>
+    api.put<{ saved: number; cleared: number }>(`/office/papers/${paperId}/sections/${sectionId}/marks`, { entries }),
+  submitMarks: (paperId: number, sectionId: number) => api.post<unknown>(`/office/papers/${paperId}/sections/${sectionId}/submit`),
+
+  leave: (status?: string) => api.get<T.LeaveRequest[]>(`/office/leave${qs({ status })}`),
+  reviewLeave: (id: number, recommendation: "APPROVE" | "REJECT", note: string | null) =>
+    api.post<unknown>(`/office/leave/${id}/review`, { recommendation, note }),
+
+  sectionResults: (examId: number, sectionId: number) =>
+    api.get<T.SectionResultReport>(`/office/results/exams/${examId}/sections/${sectionId}`),
+  performance: (studentUserId: number) => api.get<T.StudentPerformance>(`/office/students/${studentUserId}/performance`),
+};
+
+/**
+ * The student portal (LMS F3): the student's place, week, meetings, exams, materials, results,
+ * documents and applications. Every route reads the caller's own records only.
+ */
+export const learning = {
+  places: () => api.get<T.StudentPlace[]>("/classroom/sections"),
+  week: () => api.get<(Omit<T.RoutineSlot, "section"> & { section: { id: number; name: string } | null })[]>("/classroom/routine"),
+  calendar: (range: { from?: string; to?: string } = {}) => api.get<T.FeedEvent[]>(`/calendar${qs(range)}`),
+  onlineClasses: () => api.get<T.StudentOnlineClass[]>("/classroom/online-classes"),
+  join: (id: number) => api.post<{ joinUrl: string }>(`/classroom/online-classes/${id}/join`),
+  exams: () => api.get<T.StudentExam[]>("/classroom/exams"),
+  materials: (subjectId?: number) => api.get<T.CourseMaterial[]>(`/classroom/materials${qs({ subjectId })}`),
+  attendance: () => api.get<T.StudentAttendanceSummary>("/classroom/attendance/summary"),
+  results: () => api.get<T.PublishedResult[]>("/classroom/exam-results"),
+  documents: () => api.get<T.IssuedDocument[]>("/classroom/certificates"),
+  leave: () => api.get<T.LeaveRequest[]>("/classroom/leave"),
+  applyLeave: (input: Body) => api.post<T.LeaveRequest>("/classroom/leave", input),
+  cancelLeave: (id: number) => api.post<T.LeaveRequest>(`/classroom/leave/${id}/cancel`),
+  transfers: () => api.get<T.TransferRequest[]>("/classroom/transfers"),
+  applyTransfer: (input: Body) => api.post<T.TransferRequest>("/classroom/transfers", input),
+  cancelTransfer: (id: number) => api.post<T.TransferRequest>(`/classroom/transfers/${id}/cancel`),
+};
+
+/** The academic calendar, as the Head Master manages it (drafts included). */
+export const academicCalendar = {
+  events: (range: { from?: string; to?: string } = {}) => api.get<T.CalendarEvent[]>(`/calendar/events${qs(range)}`),
+  create: (input: Body) => api.post<T.CalendarEvent>("/calendar/events", input),
+  update: (id: number, input: Body) => api.patch<T.CalendarEvent>(`/calendar/events/${id}`, input),
+  remove: (id: number) => api.delete<unknown>(`/calendar/events/${id}`),
+};

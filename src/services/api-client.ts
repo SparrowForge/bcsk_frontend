@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies, headers as requestHeadersOf } from "next/headers";
+import { SESSION_COOKIE } from "@/lib/session-cookies";
 
 /**
  * The one place the frontend talks to the backend.
@@ -108,8 +109,8 @@ async function envelope<T>(path: string, options: RequestOptions = {}): Promise<
     // Forward the browser's httpOnly cookie so the backend sees the same session the web
     // surface already established. The frontend never handles the token itself.
     const jar = await cookies();
-    const session = jar.get("bcsk_session")?.value;
-    if (session) requestHeaders["cookie"] = `bcsk_session=${session}`;
+    const session = jar.get(SESSION_COOKIE)?.value;
+    if (session) requestHeaders["cookie"] = `${SESSION_COOKIE}=${session}`;
   }
 
   let res: Response;
@@ -157,8 +158,8 @@ async function upload(file: File, folder: string): Promise<{ path: string }> {
 
   const headers: Record<string, string> = { ...(await clientIpHeaders()) };
   const jar = await cookies();
-  const session = jar.get("bcsk_session")?.value;
-  if (session) headers["cookie"] = `bcsk_session=${session}`;
+  const session = jar.get(SESSION_COOKIE)?.value;
+  if (session) headers["cookie"] = `${SESSION_COOKIE}=${session}`;
 
   let res: Response;
   try {

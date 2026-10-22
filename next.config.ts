@@ -35,6 +35,15 @@ nextConfig.rewrites = async () => [
   { source: "/api/documents/:type", destination: `${API}/documents/:type` },
   { source: "/api/admin/documents/:userId/:type", destination: `${API}/admin/documents/:userId/:type` },
   { source: "/api/admin/payments-export", destination: `${API}/admin/payments-export` },
+  // LMS F2: a teacher's tabulation sheet of their own section, as PDF or CSV.
+  {
+    source: "/api/office/results/:examId/:sectionId/:file(tabulation\\.pdf|tabulation\\.csv)",
+    destination: `${API}/office/results/exams/:examId/sections/:sectionId/:file`,
+  },
+  // LMS F3: a student's own mark sheet, issued certificates and transfer letter.
+  { source: "/api/classroom/exam-results/:examId/mark-sheet", destination: `${API}/classroom/exam-results/:examId/mark-sheet` },
+  { source: "/api/classroom/certificates/:serial", destination: `${API}/classroom/certificates/:serial` },
+  { source: "/api/classroom/transfers/letter", destination: `${API}/classroom/transfers/letter` },
 ];
 
 export default nextConfig;

@@ -1,13 +1,14 @@
 export const ROLES = {
   STUDENT: "STUDENT",
   TEACHER: "TEACHER",
+  HEAD_MASTER: "HEAD_MASTER",
   ADMIN_SUPPORT: "ADMIN_SUPPORT",
   IT_SUPPORT: "IT_SUPPORT",
   SUPER_ADMIN: "SUPER_ADMIN",
 } as const;
 export type Role = (typeof ROLES)[keyof typeof ROLES];
 
-export const ADMIN_ROLES: Role[] = [ROLES.ADMIN_SUPPORT, ROLES.IT_SUPPORT, ROLES.SUPER_ADMIN];
+export const ADMIN_ROLES: Role[] = [ROLES.HEAD_MASTER, ROLES.ADMIN_SUPPORT, ROLES.IT_SUPPORT, ROLES.SUPER_ADMIN];
 
 export const CLASS_LEVELS = [
   { key: "PRE_PRIMARY", label: "Pre-Primary" },

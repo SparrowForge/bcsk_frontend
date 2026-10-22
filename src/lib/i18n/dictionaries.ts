@@ -231,6 +231,7 @@ const en = {
     forgotPassword: "Forgot password?",
     requestId: "Request Student ID",
     invalidCredentials: "That ID and password combination doesn't match our records.",
+    sessionExpired: "Your session has ended. Please sign in again.",
   },
 };
 
@@ -466,6 +467,7 @@ const bn: Dict = {
     forgotPassword: "পাসওয়ার্ড ভুলে গেছেন?",
     requestId: "স্টুডেন্ট আইডির জন্য আবেদন",
     invalidCredentials: "আইডি ও পাসওয়ার্ড মিলছে না।",
+    sessionExpired: "আপনার সেশন শেষ হয়েছে। আবার লগইন করুন।",
   },
 };
 
@@ -699,6 +701,7 @@ const ko: Dict = {
     forgotPassword: "비밀번호를 잊으셨나요?",
     requestId: "학생 ID 신청",
     invalidCredentials: "ID와 비밀번호가 일치하지 않습니다.",
+    sessionExpired: "세션이 만료되었습니다. 다시 로그인해 주세요.",
   },
 };
 

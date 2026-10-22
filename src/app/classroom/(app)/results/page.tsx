@@ -1,11 +1,16 @@
 import { formatDate } from "@/lib/dates";
 import { requireMenu } from "@/lib/auth";
-import { classroom } from "@/services";
+import { classroom, learning } from "@/services";
+import { PublishedResults } from "./PublishedResults";
 
 /** FR-STU-05 / FR-IELTS-05 / FR-ABC-08: result sheet, progress records, Hifz progress, game scores. */
 export default async function ResultsPage() {
   const session = await requireMenu("classroom.results");
-  const { exams: results, progress, hifz, games } = await classroom.results();
+  const [{ exams: all, progress, hifz, games }, published] = await Promise.all([classroom.results(), learning.results()]);
+  // LMS F3: an exam processed in the results module shows as its own card, with a mark sheet; its
+  // copy in the older results table is left out here so it does not appear twice.
+  const fromExams = new Set(published.map((p) => p.exam.id));
+  const results = all.filter((r) => r.examId == null || !fromExams.has(r.examId));
 
   const semesters = Array.from(new Set(results.map((r) => r.semester)));
 
@@ -20,6 +25,8 @@ export default async function ResultsPage() {
           Download Result Sheet
         </a>
       </div>
+
+      <PublishedResults results={published} />
 
       {semesters.map((sem) => (
         <section key={sem}>
@@ -48,7 +55,7 @@ export default async function ResultsPage() {
           </div>
         </section>
       ))}
-      {semesters.length === 0 && (
+      {semesters.length === 0 && published.length === 0 && (
         <p className="bg-white rounded-2xl border border-line p-6 text-sm text-ink-soft">No exam results published yet.</p>
       )}
 

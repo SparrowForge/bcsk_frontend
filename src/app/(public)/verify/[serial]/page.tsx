@@ -31,6 +31,22 @@ export default async function VerifyPage({ params }: { params: Promise<{ serial:
               <div className="flex justify-between"><dt className="font-bold text-ink-soft">Issued</dt><dd>{formatDate(cert.issuedAt)}</dd></div>
             </dl>
           </div>
+        ) : cert.revoked ? (
+          <div className="bg-white border border-line rounded-2xl p-8 text-center">
+            <div className="mx-auto w-14 h-14 rounded-full bg-red-50 text-red-600 flex items-center justify-center">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="9" /><path d="M5.6 5.6l12.8 12.8" /></svg>
+            </div>
+            <h2 className="mt-4 font-display text-xl font-semibold text-red-600">Revoked document</h2>
+            <p className="mt-2 text-sm text-ink-soft">
+              This document was issued by BCSK and later withdrawn. It is no longer valid.
+            </p>
+            <dl className="mt-5 text-sm text-left space-y-2.5">
+              <div className="flex justify-between"><dt className="font-bold text-ink-soft">Serial</dt><dd className="font-bold text-ink">{cert.serial}</dd></div>
+              <div className="flex justify-between"><dt className="font-bold text-ink-soft">Type</dt><dd>{cert.type.replace(/_/g, " ")}</dd></div>
+              <div className="flex justify-between"><dt className="font-bold text-ink-soft">Issued</dt><dd>{formatDate(cert.issuedAt)}</dd></div>
+              <div className="flex justify-between"><dt className="font-bold text-ink-soft">Revoked</dt><dd>{formatDate(cert.revokedAt)}</dd></div>
+            </dl>
+          </div>
         ) : (
           <div className="bg-white border border-line rounded-2xl p-8 text-center">
             <div className="mx-auto w-14 h-14 rounded-full bg-red-50 text-red-600 flex items-center justify-center">

@@ -1,13 +1,20 @@
 import { notFound } from "next/navigation";
 import { requireMenu } from "@/lib/auth";
-import { office, ApiError } from "@/services";
+import { office, teaching, ApiError } from "@/services";
+import { schoolToday } from "@/lib/school-time";
 import { LiveControls } from "./LiveControls";
 import { AttendanceSheet } from "./AttendanceSheet";
 import { AssignmentPanel } from "./AssignmentPanel";
 import { VideoPanel } from "./VideoPanel";
 
 /** FR-TCH-03/04: class management — live session, roster, attendance, assignments, videos. */
-export default async function ClassManagePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ClassManagePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ date?: string }>;
+}) {
   const session = await requireMenu("office.classes");
   const { id } = await params;
   // Ownership is enforced by the backend — it returns 403 for someone else's class, so a
@@ -23,7 +30,13 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
   const { roster, assignments, videos, todayAttendance: todayAtt } = detail;
 
   // The school's calendar day in Korea: the UTC date is still "yesterday" until 09:00 KST.
-  const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }).format(new Date());
+  const today = schoolToday();
+  // LMS F2: attendance for any past day, prefilled with what was marked then.
+  const asked = (await searchParams).date;
+  const date = asked && /^d{4}-d{2}-d{2}$/.test(asked) && asked < today ? asked : today;
+  const marked = date === today
+    ? todayAtt.map((a) => ({ id: a.studentUserId, status: a.status }))
+    : (await teaching.attendanceSheet(cs.id, date)).students.map((s) => ({ id: s.student.id, status: s.status ?? "" }));
   // What this teacher's switches on "My Classes" allow: Insert = attendance, assignments, grading,
   // videos; Update = going live. Controls they may not use are not shown at all.
   const flags = session.menus.find((m) => m.key === "office.classes")!.flags;
@@ -50,13 +63,14 @@ export default async function ClassManagePage({ params }: { params: Promise<{ id
 
       <AttendanceSheet
         classSessionId={cs.id}
-        date={today}
+        date={date}
+        today={today}
         canSave={flags.insert}
         students={roster.map((e) => ({
           userId: e.student.id,
           name: e.student.name,
           studentId: e.student.studentProfile?.studentId ?? "",
-          current: todayAtt.find((a) => a.studentUserId === e.student.id)?.status ?? "",
+          current: marked.find((a) => a.id === e.student.id)?.status ?? "",
         }))}
       />
 

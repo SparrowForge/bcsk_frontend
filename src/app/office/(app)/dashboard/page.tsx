@@ -1,7 +1,8 @@
 import { formatDate } from "@/lib/dates";
 import Link from "next/link";
 import { requireTeacher } from "@/lib/auth";
-import { office, site } from "@/services";
+import { office, site, teaching } from "@/services";
+import { schoolToday, weekdayOf } from "@/lib/school-time";
 import { getDict } from "@/lib/i18n";
 import { OfficeBoard } from "@/components/home/OfficeBoard";
 import { SEMESTER_CURRENT, classLevelLabel } from "@/lib/constants";
@@ -13,12 +14,14 @@ export default async function TeacherDashboard() {
   // A teacher without the "My Classes" menu still sees their timetable here, but not a link into a
   // page that would refuse them.
   const canManage = session.menus.some((m) => m.key === "office.classes");
-  const [{ profile, sessions, notifications, openQuestions }, board, { t }] = await Promise.all([
+  const [{ profile, sessions, notifications, openQuestions }, board, { t }, desk] = await Promise.all([
     office.dashboard(),
     // The office board left the homepage in October 2026: who is at their desk and who is
     // teaching is for staff, so it lives here. A failed read drops the board, not the page.
     site.schoolBoard().catch(() => null),
     getDict(),
+    // LMS F2: today's routine and what is waiting on the teacher. A failed read drops the card.
+    canManage ? teachingDesk().catch(() => null) : Promise.resolve(null),
   ]);
 
   return (
@@ -45,6 +48,40 @@ export default async function TeacherDashboard() {
         <div className="-mt-6">
           <OfficeBoard board={board} t={t} animate={false} />
         </div>
+      )}
+
+      {desk && (
+        <section className="bg-white rounded-3xl border border-line p-6 grid sm:grid-cols-[1fr_auto] gap-6">
+          <div>
+            <h2 className="font-display text-lg font-semibold text-green">Today · {desk.weekday}</h2>
+            {desk.today.length === 0 ? (
+              <p className="text-sm text-ink-soft mt-2">No class on your routine today.</p>
+            ) : (
+              <ul className="mt-2 divide-y divide-line">
+                {desk.today.map((c) => (
+                  <li key={c.id}>
+                    <Link href={`/office/classes/${c.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-1 py-2 hover:text-green-mid">
+                      <span className="font-mono text-sm tabular-nums w-24">{c.startTime}{c.endTime ? `–${c.endTime}` : ""}</span>
+                      <span className="font-bold text-ink flex-1">{c.title}</span>
+                      {c.room && <span className="text-xs text-ink-soft">{c.room}</span>}
+                      <span className="text-xs font-bold text-crimson-ink">Attendance →</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div className="flex sm:flex-col gap-3">
+            <Link href="/office/exams" className="rounded-2xl border border-line px-4 py-3 hover:border-green-mid min-w-36">
+              <p className="font-display text-2xl font-semibold text-crimson-ink">{desk.sheetsToDo}</p>
+              <p className="text-[11px] font-bold text-ink-soft uppercase">Mark sheets to finish</p>
+            </Link>
+            <Link href="/office/leave" className="rounded-2xl border border-line px-4 py-3 hover:border-green-mid min-w-36">
+              <p className="font-display text-2xl font-semibold text-crimson-ink">{desk.leaveWaiting}</p>
+              <p className="text-[11px] font-bold text-ink-soft uppercase">Leave to review</p>
+            </Link>
+          </div>
+        </section>
       )}
 
       <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
@@ -127,4 +164,19 @@ export default async function TeacherDashboard() {
       </div>
     </div>
   );
+}
+
+/** Today's classes from the routine, mark sheets of papers already sat, and leave waiting. */
+async function teachingDesk() {
+  const day = schoolToday();
+  const weekday = weekdayOf(day);
+  const [week, papers, leave] = await Promise.all([teaching.week(), teaching.papers(), teaching.leave("PENDING")]);
+  return {
+    weekday,
+    today: week.filter((s) => s.active && s.dayOfWeek === weekday),
+    sheetsToDo: papers
+      .filter((p) => p.date.slice(0, 10) <= day)
+      .reduce((n, p) => n + p.sections.filter((s) => s.status === "NOT_STARTED" || s.status === "DRAFT").length, 0),
+    leaveWaiting: leave.length,
+  };
 }

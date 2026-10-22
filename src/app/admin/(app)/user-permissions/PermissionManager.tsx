@@ -14,6 +14,7 @@ const FLAGS: { key: MenuFlag; label: string }[] = [
 /** Roles whose defaults can be imported, by the panel they belong to. */
 const ROLES: Record<Panel, { value: string; label: string }[]> = {
   ADMIN: [
+    { value: "HEAD_MASTER", label: "Head Master" },
     { value: "ADMIN_SUPPORT", label: "Admin Support" },
     { value: "IT_SUPPORT", label: "IT Support" },
     { value: "SUPER_ADMIN", label: "Super Admin (everything)" },

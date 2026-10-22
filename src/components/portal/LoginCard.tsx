@@ -19,6 +19,7 @@ export function LoginCard({
   action,
   accent = "bg-green hover:bg-green-deep",
   demoHint,
+  notice,
 }: {
   title: string;
   idLabel: string;
@@ -30,6 +31,8 @@ export function LoginCard({
   action: (prev: LoginState, f: FormData) => Promise<LoginState>;
   accent?: string;
   demoHint?: string;
+  /** Shown above the form - why the user is here, such as a session that ended (F0). */
+  notice?: string;
 }) {
   const [state, formAction, pending] = useActionState<LoginState, FormData>(action, null);
   const formKept = useKeptForm(formAction, state);
@@ -37,6 +40,9 @@ export function LoginCard({
   return (
     <div className="w-full max-w-md bg-white rounded-3xl border border-line shadow-sm p-8">
       <h1 className="font-display text-2xl font-semibold text-green text-center">{title}</h1>
+      {notice && (
+        <p role="status" className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-3.5 py-2.5 text-sm text-amber-900">{notice}</p>
+      )}
       <form {...formKept} className="mt-6 space-y-4">
         <label className="block">
           <span className="text-xs font-bold text-ink">{idLabel}</span>

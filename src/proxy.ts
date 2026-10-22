@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  REFRESH_AHEAD_SECONDS, REFRESH_COOKIE, SESSION_COOKIE, isPortalPath, loginFor, refreshCookie, secondsLeft,
+  sessionCookie, type TokenPair,
+} from "@/lib/session-cookies";
 
 /**
- * SEC-8: security headers for every response.
+ * Runs before every request (Next 16's proxy runs on Node by default). Two jobs:
  *
- * The app previously sent none — no CSP, no HSTS, no framing protection — and there was
- * nothing at all to add them centrally. This runs on the Edge runtime before every request,
- * so it cannot use Prisma; the rate limiting that needs the database lives in
- * `src/lib/rate-limit.ts` and is called from the sensitive server actions instead.
+ *  - SEC-8: security headers for every response. The app previously sent none - no CSP, no
+ *    HSTS, no framing protection - and there was nothing at all to add them centrally.
+ *  - F0: session renewal. Shortly before the access token runs out, swap the refresh token for
+ *    a fresh pair (`renew` below), and send a session that has ended to its portal's sign-in.
  *
  * Named `proxy` because Next 16.3 deprecated the `middleware` file convention in favour of
- * `proxy`; the behaviour, the matcher and the nonce contract are unchanged.
+ * `proxy`; the matcher and the nonce contract are unchanged.
  */
 
 /** External origins the app genuinely loads code or data from. */
@@ -58,10 +62,68 @@ function contentSecurityPolicy(nonce: string, isDev: boolean): string {
   ].join("; ");
 }
 
-export function proxy(req: NextRequest) {
+const BACKEND =
+  process.env.BACKEND_API_URL?.trim() || process.env.NEXT_PUBLIC_API_BASE_URL?.trim() || "http://localhost:4000/api/v1";
+
+type Renewal =
+  | { kind: "none" } // signed out, or the token still has time: nothing to do
+  | { kind: "renewed"; pair: TokenPair }
+  | { kind: "expired" } // the refresh token was refused: the session is over
+  | { kind: "skip" }; // another request is renewing, or the API is unreachable: leave things be
+
+/**
+ * F0: renew the session shortly before its access token runs out. Server Components cannot set
+ * cookies, so this is the one place a renewal can reach the browser - and it runs before the
+ * page renders, so the render already sees the new token.
+ */
+async function renew(req: NextRequest): Promise<Renewal> {
+  const token = req.cookies.get(SESSION_COOKIE)?.value;
+  const refreshToken = req.cookies.get(REFRESH_COOKIE)?.value;
+  const left = secondsLeft(token);
+  if (left != null && left > REFRESH_AHEAD_SECONDS) return { kind: "none" };
+  if (!refreshToken) return { kind: "none" };
+
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  // The backend rate-limits per visitor; the same trusted-proxy headers as api-client.ts.
+  const key = process.env.BACKEND_PROXY_KEY?.trim();
+  const ip = (req.headers.get("x-forwarded-for")?.split(",")[0] ?? req.headers.get("x-real-ip") ?? "").trim();
+  if (key && ip) Object.assign(headers, { "x-bcsk-proxy-key": key, "x-bcsk-client-ip": ip });
+
+  try {
+    const res = await fetch(`${BACKEND}/auth/refresh`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ refreshToken }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(5000),
+    });
+    if (res.ok) {
+      const body = (await res.json()) as { data?: TokenPair };
+      return body.data?.token ? { kind: "renewed", pair: body.data } : { kind: "skip" };
+    }
+    // 409: a parallel request (the page and its prefetches) is renewing with the same token.
+    if (res.status === 401) return { kind: "expired" };
+    return { kind: "skip" };
+  } catch {
+    // An unreachable API must not sign anyone out; the next request tries again.
+    return { kind: "skip" };
+  }
+}
+
+export async function proxy(req: NextRequest) {
   const isDev = process.env.NODE_ENV !== "production";
   const nonce = crypto.randomUUID().replace(/-/g, "");
   const csp = contentSecurityPolicy(nonce, isDev);
+
+  const renewal = await renew(req);
+  if (renewal.kind === "renewed") {
+    // Updating the request's cookies is what makes this very render use the new token.
+    req.cookies.set(SESSION_COOKIE, renewal.pair.token);
+    if (renewal.pair.refreshToken) req.cookies.set(REFRESH_COOKIE, renewal.pair.refreshToken);
+  } else if (renewal.kind === "expired") {
+    req.cookies.delete(SESSION_COOKIE);
+    req.cookies.delete(REFRESH_COOKIE);
+  }
 
   // Passing the policy through on the request is what lets Next stamp its own inline
   // scripts with this nonce. Without it, a nonce-based CSP breaks hydration.
@@ -69,7 +131,20 @@ export function proxy(req: NextRequest) {
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("content-security-policy", csp);
 
-  const res = NextResponse.next({ request: { headers: requestHeaders } });
+  // An ended session on a portal page goes to that portal's sign-in, which says why. Only page
+  // loads are redirected; a form post reaches its action, whose guard redirects in turn.
+  const { pathname } = req.nextUrl;
+  const res = renewal.kind === "expired" && req.method === "GET" && isPortalPath(pathname)
+    ? NextResponse.redirect(new URL(`${loginFor(pathname)}?expired=1`, req.url))
+    : NextResponse.next({ request: { headers: requestHeaders } });
+
+  if (renewal.kind === "renewed") {
+    res.cookies.set(SESSION_COOKIE, renewal.pair.token, sessionCookie(renewal.pair.expiresIn));
+    if (renewal.pair.refreshToken) res.cookies.set(REFRESH_COOKIE, renewal.pair.refreshToken, refreshCookie());
+  } else if (renewal.kind === "expired") {
+    res.cookies.delete(SESSION_COOKIE);
+    res.cookies.delete(REFRESH_COOKIE);
+  }
 
   res.headers.set("content-security-policy", csp);
   res.headers.set("x-content-type-options", "nosniff");

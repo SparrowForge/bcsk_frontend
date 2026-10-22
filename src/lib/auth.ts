@@ -1,7 +1,9 @@
 import "server-only";
 import { cache } from "react";
+import { cookies } from "next/headers";
 import { redirect, forbidden } from "next/navigation";
 import { api, ApiError } from "@/services/api-client";
+import { REFRESH_COOKIE, SESSION_COOKIE } from "@/lib/session-cookies";
 
 /**
  * Session and access guards for the web app.
@@ -14,7 +16,7 @@ import { api, ApiError } from "@/services/api-client";
  * still redirects, `requirePermission()` still renders the 403 boundary.
  */
 
-export type Role = "STUDENT" | "TEACHER" | "ADMIN_SUPPORT" | "IT_SUPPORT" | "SUPER_ADMIN";
+export type Role = "STUDENT" | "TEACHER" | "HEAD_MASTER" | "ADMIN_SUPPORT" | "IT_SUPPORT" | "SUPER_ADMIN";
 
 export type Session = {
   userId: number;
@@ -44,7 +46,8 @@ export type AccessibleMenu = {
 
 export const CHANGE_PASSWORD_PATH = "/change-password";
 
-const ADMIN_ROLES: Role[] = ["ADMIN_SUPPORT", "IT_SUPPORT", "SUPER_ADMIN"];
+/** Everyone who signs in at /admin - the Head Master too (LMS F0), with their own menus. */
+const ADMIN_ROLES: Role[] = ["HEAD_MASTER", "ADMIN_SUPPORT", "IT_SUPPORT", "SUPER_ADMIN"];
 
 /** Where a user lands after signing in. */
 export function homeFor(role: Role): string {
@@ -72,30 +75,45 @@ function enforcePasswordChange(session: Session): void {
   if (session.mustChangePassword) redirect(CHANGE_PASSWORD_PATH);
 }
 
+/**
+ * F0: the sign-in page to send someone without a session to. When the browser still carried a
+ * session cookie the backend no longer accepts - it ran out, or a password change elsewhere
+ * retired it - the page is told so (`?expired=1`) and says why, rather than silently asking for
+ * a password again.
+ */
+async function signInPage(portal: string): Promise<string> {
+  const jar = await cookies();
+  return jar.has(SESSION_COOKIE) || jar.has(REFRESH_COOKIE) ? `${portal}?expired=1` : portal;
+}
+
 export async function requireStudent(): Promise<Session> {
   const s = await getSession();
-  if (!s || s.role !== "STUDENT") redirect("/classroom");
+  if (!s) redirect(await signInPage("/classroom"));
+  if (s.role !== "STUDENT") redirect("/classroom");
   enforcePasswordChange(s);
   return s;
 }
 
 export async function requireTeacher(): Promise<Session> {
   const s = await getSession();
-  if (!s || s.role !== "TEACHER") redirect("/office");
+  if (!s) redirect(await signInPage("/office"));
+  if (s.role !== "TEACHER") redirect("/office");
   enforcePasswordChange(s);
   return s;
 }
 
 export async function requireAdmin(): Promise<Session> {
   const s = await getSession();
-  if (!s || !ADMIN_ROLES.includes(s.role)) redirect("/admin");
+  if (!s) redirect(await signInPage("/admin"));
+  if (!ADMIN_ROLES.includes(s.role)) redirect("/admin");
   enforcePasswordChange(s);
   return s;
 }
 
 export async function requireSuperAdmin(): Promise<Session> {
   const s = await getSession();
-  if (!s || s.role !== "SUPER_ADMIN") redirect("/admin");
+  if (!s) redirect(await signInPage("/admin"));
+  if (s.role !== "SUPER_ADMIN") redirect("/admin");
   enforcePasswordChange(s);
   return s;
 }

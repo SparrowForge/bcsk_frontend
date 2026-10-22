@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireMenu } from "@/lib/auth";
 import { office } from "@/services";
+import { TeachingTabs } from "@/components/office/TeachingTabs";
 
 const WEEK = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
@@ -31,8 +32,9 @@ export default async function MyClassesPage() {
 
   return (
     <div className="max-w-4xl">
+      <TeachingTabs />
       <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
-        <h1 className="font-display text-2xl font-semibold text-green">My Classes</h1>
+        <h1 className="font-display text-2xl font-semibold text-green">My week</h1>
         <p className="text-sm text-ink-soft">
           {classes.length} {classes.length === 1 ? "class" : "classes"} · {students(total)}
         </p>

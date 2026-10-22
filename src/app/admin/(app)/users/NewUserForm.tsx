@@ -6,7 +6,7 @@ import { createUser, type UserFormState } from "./actions";
 
 const input = "rounded-lg border border-line px-3 py-2 text-sm focus:border-green-mid focus:outline-none";
 
-export function NewUserForm() {
+export function NewUserForm({ canCreatePrivileged }: { canCreatePrivileged: boolean }) {
   const [state, action, pending] = useActionState<UserFormState, FormData>(createUser, null);
   const kept = useKeptForm(action, state, { resetOnSuccess: true });
   const [role, setRole] = useState("STUDENT");
@@ -20,9 +20,10 @@ export function NewUserForm() {
           <select name="role" value={role} onChange={(e) => setRole(e.target.value)} className={`block mt-1 ${input}`}>
             <option value="STUDENT">Student</option>
             <option value="TEACHER">Teacher</option>
+            {canCreatePrivileged && <option value="HEAD_MASTER">Head Master</option>}
             <option value="ADMIN_SUPPORT">Admin Support</option>
             <option value="IT_SUPPORT">IT Support</option>
-            <option value="SUPER_ADMIN">Super Admin</option>
+            {canCreatePrivileged && <option value="SUPER_ADMIN">Super Admin</option>}
           </select>
         </label>
         <label className="block text-xs font-bold text-ink">

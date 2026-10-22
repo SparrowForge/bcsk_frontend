@@ -12,10 +12,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** FR-STU-01: Classroom login (Student ID + Password) with forgot-password and request-ID paths. */
-export default async function ClassroomLoginPage() {
+export default async function ClassroomLoginPage({ searchParams }: { searchParams: Promise<{ expired?: string }> }) {
   const session = await getSession();
   if (session?.role === "STUDENT") redirect("/classroom/dashboard");
   const { t } = await getDict();
+  const { expired } = await searchParams;
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-mist/60">
@@ -27,6 +28,7 @@ export default async function ClassroomLoginPage() {
         forgotLabel={t.auth.forgotPassword}
         requestIdLabel={t.auth.requestId}
         invalidMessage={t.auth.invalidCredentials}
+        notice={expired ? t.auth.sessionExpired : undefined}
         action={loginStudent}
         demoHint={isDemoMode() ? "Demo: BCSK-2026-0001 / bcsk1234" : undefined}
       />

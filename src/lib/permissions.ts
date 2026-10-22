@@ -73,6 +73,10 @@ const ROLE_PERMISSIONS: Record<Role, readonly Permission[]> = {
   [ROLES.SUPER_ADMIN]: PERMISSIONS,
   [ROLES.ADMIN_SUPPORT]: ADMIN_SUPPORT_PERMISSIONS,
   [ROLES.IT_SUPPORT]: IT_SUPPORT_PERMISSIONS,
+  // The Head Master's capabilities are LMS ones this older copy does not list. Nothing renders
+  // from this map any more - sessions carry their permissions from `GET /auth/me`, which reads
+  // the backend's map - so the role is listed only to keep the type complete.
+  [ROLES.HEAD_MASTER]: [],
   [ROLES.TEACHER]: [],
   [ROLES.STUDENT]: [],
 };

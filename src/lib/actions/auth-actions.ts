@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { api, ApiError, toActionError } from "@/services/api-client";
 import { homeFor, getSession, type Role } from "@/lib/auth";
+import { REFRESH_COOKIE, SESSION_COOKIE, refreshCookie, sessionCookie, type TokenPair } from "@/lib/session-cookies";
 
 /**
  * Authentication actions. Every one is a thin pass-through to the backend, which owns
@@ -13,11 +14,20 @@ import { homeFor, getSession, type Role } from "@/lib/auth";
 
 export type LoginState = { error?: string } | null;
 
-type LoginResponse = {
-  token: string;
-  refreshToken: string;
+type LoginResponse = TokenPair & {
   user: { userId: number; loginId: string; role: Role; name: string; mustChangePassword: boolean };
 };
+
+/**
+ * Store a session in the browser: the access token for as long as it lives, and (F0) the
+ * refresh token the proxy uses to renew it. The backend's own Set-Cookie is on a
+ * server-to-server response the browser never sees, so this is what actually signs the user in.
+ */
+async function storeSession(pair: TokenPair) {
+  const jar = await cookies();
+  jar.set(SESSION_COOKIE, pair.token, sessionCookie(pair.expiresIn));
+  if (pair.refreshToken) jar.set(REFRESH_COOKIE, pair.refreshToken, refreshCookie());
+}
 
 async function login(formData: FormData, surface: "classroom" | "office" | "admin"): Promise<LoginState> {
   const loginId = String(formData.get("loginId") ?? "").trim();
@@ -34,16 +44,7 @@ async function login(formData: FormData, surface: "classroom" | "office" | "admi
     return toActionError(e);
   }
 
-  // The backend also sets this cookie, but its Set-Cookie header is on a server-to-server
-  // response the browser never sees. Setting it here is what actually signs the user in.
-  const jar = await cookies();
-  jar.set("bcsk_session", result.token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 8 * 3600,
-    path: "/",
-  });
+  await storeSession(result);
 
   // SEC-2: office-issued credentials must be replaced before the portal opens.
   redirect(result.user.mustChangePassword ? "/change-password" : homeFor(result.user.role));
@@ -62,13 +63,16 @@ export async function loginAdmin(_p: LoginState, f: FormData) {
 }
 
 export async function logout(dest: string) {
+  const jar = await cookies();
   try {
-    await api.post("/auth/logout", {}, { auth: true });
+    // The refresh token goes with it so the backend revokes it - otherwise it would stay usable
+    // for its full 30 days after the user signed out.
+    await api.post("/auth/logout", { refreshToken: jar.get(REFRESH_COOKIE)?.value }, { auth: true });
   } catch {
     // Signing out must succeed locally even if the API is unreachable.
   }
-  const jar = await cookies();
-  jar.delete("bcsk_session");
+  jar.delete(SESSION_COOKIE);
+  jar.delete(REFRESH_COOKIE);
   redirect(dest);
 }
 
@@ -88,24 +92,15 @@ export async function changePassword(
   if (newPassword.length < 10) return { error: "Your new password must be at least 10 characters." };
   if (newPassword !== confirmPassword) return { error: "The two new passwords don't match." };
 
-  let result: { token?: string };
+  let result: Partial<TokenPair>;
   try {
-    result = await api.post<{ token?: string }>("/users/me/change-password", { currentPassword, newPassword });
+    result = await api.post<Partial<TokenPair>>("/users/me/change-password", { currentPassword, newPassword });
   } catch (e) {
     return toActionError(e);
   }
-  // A password change retires every session issued before it, this one included; the backend
-  // hands back a fresh token to keep the holder signed in.
-  if (result.token) {
-    const jar = await cookies();
-    jar.set("bcsk_session", result.token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 8 * 3600,
-      path: "/",
-    });
-  }
+  // A password change retires every session issued before it, this one and its refresh token
+  // included; the backend hands back a fresh pair to keep the holder signed in.
+  if (result.token) await storeSession({ ...result, token: result.token });
   redirect(homeFor(session.role));
 }
 

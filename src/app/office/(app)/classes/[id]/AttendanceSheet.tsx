@@ -6,11 +6,14 @@ import { markAttendance } from "./actions";
 export function AttendanceSheet({
   classSessionId,
   date,
+  today,
   students,
   canSave,
 }: {
   classSessionId: number;
   date: string;
+  /** The school's today: the latest day attendance can be taken for. */
+  today: string;
   /** Without Insert on "My Classes" the sheet is shown read-only. */
   canSave: boolean;
   students: { userId: number; name: string; studentId: string; current: string }[];
@@ -20,7 +23,17 @@ export function AttendanceSheet({
 
   return (
     <section className="bg-white rounded-2xl border border-line p-6">
-      <h2 className="font-display text-lg font-semibold text-green mb-1">Attendance — {date}</h2>
+      <div className="flex flex-wrap items-end justify-between gap-3 mb-1">
+        <h2 className="font-display text-lg font-semibold text-green">Attendance — {date === today ? "today" : date}</h2>
+        {/* A plain GET form: picking a day reloads the sheet with what was marked then. */}
+        <form className="flex items-end gap-2">
+          <label className="text-xs font-bold text-ink">
+            Day
+            <input type="date" name="date" defaultValue={date} max={today} className="mt-1 block rounded-lg border border-line px-2 py-1.5 text-xs" />
+          </label>
+          <button className="border border-line hover:border-green-mid text-ink text-xs font-bold rounded-lg px-3 py-1.5">Open</button>
+        </form>
+      </div>
       <p className="text-xs text-ink-soft mb-4">
         {canSave ? "Class roster. Choose a status per student and save." : "Class roster. Your account can view attendance but not record it."}
       </p>
@@ -51,6 +64,8 @@ export function AttendanceSheet({
                 <option value="PRESENT">Present</option>
                 <option value="LATE">Late</option>
                 <option value="ABSENT">Absent</option>
+                {/* Set by an approved leave request; kept as it is when the sheet is saved. */}
+                {s.current === "EXCUSED" && <option value="EXCUSED">Excused (leave)</option>}
               </select>
             </div>
           ))}

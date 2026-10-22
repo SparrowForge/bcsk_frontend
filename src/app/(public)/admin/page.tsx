@@ -13,10 +13,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** FR-ADMIN-01: Admin login with RBAC. */
-export default async function AdminLoginPage() {
+export default async function AdminLoginPage({ searchParams }: { searchParams: Promise<{ expired?: string }> }) {
   const session = await getSession();
   if (session && ADMIN_ROLES.includes(session.role)) redirect("/admin/dashboard");
   const { t } = await getDict();
+  const { expired } = await searchParams;
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center px-4 py-16 bg-green/5">
@@ -27,6 +28,7 @@ export default async function AdminLoginPage() {
         loginLabel={t.auth.login}
         forgotLabel={t.auth.forgotPassword}
         invalidMessage={t.auth.invalidCredentials}
+        notice={expired ? t.auth.sessionExpired : undefined}
         action={loginAdmin}
         demoHint={isDemoMode() ? "Demo: admin / bcsk1234" : undefined}
       />
